@@ -1,0 +1,277 @@
+
+.fixed-top{
+
+}
+
+.tab-bg-dark-navy-blue ul>li>a {
+    padding: 6px 15px !important;
+}
+
+.fileupload {
+    margin-left: -15px;
+}
+
+.pull-right {
+    margin-top:15px;
+}
+
+.notice_write{
+    height:328px;
+}
+
+.panel-body{
+    overflow: hidden;
+}
+
+.panel_plan{
+    background-color: #f1f2f7;
+}
+
+.panel_plan > .panel-body{
+    margin:10px auto;
+    background-color: #FFFFFF;
+    filter:progid:DXImageTransform.Microsoft.Shadow(color=#909090,direction=120,strength=3);/*ie*/
+    -moz-box-shadow: 2px 2px 10px #909090;/*firefox*/
+    -webkit-box-shadow: 2px 2px 10px #909090;/*safari或chrome*/
+    box-shadow:2px 2px 10px #909090;/*opera或ie9*/
+}
+
+.btn_plan_create{
+    float: left!important;;
+    margin-left: 20px;
+}
+
+.btn_plan_fill{
+    float: right;
+}
+
+.term_picker{
+    float: left;
+    margin-right: -50px;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.panel_top_select_normal{
+    float: left;
+    margin-left:16px;
+}
+
+.plan_search_panel{
+    margin-top:10px;
+}
+
+.td_species_name{
+    vertical-align:middle!important;
+}
+
+.modal-body{
+    padding-left: 0!important;
+}
+
+.modal_input_1{
+    width: 30%;
+    float:left;
+    margin:0 0 15px;
+}
+
+.modal_input_2{
+    width: 25%;
+    float:left;
+    margin:0 8px 15px;
+}
+
+.modal_input_3{
+    width: 10%;
+    float:left;
+    margin:0 4px 15px;
+}
+
+.fileupload{
+    margin-left: 0 !important;
+}
+
+.intent_fill_form_group > .control-label{
+    float: left;
+    height:34px;
+    line-height:34px;
+    overflow:hidden;
+}
+
+.intent_fill_form_group{
+    margin-bottom: 0!important;
+}
+
+.intent_view h4{
+    float: left;
+    margin-right:50px;
+}
+
+.intent_view button{
+    float: right;
+    margin-right: 10px;
+}
+
+.btn_plan_create{
+    float:right;
+    margin-right: 0!important;
+    margin-left: 10px!important;
+}
+
+.panel-account{
+    padding: 0px 0px 10px;
+}
+
+.panel_body_top{
+    margin-bottom: 0px!important;
+}
+
+.panel_body_top_select{
+    width: 200px;
+}
+
+.system_input_padding{
+    padding-left: 0px!important;
+}
+
+.panel_close{
+    display: none;
+}
+
+.btn_panel_normal{
+    padding: 2px 8px!important;
+}
+
+.btn_species_delete,.btn_manager_delete,.btn_position_delete{
+    margin-left: 10px;
+}
+
+.plan_new_label{
+    margin-top: 8px;
+}
+
+.btn_plan_search, .btn_plan_search_all{
+    margin-left:0px;
+    margin-top:15px;
+}
+
+.btn_plan_export,.btn_grades_excute{
+    margin-bottom: 10px;
+}
+
+.info_h{
+    margin-bottom:0;
+}
+
+.checkbox-simple{
+    margin-left: 2px;
+}
+
+.xsmall{
+    height: 34px !important;
+}
+
+/* *************logout start***************** */
+
+.dropdown-menu{
+    width: 80px!important;
+    min-width: 80px!important;
+}
+
+.dropdown-menu.extended{
+    min-width: 80px!important;
+}
+
+.top-nav ul.top-menu>li .dropdown-menu.logout{
+    margin-right: 0!important;
+    padding-right: 0!important;
+    width: 100%!important;
+}
+
+.dropdown-menu.extended.logout>li{
+    margin-right: 0!important;
+    padding-right: 0!important;
+    width: 100%!important;
+}
+.dropdown-menu.extended.logout>li>a{
+    margin-right: 0!important;
+    width: 100%!important;
+}
+
+/* *************logout end***************** */
+
+/* *************tree start***************** */
+.tree {
+}
+.tree li,
+.tree li > a,
+.tree li > span {
+    padding: 4pt;
+    border-radius: 4px;
+}
+
+.tree li a {
+    text-decoration: none;
+    line-height: 20pt;
+    border-radius: 4px;
+}
+
+.tree li a:hover {
+    background-color: #F7F7F7;
+}
+
+.tree li a.active:hover {
+    background-color: #F7F7F7;
+}
+
+ul, .list-unstyled{
+    padding-left: 0px!important;
+}
+
+.editable-table{
+    margin-top: -15px!important;
+}
+
+.table_page{
+    margin-bottom: 6px;
+}
+
+/* *************tree end***************** */
+
+@media (max-width: 768px){
+    .term_picker{
+        float: left;
+        margin: 10px;
+        padding-right: 0px;
+        padding-left: 15px;
+    }
+
+    .btn_plan_search{
+        margin-left:15px;
+        margin-top:15px;
+    }
+
+    .btn_plan_create{
+        margin-top:15px;
+        margin-right:15px!important;
+    }
+
+    .btn_plan_fill{
+        float: right;
+    }
+
+    .intent_view h4{
+        float: left;
+        margin-right:100px;
+    }
+
+    .system_input_padding{
+        padding-left: 0px!important;
+    }
+
+    .fileupload-div{
+        margin-top:10px;
+        width:50%;
+    }
+
+}

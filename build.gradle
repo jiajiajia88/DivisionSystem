@@ -1,0 +1,57 @@
+group 'com.szy'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'spring-boot'
+
+
+buildscript {
+    ext {
+        springBootVersion = '1.4.1.RELEASE'
+    }
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'org.springframework:springloaded:1.2.6.RELEASE'
+    }
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+bootRepackage {
+    mainClass = 'com.szy.ApplicationStart'
+}
+
+configurations {
+    providedRuntime
+    //compile.exclude group:'ch.qos.logback'
+}
+
+dependencies {
+
+    compile (
+            'org.springframework.boot:spring-boot-starter-aop',
+            'org.springframework.boot:spring-boot-starter-cache',
+            'org.springframework.boot:spring-boot-starter-web',
+            'org.springframework.boot:spring-boot-starter-thymeleaf',
+//            'org.springframework.boot:spring-boot-devtools:1.4.3.RELEASE',
+//            'org.springframework.boot:spring-boot-configuration-processor:1.4.3.RELEASE',
+            'com.alibaba:fastjson:1.2.21',
+            'commons-lang:commons-lang:2.6',
+            'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1'
+    )
+    runtime('mysql:mysql-connector-java')
+    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+
+}

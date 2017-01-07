@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<!-- layout文件路径-->
+<body>
+<section layout:fragment="content">
+    <!-- page start-->
+    <div class="row" th:switch="${phoneNumber}==null ? 'true' : 'false'">
+        <div class="col-sm-6">
+            <section class="panel panel_plan">
+                <div class="panel-body">
+                    <div class="panel-account col-lg-12">
+                        <h4>修改密码</h4>
+                    </div>
+                    <div class="form-group">
+                        <label for="origin_pwd">原密码</label>
+                        <input type="password" class="form-control" id="origin_pwd" placeholder="请输入原密码"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_pwd">新密码</label>
+                        <input type="password" class="form-control" id="new_pwd" placeholder="请输入新密码"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="repeat_pwd">重复新密码</label>
+                        <input type="password" class="form-control" id="repeat_pwd" placeholder="再一遍输入新密码"/>
+                    </div>
+                    <button type="button" id="btn_pwd_update" class="btn btn-info">提交</button>
+                </div>
+            </section>
+        </div>
+
+
+        <div id="panel_phone_fill" class="col-sm-6" th:case="'true'" th:if="${session.role}=='student'">
+            <section class="panel panel_plan">
+                <div class="panel-body">
+                    <div class="panel-account col-lg-12">
+                        <h4>手机号补充</h4>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_number_add"></label>
+                        <input type="password" class="form-control" id="phone_number_add" name="phone_number" placeholder="请输入手机号（长号）"/>
+                    </div>
+                    <button id="btn_phone_add" type="button" class="btn btn-white">提交</button>
+                </div>
+            </section>
+        </div>
+
+        <div id="panel_phone_show" class="col-sm-6" th:case="'false'" th:if="${session.role}=='student'">
+            <section class="panel panel_plan">
+                <div class="panel-body">
+                    <div class="panel-account col-lg-12">
+                        <h4>手机号</h4>
+                    </div>
+                    <div class="form-group">
+                        <label id="phone_number_label"><h3 th:text="${phoneNumber}"></h3></label>
+                        <input id="phone_number_modify" type="text" class="form-control panel_close" name="phone_number" th:value="${phoneNumber}" placeholder="请输入手机号（长号）"/>
+                    </div>
+                    <button id="btn_phone_modify" type="button" class="btn btn-white">修改</button>
+                    <button id="btn_phone_update" type="button" class="btn btn-white panel_close">提交</button>
+                    <button id="btn_phone_cancel" type="button" class="btn btn-white panel_close">取消</button>
+                </div>
+            </section>
+        </div>
+
+    </div>
+
+    <!-- page end -->
+</section>
+</body>
+</html>

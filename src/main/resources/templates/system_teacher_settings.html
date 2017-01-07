@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<!-- layout文件路径-->
+<body>
+<section layout:fragment="content">
+    <!-- page start-->
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="panel panel_plan">
+                <div class="panel-body">
+                    <div class="panel-account col-lg-1">
+                        <h4>添加教师</h4>
+                    </div>
+                    <div class="form-group col-lg-2 system_input_padding">
+                        <input type="text" class="form-control" id="manager" name="manager" placeholder="请输入管理员名"/>
+                    </div>
+                    <div class="panel-account col-lg-1">
+                        <h4>学工号</h4>
+                    </div>
+                    <div class="form-group col-lg-2 system_input_padding">
+                        <input type="text" class="form-control" id="number" name="number" placeholder="请输入学工号"/>
+                    </div>
+                    <div class="panel-account col-lg-1">
+                        <h4>职务</h4>
+                    </div>
+                    <div class="form-group col-lg-2 system_input_padding">
+                        <select id="position" class="form-control" >
+                            <option th:each="position:${positionList}" th:text="${position.description}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-lg-2 system_input_padding">
+                        <button type="submit" class="btn btn-white btn_teacher_add">提交</button>
+                    </div>
+                    <table class="table  table-hover general-table">
+                        <thead>
+                        <tr>
+                            <th><h5>已有管理员</h5></th>
+                            <th><h5>学工号</h5></th>
+                            <th><h5>职务</h5></th>
+                            <th><h5>操作</h5></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="teacher:${teacherList}">
+                            <td th:text="${teacher.name}"></td>
+                            <td th:text="${teacher.number}"></td>
+                            <td th:text="${teacher.description}"></td>
+                            <td>
+                                <button type="button" class="btn btn-white btn_teacher_modify btn_panel_normal">修改</button>
+                                <button type="button" class="btn btn-white btn_teacher_delete btn_panel_normal">删除</button>
+                            </td>
+                            <td class="panel_close"><input type="text" class="form-control" th:value="${teacher.name}" placeholder="请输入大类名"/></td>
+                            <td class="panel_close"><input type="text" class="form-control" th:value="${teacher.number}" placeholder="请输入学工号"/></td>
+                            <td class="panel_close">
+                                <select class="form-control" >
+                                    <option th:each="position:${positionList}" th:text="${position.description}"></option>
+                                </select>
+                            </td>
+                            <td class="panel_close">
+                                <button type="button" class="btn btn-white btn_teacher_submit btn_panel_normal">保存</button>
+                                <button type="button" class="btn btn-white btn_teacher_submitout btn_panel_normal">取消修改</button>
+                            </td>
+                            <input type="hidden" th:value="${teacher.id}"/>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- page end -->
+
+</section>
+</body>
+</html>

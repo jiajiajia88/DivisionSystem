@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<!-- layout文件路径-->
+<body>
+<div layout:fragment="content">
+    <!-- page start-->
+    <div class="row">
+        <div class="col-sm-12">
+
+            <section class="panel panel_plan">
+                <div class="panel-body profile-information">
+                    <div class="col-md-4">
+                        <div class="profile-desk" th:switch="${studentinfo.division}==1 ? 'true' : 'false'">
+                            <h1 th:text="${studentinfo.name}"></h1>
+                            <h3 th:text="${studentinfo.originalClass}"></h3>
+                            <h4 th:case="'true'" th:text="${studentinfo.stufrom}+'|文科'"></h4>
+                            <h4 th:case="'false'" th:text="${studentinfo.stufrom}+'|理科'"></h4>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="profile-statistics">
+                            <h1 th:text="${studentinfo.gpa}"></h1>
+                            <p>学分平均绩点</p>
+                            <h1 th:text="${studentinfo.realgpa}"></h1>
+                            <p>平均学分绩点*70%</p>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="profile-statistics">
+                            <h1 th:text="${studentinfo.entrancescore}"></h1>
+                            <p>高考成绩</p>
+                            <h1 th:text="${studentinfo.admissionscore}">未知</h1>
+                            <p>生源省高考录取线</p>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="profile-statistics">
+                            <h1 th:text="${studentinfo.gradeone}"></h1>
+                            <p>高考成绩/生源省高考录取线</p>
+                            <h1 th:text="${studentinfo.gradetwo}">未知</h1>
+                            <p>30%*高考成绩/生源省高考录取线</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="profile-statistics">
+                            <h1 th:text="${studentinfo.totalgrade}"></h1>
+                            <p>总成绩（70%*平均学分绩点 + 30%*高考成绩/生源省高考录取线）</p>
+                            <h1 th:text="${studentinfo.rank}">未知</h1>
+                            <p>专业排名</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-body intent_view col-md-12" th:if="${ifFillIntent}=='not'">
+                    <h4 th:text="${message}"></h4>
+                    <a href="#myModal" data-toggle="modal" class="btn btn-white btn_plan_fill">
+                        填报志愿
+                    </a>
+                </div>
+
+                <div class="panel-body intent_view col-md-12" th:if="${ifConfirm}==1">
+                    <div class="col-md-3"><h4 id="firstmajor" th:text="${firstmajor}"></h4></div>
+                    <div class="col-md-3"><h4 id="secondmajor" th:text="${secondmajor}"></h4></div>
+                    <div class="col-md-3"><h4 id="thirdmajor" th:if="${majorAmount>2}" th:text="${thirdmajor}"></h4></div>
+                    <div class="col-md-3">
+                        <a href="#myModal" data-toggle="modal" class="btn btn-white btn_plan_fill">
+                            修改
+                        </a>
+                    </div>
+                </div>
+
+                <div class="panel-body intent_view col-md-12" th:if="${ifConfirm}==2">
+                    <div class="col-md-3"><h4 th:text="${firstmajor}"></h4></div>
+                    <div class="col-md-3"><h4 th:text="${secondmajor}"></h4></div>
+                    <div class="col-md-3"><h4 th:text="${thirdmajor}"></h4></div>
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-white">导出到PDF</button>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </div>
+    <!-- page end-->
+
+    <!-- modal start -->
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 class="modal-title">填报志愿</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" class="form-horizontal" >
+
+                        <div class="form-group" th:if="${majorAmount>0}">
+                            <label class="col-lg-2 control-label">第一志愿</label>
+                            <div class="col-lg-10">
+                                <select id="first-select" class="form-control">
+                                    <option />
+                                    <option th:each="major:${major}" th:text="${major.majorName}"/>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" th:if="${majorAmount>1}">
+                            <label class="col-lg-2 control-label">第二志愿</label>
+                            <div class="col-lg-10">
+                                <select id="second-select" class="form-control">
+                                    <option />
+                                    <option th:each="major:${major}" th:text="${major.majorName}"/>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" th:if="${majorAmount>2}">
+                            <label class="col-lg-2 control-label">第三志愿</label>
+                            <div class="col-lg-10">
+                                <select id="third-select" class="form-control">
+                                    <option />
+                                    <option th:each="major:${major}" th:text="${major.majorName}"/>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button class="btn btn-default btn_intentPlan_submit" type="button">保存</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal end-->
+
+    <!-- modal start -->
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal2" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                    <h4 class="modal-title">修改志愿</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" class="form-horizontal">
+
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">第一志愿</label>
+                            <div class="col-lg-10">
+                                <input type="text" placeholder=" " class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">第二志愿</label>
+                            <div class="col-lg-10">
+                                <input type="text" placeholder=" " class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label">第三志愿</label>
+                            <div class="col-lg-10">
+                                <input type="text" placeholder=" " class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-offset-2 col-lg-10">
+                                <button class="btn btn-default" type="button">提交</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--modal end-->
+    <script th:inline="javascript">
+        jQuery(document).ready(function() {
+            $(function () {
+                var firstmajor = $("#firstmajor").text();
+                var secondmajor = $("#secondmajor").text();
+                var thirdmajor = $("#thirdmajor").text();
+
+                $("#first-select").find("option").each(function(){
+                    if($(this).val() == firstmajor){
+                        $(this).attr("selected",true);
+                    }
+                });
+
+                $("#second-select").find("option").each(function(){
+                    if($(this).val() == secondmajor){
+                        $(this).attr("selected",true);
+                    }
+                });
+
+                $("#third-select").find("option").each(function(){
+                    if($(this).val() == thirdmajor){
+                        $(this).attr("selected",true);
+                    }
+                });
+            });
+        });
+    </script>
+</div>
+</body>
+</html>
