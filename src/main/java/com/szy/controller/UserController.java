@@ -31,8 +31,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/v/user/password/update", method = {RequestMethod.POST})
-    public Object updatePasswd(@RequestBody UserUpdatePasswordReq req) {
-        return null;
-//        return userService.updatePasswd(req);
+    public Object updatePasswd(@RequestBody UserUpdatePasswordReq req, HttpSession session) {
+        return userService.updatePassward(req, session);
     }
 }

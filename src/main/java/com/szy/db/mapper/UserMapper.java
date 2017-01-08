@@ -13,4 +13,5 @@ public interface UserMapper {
     public int insertUser(UserDbo userDbo);
     public UserDbo selectUserByNumber(long number);
     public List<UserDbo> selectUsers(Items items);
+    public int updateUser(UserDbo userDbo);
 }

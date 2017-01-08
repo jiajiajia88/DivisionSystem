@@ -6,6 +6,7 @@ import com.szy.db.mapper.UserMapper;
 import com.szy.db.model.UserDbo;
 import com.szy.model.Account;
 import com.szy.model.UserLoginReq;
+import com.szy.model.UserUpdatePasswordReq;
 import com.szy.service.IUserService;
 import com.szy.util.DBUtil;
 import com.szy.util.UserLimitUtil;
@@ -41,6 +42,25 @@ public class UserServiceImpl implements IUserService {
 
         Account account = new Account(userDbo.getNumber(),userDbo.getLimit(),userDbo.getLoginTime());
         session.setAttribute("account", account);
+        return RespEnum.SUCCESS.getResponse();
+    }
+
+    @Override
+    public Response updatePassward(UserUpdatePasswordReq req, HttpSession session) {
+        if(req == null || req.getNumber() == 0 || req.getPassword() == null)
+            return RespEnum.PARAMETER_MiSS.getResponse();
+
+        UserDbo userDbo = new UserDbo();
+        userDbo.setNumber(req.getNumber());
+        userDbo.setPassword(req.getPassword());
+        UserMapper userMapper = DBUtil.getMapper(UserMapper.class);
+        try{
+            userMapper.updateUser(userDbo);
+        } catch (Exception e){
+            e.printStackTrace();
+            return RespEnum.DATA_UPDATE_ERR.getResponse();
+        }
+
         return RespEnum.SUCCESS.getResponse();
     }
 }

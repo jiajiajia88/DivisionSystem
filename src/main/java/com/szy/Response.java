@@ -11,12 +11,15 @@ public class Response {
     public String getRetInfo() {
         return retInfo;
     }
+
     public void setRetInfo(String retInfo) {
         this.retInfo = retInfo;
     }
+
     public int getRetCode() {
         return retCode;
     }
+
     public void setRetCode(int retcode) {
         this.retCode = retcode;
     }
