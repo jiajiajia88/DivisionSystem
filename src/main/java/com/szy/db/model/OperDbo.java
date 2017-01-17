@@ -8,6 +8,7 @@ public class OperDbo {
     private int id;
     private long operTime;
     private long user;
+    private String scope;     //作用域：{GRADE，MAJOR, PLAN, POSITION, SPECIES, DIVISION}
     private String description;
     private int status;
 

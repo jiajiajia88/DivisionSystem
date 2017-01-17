@@ -5,17 +5,17 @@ import com.szy.model.SystemInfo;
 /**
  * Created by shizhouyong on 2017/1/8.
  */
-public class MajorDbo extends SystemInfo{
+public class CategoryDbo extends SystemInfo{
 
-    private String description;
+    private int stuAmount;
     private int status;
 
-    public String getDescription() {
-        return description;
+    public int getStuAmount() {
+        return stuAmount;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setStuAmount(int stuAmount) {
+        this.stuAmount = stuAmount;
     }
 
     public int getStatus() {

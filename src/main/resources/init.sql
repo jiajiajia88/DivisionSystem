@@ -50,41 +50,6 @@ CREATE TABLE tb_student_info
   PRIMARY KEY(number)
 )Engine=INNODB DEFAULT charset=utf8;
 
-/* **** 职位表 **** */
-DROP TABLE IF EXISTS tb_positions;
-CREATE TABLE tb_positions
-(
-  id INT NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  name VARCHAR(20) NOT NULL COMMENT '职位名',
-  createTime datetime DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY(id),
-  UNIQUE KEY description(name)
-)ENGINE=INNODB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
-/* **** 专业大类表 **** */
-DROP TABLE IF EXISTS tb_species;
-CREATE TABLE tb_species
-(
-  id INT NOT NULL AUTO_INCREMENT COMMENT '大类id',
-  name VARCHAR(50) NOT NULL COMMENT '大类名',
-  stuAmount INT COMMENT '学生人数',
-  createTime DATETIME DEFAULT NULL COMMENT '创建时间',
-  status TINYINT DEFAULT 0 COMMENT '状态',
-  PRIMARY KEY(id),
-  UNIQUE KEY species_name(name)
-)Engine=INNODB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
-/* **** 专业表 **** */
-DROP TABLE IF EXISTS tb_major;
-CREATE TABLE tb_major
-(
-  id INT NOT NULL AUTO_INCREMENT COMMENT '专业id',
-  name VARCHAR(50) NOT NULL COMMENT '专业名',
-  createTime DATETIME DEFAULT NULL COMMENT '创建时间',
-  status TINYINT NOT NULL DEFAULT 0,
-  PRIMARY KEY(id),
-  UNIQUE KEY major_name(name)
-)ENGINE=INNODB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 /* **** 计划专业表 **** */
 DROP TABLE IF EXISTS tb_plan_major;
@@ -113,15 +78,69 @@ CREATE TABLE tb_intent_fill
   UNIQUE KEY number(number)
 )Engine=INNODB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+
+/* **** 系统日志表 **** */
+DROP TABLE IF EXISTS tb_oper;
+CREATE TABLE tb_oper
+(
+  id INT NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  operTime DATETIME NOT NULL COMMENT '操作时间',
+  user BIGINT(13) NOT NULL COMMENT '操作用户',
+  scope ENUM('GRADE','MAJOR','PLAN','POSITION','SPECIES','DIVISION') COMMENT '作用域',
+  description VARCHAR(50) COMMENT '操作描述',
+  status TINYINT COMMENT '状态',
+  PRIMARY KEY(id)
+)ENGINE=INNODB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
 /* **** 年级表 **** */
 DROP TABLE IF EXISTS tb_grade;
 CREATE TABLE tb_grade
 (
   id INT NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  grade INT(4) NOT NULL COMMENT '学期',
+  name INT(4) NOT NULL COMMENT '学期',
+  createTime datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY(id),
-  UNIQUE KEY grade(grade)
+  UNIQUE KEY grade_name(name)
 )Engine=INNODB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+/* **** 职位表 **** */
+DROP TABLE IF EXISTS tb_position;
+CREATE TABLE tb_position
+(
+  id INT NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  name VARCHAR(20) NOT NULL COMMENT '职位名',
+  description VARCHAR(1024) DEFAULT NULL COMMENT '职位描述',
+  createTime datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY(id),
+  UNIQUE KEY description(name)
+)ENGINE=INNODB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+/* **** 专业大类表 **** */
+DROP TABLE IF EXISTS tb_category;
+CREATE TABLE tb_category
+(
+  id INT NOT NULL AUTO_INCREMENT COMMENT '大类id',
+  name VARCHAR(50) NOT NULL COMMENT '大类名',
+  stuAmount INT COMMENT '学生人数',
+  createTime DATETIME DEFAULT NULL COMMENT '创建时间',
+  status TINYINT DEFAULT 0 COMMENT '状态',
+  PRIMARY KEY(id),
+  UNIQUE KEY category_name(name)
+)Engine=INNODB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+/* **** 专业表 **** */
+DROP TABLE IF EXISTS tb_major;
+CREATE TABLE tb_major
+(
+  id INT NOT NULL AUTO_INCREMENT COMMENT '专业id',
+  name VARCHAR(64) NOT NULL COMMENT '专业名',
+  description VARCHAR(2048) DEFAULT NULL COMMENT '专业描述',
+  createTime DATETIME DEFAULT NULL COMMENT '创建时间',
+  status TINYINT NOT NULL DEFAULT 0,
+  PRIMARY KEY(id),
+  UNIQUE KEY major_name(name)
+)ENGINE=INNODB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 /* **** 分流计划表 **** */
 DROP TABLE IF EXISTS tb_plan;
@@ -136,17 +155,4 @@ CREATE TABLE tb_plan
   status TINYINT COMMENt '状态',
   PRIMARY KEY(id)
 )ENGINE=INNODB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
-/* **** 系统日志表 **** */
-DROP TABLE IF EXISTS tb_system_log;
-CREATE TABLE tb_system_log
-(
-  id INT NOT NULL AUTO_INCREMENT COMMENT '主键id',
-  operTime DATETIME NOT NULL COMMENT '操作时间',
-  user BIGINT(13) NOT NULL COMMENT '操作用户',
-  description VARCHAR(50) COMMENT '操作描述',
-  status TINYINT COMMENT '状态',
-  PRIMARY KEY(id)
-)ENGINE=INNODB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
 

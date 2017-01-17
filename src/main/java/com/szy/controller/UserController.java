@@ -23,8 +23,6 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    private Logger logger = LoggerFactory.getLogger(UserController.class);
-
     @RequestMapping(value = "/user/login", method = {RequestMethod.POST})
     public Object login(@RequestBody UserLoginReq req, HttpSession session) {
         return userService.login(req, session);
