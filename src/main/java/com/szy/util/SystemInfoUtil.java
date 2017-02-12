@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
+ * 系统信息工具类，通过内存存取基本信息，提高访问速度
  * Created by shizhouyong on 2017/1/9.
  */
 @Component
@@ -26,66 +28,83 @@ public class SystemInfoUtil {
     private final static String MAJOR = "MAJOR";
     private final static String CATEGORY = "CATEGORY";
 
-    private static Long uptime = 0L;
+    private static Long uptime_g = 0L;
+    private static Long uptime_p = 0L;
+    private static Long uptime_m = 0L;
+    private static Long uptime_c = 0L;
     private final static long CACHE_TIME = 24 * 60 * 60 * 1000;
 
-    private static volatile Map<String, SystemInfo> gradeMap = new HashMap<>();
-    private static volatile Map<String, SystemInfo> positionMap = new HashMap<>();
-    private static volatile Map<String, SystemInfo> majorMap = new HashMap<>();
-    private static volatile Map<String, SystemInfo> categoryMap = new HashMap<>();
+    private static volatile Map<String, SystemInfo> gradeMap = new ConcurrentHashMap<>();
+    private static volatile Map<String, SystemInfo> positionMap = new ConcurrentHashMap<>();
+    private static volatile Map<String, SystemInfo> majorMap = new ConcurrentHashMap<>();
+    private static volatile Map<String, SystemInfo> categoryMap = new ConcurrentHashMap<>();
 
-    public SystemInfo addSystemInfo(SystemInfo systemInfo, String type) throws Exception {
+    public Response addSystemInfo(SystemInfo systemInfo, String type) throws Exception {
         checkUpdate(type);
         SystemMapper systemMapper = DBUtil.getMapper(SystemMapper.class);
         if (type.equals(GRADE) && systemInfo instanceof GradeDbo) {
             if (gradeMap.containsKey(systemInfo.getName()))
-                return gradeMap.get(systemInfo.getName());
+                return RespEnum.NAME_DUPLICATE.getResponse();
 
-            systemMapper.insertGrade(systemInfo);
+            try {
+                systemMapper.insertGrade(systemInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             List<GradeDbo> gradeDbos = systemMapper.selectGrades();
             for (GradeDbo gradeDbo : gradeDbos) {
                 gradeMap.put(gradeDbo.getName(), gradeDbo);
             }
-            return systemInfo;
         }
 
         if (type.equals(MAJOR) && systemInfo instanceof MajorDbo) {
             if (majorMap.containsKey(systemInfo.getName()))
-                return majorMap.get(systemInfo.getName());
+                return RespEnum.NAME_DUPLICATE.getResponse();
 
-            systemMapper.insertMajor(systemInfo);
+            try {
+                systemMapper.insertMajor(systemInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             List<MajorDbo> majorDbos = systemMapper.selectMajors();
             for (MajorDbo majorDbo : majorDbos) {
                 majorMap.put(majorDbo.getName(), majorDbo);
             }
-            return systemInfo;
         }
 
         if (type.equals(CATEGORY) && systemInfo instanceof CategoryDbo) {
             if (categoryMap.containsKey(systemInfo.getName()))
-                return categoryMap.get(systemInfo.getName());
+                return RespEnum.NAME_DUPLICATE.getResponse();
 
-            systemMapper.insertCategory(systemInfo);
+
+            try {
+                systemMapper.insertCategory(systemInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             List<CategoryDbo> categoryDbos = systemMapper.selectCategories();
             for (CategoryDbo categoryDbo : categoryDbos) {
                 categoryMap.put(categoryDbo.getName(), categoryDbo);
             }
-            return systemInfo;
         }
 
         if (type.equals(POSITION) && systemInfo instanceof PositionDbo) {
             if (positionMap.containsKey(systemInfo.getName()))
-                return positionMap.get(systemInfo.getName());
+                return RespEnum.NAME_DUPLICATE.getResponse();
 
-            systemMapper.insertPosition(systemInfo);
+            try {
+                systemMapper.insertPosition(systemInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             List<PositionDbo> positionDbos = systemMapper.selectPositions();
             for (PositionDbo positionDbo : positionDbos) {
                 positionMap.put(positionDbo.getName(), positionDbo);
             }
-            return systemInfo;
         }
 
-        return null;
+
+        return RespEnum.SUCCESS.getResponse();
     }
 
     public Response deleteSystemInfo(String name, String type) throws Exception {
@@ -163,48 +182,59 @@ public class SystemInfoUtil {
     private void checkUpdate(String type){
 
         long cur = System.currentTimeMillis();
-        if(cur - uptime < CACHE_TIME)
-            return;
 
-        synchronized (uptime) {
-            if(cur - uptime < CACHE_TIME)
-                return;
+        SystemMapper systemMapper = DBUtil.getMapper(SystemMapper.class);
+        switch (type) {
+            case GRADE:
+                synchronized (uptime_g) {
+                    if (cur - uptime_g < CACHE_TIME)
+                        return;
 
-            SystemMapper systemMapper = DBUtil.getMapper(SystemMapper.class);
-
-            switch (type) {
-                case GRADE:
                     List<GradeDbo> gradeDbos = systemMapper.selectGrades();
                     for (GradeDbo gradeDbo : gradeDbos) {
                         gradeMap.put(gradeDbo.getName(), gradeDbo);
                     }
-                    uptime = cur;
-                    return;
-                case MAJOR:
+                    uptime_g = cur;
+                }
+                return;
+            case MAJOR:
+                synchronized (uptime_m) {
+                    if (cur - uptime_m < CACHE_TIME)
+                        return;
+
                     List<MajorDbo> majorDbos = systemMapper.selectMajors();
                     for (MajorDbo majorDbo : majorDbos) {
                         majorMap.put(majorDbo.getName(), majorDbo);
                     }
-                    uptime = cur;
-                    return;
-                case CATEGORY:
+                    uptime_m = cur;
+                }
+                return;
+            case CATEGORY:
+                synchronized (uptime_c) {
+                    if (cur - uptime_c < CACHE_TIME)
+                        return;
+
                     List<CategoryDbo> categoryDbos = systemMapper.selectCategories();
                     for (CategoryDbo categoryDbo : categoryDbos) {
                         categoryMap.put(categoryDbo.getName(), categoryDbo);
                     }
-                    uptime = cur;
-                    return;
-                case POSITION:
+                    uptime_c = cur;
+                }
+                return;
+            case POSITION:
+                synchronized (uptime_p) {
+                    if (cur - uptime_p < CACHE_TIME)
+                        return;
                     List<PositionDbo> positionDbos = systemMapper.selectPositions();
                     for (PositionDbo positionDbo : positionDbos) {
                         positionMap.put(positionDbo.getName(), positionDbo);
                     }
-                    uptime = cur;
-                    return;
-                default:
-                    return;
-            }
+                    uptime_p = cur;
+                }
+                return;
+            default:
         }
+
     }
 
 }

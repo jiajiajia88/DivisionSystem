@@ -6,7 +6,7 @@ package com.szy.model;
 public class AddCategoryReq {
 
     private String name;
-    private int stuAmount;
+    private String description;
 
     public String getName() {
         return name;
@@ -16,11 +16,11 @@ public class AddCategoryReq {
         this.name = name;
     }
 
-    public int getStuAmount() {
-        return stuAmount;
+    public String getDescription() {
+        return description;
     }
 
-    public void setStuAmount(int stuAmount) {
-        this.stuAmount = stuAmount;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

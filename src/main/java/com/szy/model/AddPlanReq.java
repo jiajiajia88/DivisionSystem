@@ -1,28 +1,16 @@
-package com.szy.db.model;
+package com.szy.model;
 
 /**
- * Created by shizhouyong on 2017/1/8.
+ * Created by shizhouyong on 2017/1/24.
  */
-public class PlanDbo {
+public class AddPlanReq {
 
-    private int id;
     private int grade;
     private int category;
     private int studentAmount;
     private int majorAmount;
     private String details;
-    private long createTime;
-    private long updateTime;
     private String remarks;
-    private int status;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public int getGrade() {
         return grade;
@@ -64,35 +52,11 @@ public class PlanDbo {
         this.details = details;
     }
 
-    public long getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(long createTime) {
-        this.createTime = createTime;
-    }
-
-    public long getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(long updateTime) {
-        this.updateTime = updateTime;
-    }
-
     public String getRemarks() {
         return remarks;
     }
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 }

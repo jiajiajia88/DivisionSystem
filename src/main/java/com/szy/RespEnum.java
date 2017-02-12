@@ -28,6 +28,7 @@ public enum RespEnum {
     PASSWD_ERR(0x00010004, "password error"),                  //密码错误
     DATA_NOT_FOUND(0x00010005, "data not found"),              //该数据不存在
     TYPE_NOT_FOUND(0x00010006, "type not found"),              //类型不存在
+    DATA_PARSE_ERR(0x00010007, "data parse failed"),           //数据解析出错
 
     /*
      * 数据库错误码

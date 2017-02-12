@@ -21,7 +21,7 @@
     </insert>
 
     <select id="selectMajors" resultType="com.szy.db.model.MajorDbo">
-        SELECT id,name,description,unix_timestamp(createTime) as createTime,status FROM t_major WHERE status > 0
+        SELECT id,name,description,unix_timestamp(createTime) FROM t_major WHERE status > 0
     </select>
 
     <delete id="deleteMajor" parameterType="int">
@@ -34,7 +34,7 @@
     </insert>
 
     <select id="selectPlans" resultType="com.szy.db.model.PlanDbo">
-        SELECT id,grade,species,studentAmount,majorAmount,unix_timestamp(createTime) as createTime,status FROM t_plan WHERE status > 0
+        SELECT id,grade,species,studentAmount,majorAmount,unix_timestamp(createTime) FROM t_plan WHERE status > 0
     </select>
 
     <update id="deletePlan" parameterType="int">
@@ -43,11 +43,11 @@
 
     <!--职位-->
     <insert id="insertPosition" parameterType="com.szy.db.model.PositionDbo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_position(name,createTime,description) VALUES (#{name}, description, from_unixtime(#{createTime}))
+        INSERT INTO t_position(name, createTime) VALUES (#{name}, from_unixtime(#{createTime}))
     </insert>
 
     <select id="selectPositions" resultType="com.szy.db.model.PositionDbo">
-        SELECT id,name,description,unix_timestamp(createTime) as createTime,status FROM t_position
+        SELECT id,name,unix_timestamp(createTime) FROM t_position
     </select>
 
     <delete id="deletePosition" parameterType="int">
@@ -56,11 +56,11 @@
 
     <!--专业大类-->
     <insert id="insertCategory" parameterType="com.szy.db.model.CategoryDbo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_category(name,description,createTime) VALUES (#{name}, #{description}, from_unixtime(#{createTime}))
+        INSERT INTO t_category(name,stuAmount,createTime) VALUES (#{name}, #{stuAmount}, from_unixtime(#{createTime}))
     </insert>
 
     <select id="selectCategories" resultType="com.szy.db.model.CategoryDbo">
-        SELECT id,name,description,unix_timestamp(createTime) as createTime,status FROM t_category
+        SELECT id,name,stuAmount,unix_timestamp(createTime) FROM t_category
     </select>
 
     <delete id="deleteCategory" parameterType="int">

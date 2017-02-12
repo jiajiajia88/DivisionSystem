@@ -3,6 +3,7 @@ package com.szy.util;
 import org.springframework.context.ApplicationContext;
 
 /**
+ * 通过Application上下文获取Mapper
  * Created by shizhouyong on 2017/1/7.
  */
 public class DBUtil {

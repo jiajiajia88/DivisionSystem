@@ -20,23 +20,28 @@ import javax.servlet.http.HttpSession;
 @Service("ISystemService")
 public class SystemServiceImpl implements ISystemService{
 
+    private final SystemInfoUtil systemInfoUtil;
+
     @Autowired
-    SystemInfoUtil systemInfoUtil;
+    public SystemServiceImpl(SystemInfoUtil systemInfoUtil) {
+        this.systemInfoUtil = systemInfoUtil;
+    }
 
     @Override
     public Response addGrade(AddGradeReq req, HttpSession session) {
         if(req == null || req.getGrade() == null){
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
+        long cur = System.currentTimeMillis() / 1000;
         GradeDbo grade = new GradeDbo();
         grade.setName(req.getGrade());
+        grade.setCreateTime(cur);
+
         try {
-            systemInfoUtil.addSystemInfo(grade,"GRADE");
-        } catch (Exception e){
-            e.printStackTrace();
+            return systemInfoUtil.addSystemInfo(grade,"GRADE");
+        } catch (Exception e) {
             return RespEnum.DATA_INSERT_ERR.getResponse();
         }
-        return RespEnum.SUCCESS.getResponse();
     }
 
     @Override
@@ -50,31 +55,27 @@ public class SystemServiceImpl implements ISystemService{
         dbo.setDescription(req.getDescription());
         dbo.setCreateTime(cur);
         try {
-            systemInfoUtil.addSystemInfo(dbo, "MAJOR");
-        } catch (Exception e){
-            e.printStackTrace();
+            return systemInfoUtil.addSystemInfo(dbo, "MAJOR");
+        } catch (Exception e) {
             return RespEnum.DATA_INSERT_ERR.getResponse();
         }
-        return RespEnum.SUCCESS.getResponse();
     }
 
     @Override
     public Response addCategory(AddCategoryReq req, HttpSession session) {
-        if(req == null || req.getName() == null || req.getStuAmount() == 0){
+        if(req == null || req.getName() == null){
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
         final long cur = System.currentTimeMillis() / 1000L;
         CategoryDbo dbo = new CategoryDbo();
         dbo.setName(req.getName());
-        dbo.setStuAmount(req.getStuAmount());
+        dbo.setDescription(req.getDescription());
         dbo.setCreateTime(cur);
         try {
-            systemInfoUtil.addSystemInfo(dbo, "CATEGORY");
+            return systemInfoUtil.addSystemInfo(dbo, "CATEGORY");
         } catch (Exception e) {
-            e.printStackTrace();
             return RespEnum.DATA_INSERT_ERR.getResponse();
         }
-        return RespEnum.SUCCESS.getResponse();
     }
 
     @Override
@@ -88,13 +89,12 @@ public class SystemServiceImpl implements ISystemService{
         dbo.setName(req.getName());
         dbo.setDescription(req.getDescription());
         dbo.setCreateTime(cur);
+
         try {
-            systemInfoUtil.addSystemInfo(dbo, "POSITION");
+            return systemInfoUtil.addSystemInfo(dbo, "POSITION");
         } catch (Exception e) {
-            e.printStackTrace();
             return RespEnum.DATA_INSERT_ERR.getResponse();
         }
-        return null;
     }
 
     @Override

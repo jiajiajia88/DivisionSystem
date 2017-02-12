@@ -19,35 +19,35 @@ import javax.servlet.http.HttpSession;
 public class SystemController {
 
     @Autowired
-    ISystemService systemService;
+    private ISystemService systemService;
 
-    @RequestMapping(value = "/system/grade/add", method = {RequestMethod.POST})
+    @RequestMapping(value = "/v/system/grade/add", method = {RequestMethod.POST})
     public Object addGrade(@RequestBody AddGradeReq req, HttpSession session) {
         return systemService.addGrade(req, session);
     }
 
-    @RequestMapping(value = "/system/major/add", method = {RequestMethod.POST})
+    @RequestMapping(value = "/v/system/major/add", method = {RequestMethod.POST})
     public Object addMajor(@RequestBody AddMajorReq req, HttpSession session) {
         return systemService.addMajor(req, session);
     }
 
-    @RequestMapping(value = "/system/category/add", method = {RequestMethod.POST})
+    @RequestMapping(value = "/v/system/category/add", method = {RequestMethod.POST})
     public Object addCategory(@RequestBody AddCategoryReq req, HttpSession session) {
         return systemService.addCategory(req, session);
     }
 
-    @RequestMapping(value = "/system/position/add", method = {RequestMethod.POST})
+    @RequestMapping(value = "/v/system/position/add", method = {RequestMethod.POST})
     public Object addPosition(@RequestBody AddPositionReq req, HttpSession session) {
         return systemService.addPosition(req, session);
     }
 
-    @RequestMapping(value = "/system/systemInfo/delete", method = {RequestMethod.POST})
+    @RequestMapping(value = "/v/system/systemInfo/delete", method = {RequestMethod.POST})
     public Object deleteSystemInfo(@RequestBody DeleteSystemInfoReq req, HttpSession session) {
         return systemService.deleteSystemInfo(req, session);
     }
 
-    @RequestMapping(value = "/system/systemInfo/get", method = {RequestMethod.POST})
-    public Object getSystemInfos(GetSystemInfoListReq req, HttpSession session) {
+    @RequestMapping(value = "/v/system/systemInfo/get", method = {RequestMethod.POST})
+    public Object getSystemInfos(@RequestBody GetSystemInfoListReq req, HttpSession session) {
         return systemService.getSystemInfos(req, session);
     }
 

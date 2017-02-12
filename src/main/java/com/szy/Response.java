@@ -5,6 +5,7 @@ package com.szy;
  * Created by shizhouyong on 2016/12/2.
  */
 public class Response {
+
     protected int retCode = 0;
     protected String retInfo;
 

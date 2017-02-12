@@ -1,30 +1,21 @@
 package com.szy.db.model;
 
 /**
- * Created by shizhouyong on 2017/1/8.
+ * Created by shizhouyong on 2017/1/25.
  */
-public class IntentFillDbo {
+public class VolunteerDbo {
 
-    private int id;
-    private String number;
+    private long number;
     private String majors;
     private long createTime;
     private long updateTime;
     private int status;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNumber() {
+    public long getNumber() {
         return number;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(long number) {
         this.number = number;
     }
 

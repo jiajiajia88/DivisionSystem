@@ -7,15 +7,15 @@ import com.szy.model.SystemInfo;
  */
 public class CategoryDbo extends SystemInfo{
 
-    private int stuAmount;
+    private String description;
     private int status;
 
-    public int getStuAmount() {
-        return stuAmount;
+    public String getDescription() {
+        return description;
     }
 
-    public void setStuAmount(int stuAmount) {
-        this.stuAmount = stuAmount;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getStatus() {

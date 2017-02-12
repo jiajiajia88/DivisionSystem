@@ -43,7 +43,7 @@ dependencies {
             'org.springframework.boot:spring-boot-starter-aop',
             'org.springframework.boot:spring-boot-starter-cache',
             'org.springframework.boot:spring-boot-starter-web',
-            'org.springframework.boot:spring-boot-starter-thymeleaf',
+//            'org.springframework.boot:spring-boot-starter-thymeleaf',
 //            'org.springframework.boot:spring-boot-devtools:1.4.3.RELEASE',
 //            'org.springframework.boot:spring-boot-configuration-processor:1.4.3.RELEASE',
             'com.alibaba:fastjson:1.2.21',

@@ -7,4 +7,5 @@ import com.szy.model.SystemInfo;
  */
 public class GradeDbo extends SystemInfo{
 
+
 }
