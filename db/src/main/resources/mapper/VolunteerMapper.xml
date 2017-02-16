@@ -2,29 +2,39 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.szy.db.mapper.VolunteerMapper">
 
-   <insert id="insertVolunteer" parameterType="com.szy.db.model.VolunteerDbo">
+    <insert id="insertVolunteer" parameterType="com.szy.db.model.VolunteerDbo">
        INSERT INTO t_volunteer(
            number,
-           majors,
+           firstChoose,
+           secondChoose,
+           thirdChoose,
            createTime)
        VALUES(
            #{number},
            #{majors},
            from_unixtime(#{createTime}))
-       on duplicate key SET majors = #{majors}, updateTime = from_unixtime(#{updateTime}  )
+       on duplicate key SET
+           firstChoose = #{firstChoose},
+           secondChoose = #{secondChoose},
+           thirdChoose = #{thirdChoose}
+           updateTime = from_unixtime(#{updateTime})
    </insert>
 
     <delete id="deleteVolunteer" parameterType="long">
         UPDATE t_volunteer SET status = -1 WHERE number = #{0}
     </delete>
 
-    <select id="getVolunteerByNumber" parameterType="long">
+    <select id="selectVolunteerByNumber" parameterType="long">
         SELECT number,majors,unix_timestamp(createTime) as createTime,unix_timestamp(updateTime) as updateTime,status FROM t_volunteer
     </select>
 
-    <select id="getVolunteerList">
+    <select id="selectVolunteerList">
         SELECT number,majors,unix_timestamp(createTime) as createTime,unix_timestamp(updateTime) as updateTime,status FROM t_volunteer
     </select>
+
+    <update id="updateVolunteerCommitStatus" parameterType="com.szy.db.model.VolunteerDbo">
+        UPDATE t_volunteer SET status = #{status}, commitTime = #{commitTime} WHERE number = #{number}
+    </update>
 
     <insert id="insertStudentInfo" parameterType="com.szy.db.model.StudentInfoDbo">
         INSERT INTO t_studentInfo(
@@ -192,5 +202,9 @@
         </if>
         limit #{from},#{size}
     </select>
+
+    <insert id="insertChoose" parameterType="com.szy.db.model.ChooseDbo">
+        INSERT INTO t_choose(number,major) VALUES (#{number}, #{major})
+    </insert>
 
 </mapper>

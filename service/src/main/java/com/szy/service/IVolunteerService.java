@@ -10,13 +10,45 @@ import javax.servlet.http.HttpSession;
  */
 public interface IVolunteerService {
 
-    public Response addVolunteer(AddVolunteerReq req, HttpSession session);
+    /**
+     * 保存志愿表
+     * @param req
+     * @param session
+     * @return
+     */
+    public Response saveVolunteer(SaveVolunteerReq req, HttpSession session);
 
-    public Response deleteVolunteer(int id, HttpSession session);
+    /**
+     * 提交志愿表
+     * @param number
+     * @param session
+     * @return
+     */
+    public Response commitVolunteer(HttpSession session);
 
+    /**
+     * 删除志愿表
+     * @param number
+     * @param session
+     * @return
+     */
+    public Response deleteVolunteer(long number, HttpSession session);
+
+    /**
+     * 获得志愿表列表
+     * @param req
+     * @param session
+     * @return
+     */
     public Response getVolunteers(GetVolunteersReq req, HttpSession session);
 
-    public Response getVolunteerDetails(int id, HttpSession session);
+    /**
+     * 获得志愿表详情
+     * @param number
+     * @param session
+     * @return
+     */
+    public Response getVolunteerDetails(long number, HttpSession session);
 
-    public Response updateVolunteer(UpdateVolunteerReq req, HttpSession session);
+
 }

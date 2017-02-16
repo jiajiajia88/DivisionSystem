@@ -5,4 +5,5 @@ package com.szy.model;
  */
 public class GetVolunteersReq {
 
+
 }

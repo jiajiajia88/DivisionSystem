@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpSession;
 
 /**
+ * 用户
  * Created by shizhouyong on 2017/1/7.
  */
 @Service("IUserService")

@@ -29,6 +29,9 @@ public enum RespEnum {
     DATA_NOT_FOUND(0x00010005, "data not found"),              //该数据不存在
     TYPE_NOT_FOUND(0x00010006, "type not found"),              //类型不存在
     DATA_PARSE_ERR(0x00010007, "data parse failed"),           //数据解析出错
+    MAJOR_IS_NULL(0x00010008, "major is null"),                //专业信息为空
+    FIRST_CHOOSE_IS_NULL(0x00010009, "first choose is null"),  //第一志愿为空
+    SECOND_CHOOSE_IS_NULL(0x0001000A, "second choose is null"),//第二志愿为空
 
     /*
      * 数据库错误码
