@@ -20,7 +20,6 @@ public interface IVolunteerService {
 
     /**
      * 提交志愿表
-     * @param number
      * @param session
      * @return
      */

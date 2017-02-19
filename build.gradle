@@ -37,6 +37,7 @@ subprojects {
 
     repositories {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+        mavenCentral()
     }
     dependencies {
         compile(
@@ -45,6 +46,13 @@ subprojects {
                 'org.springframework.boot:spring-boot-starter-web',
                 'com.alibaba:fastjson:1.2.21',
                 'commons-lang:commons-lang:2.6',
+                'org.apache.poi:poi:3.15',
+                'org.apache.poi:poi-ooxml:3.15',
+                'com.itextpdf:itextpdf:5.5.10',
+                'com.itextpdf.tool:xmlworker:5.5.10',
+                'com.itextpdf:itext-pdfa:5.5.10',
+                'commons-io:commons-io:2.5',
+                'javax.mail:mail:1.4.7',
                 'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1'
         )
 
