@@ -1,0 +1,4 @@
+dependencies {
+    compile project(":service"), project(":model")
+    testCompile project(":service"), project(":model")
+}
