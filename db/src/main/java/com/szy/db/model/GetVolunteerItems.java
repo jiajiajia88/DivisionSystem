@@ -9,10 +9,15 @@ public class GetVolunteerItems {
     private int size = 15;
     private String item = "number";
     private String sort = "asc";
+    private int category;
+    private long number;
     private long startCreateTime;
     private long endCreateTime;
     private long startUpdateTime;
     private long endUpdateTime;
+    private int firstChoose;
+    private int secondChoose;
+    private int thirdChoose;
     private int status;
     private String name;
     private String originalClass;
@@ -52,6 +57,22 @@ public class GetVolunteerItems {
         this.sort = sort;
     }
 
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public long getNumber() {
+        return number;
+    }
+
+    public void setNumber(long number) {
+        this.number = number;
+    }
+
     public long getStartCreateTime() {
         return startCreateTime;
     }
@@ -82,6 +103,30 @@ public class GetVolunteerItems {
 
     public void setEndUpdateTime(long endUpdateTime) {
         this.endUpdateTime = endUpdateTime;
+    }
+
+    public int getFirstChoose() {
+        return firstChoose;
+    }
+
+    public void setFirstChoose(int firstChoose) {
+        this.firstChoose = firstChoose;
+    }
+
+    public int getSecondChoose() {
+        return secondChoose;
+    }
+
+    public void setSecondChoose(int secondChoose) {
+        this.secondChoose = secondChoose;
+    }
+
+    public int getThirdChoose() {
+        return thirdChoose;
+    }
+
+    public void setThirdChoose(int thirdChoose) {
+        this.thirdChoose = thirdChoose;
     }
 
     public int getStatus() {

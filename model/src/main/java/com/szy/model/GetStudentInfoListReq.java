@@ -1,21 +1,21 @@
 package com.szy.model;
 
 import com.szy.db.model.Order;
-import com.szy.db.model.VolunteerFilter;
+import com.szy.db.model.StuInfoFilter;
 
 /**
- * Created by shizhouyong on 2017/1/24.
+ * Created by shizhouyong on 2017/2/20.
  */
-public class GetVolunteersReq {
+public class GetStudentInfoListReq {
 
-    private VolunteerFilter filter;
+    private StuInfoFilter filter;
     private Order order;
 
-    public VolunteerFilter getFilter() {
+    public StuInfoFilter getFilter() {
         return filter;
     }
 
-    public void setFilter(VolunteerFilter filter) {
+    public void setFilter(StuInfoFilter filter) {
         this.filter = filter;
     }
 
@@ -26,4 +26,5 @@ public class GetVolunteersReq {
     public void setOrder(Order order) {
         this.order = order;
     }
+
 }

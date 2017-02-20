@@ -32,6 +32,8 @@ public enum RespEnum {
     MAJOR_IS_NULL(0x00010008, "major is null"),                //专业信息为空
     FIRST_CHOOSE_IS_NULL(0x00010009, "first choose is null"),  //第一志愿为空
     SECOND_CHOOSE_IS_NULL(0x0001000A, "second choose is null"),//第二志愿为空
+    FILE_INPUTSTREAM_ERR(0x0001000B, "file change to inputStream failed"),
+    FILE_NEWWORKBOOK_ERR(0x0001000C, "new workbook failed"),
 
     /*
      * 数据库错误码

@@ -1,7 +1,9 @@
 package com.szy.controller;
 
 import com.szy.model.AddStudentInfoReq;
+import com.szy.model.GetStudentInfoListReq;
 import com.szy.model.UpdateStudentInfoReq;
+import com.szy.model.UploadStuInfoReq;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,7 +18,7 @@ import javax.servlet.http.HttpSession;
 public class StuInfoController {
 
     @RequestMapping(value = "/stuInfo/add/excel", method = {RequestMethod.POST, RequestMethod.GET})
-    public Object uploadStudentInfoByExcel(@RequestParam("file") MultipartFile file, HttpSession session) {
+    public Object uploadStudentInfoByExcel(@RequestBody UploadStuInfoReq req, @RequestParam("file") MultipartFile file, HttpSession session) {
         return null;
     }
 
@@ -31,7 +33,7 @@ public class StuInfoController {
     }
 
     @RequestMapping(value = "/stuInfo/list", method = {RequestMethod.POST})
-    public Object getStudentInfoList(HttpSession session) {
+    public Object getStudentInfoList(@RequestBody GetStudentInfoListReq req, HttpSession session) {
         return null;
     }
 

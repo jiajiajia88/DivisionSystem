@@ -28,8 +28,102 @@
         SELECT number,majors,unix_timestamp(createTime) as createTime,unix_timestamp(updateTime) as updateTime,status FROM t_volunteer
     </select>
 
-    <select id="selectVolunteerList">
-        SELECT number,majors,unix_timestamp(createTime) as createTime,unix_timestamp(updateTime) as updateTime,status FROM t_volunteer
+    <select id="selectVolunteerList" parameterType="com.szy.db.model.GetVolunteerItems" resultType="com.szy.db.model.VolunteerDbo">
+        SELECT a.number,firstChoose,secondChoose,thirdChoose,unix_timestamp(a.createTime) as createTime,unix_timestamp(a.updateTime) as updateTime,a.status
+        FROM t_volunteer a LEFT JOIN t_student_info b ON a.number = b.number
+        <where>
+            <choose>
+                <when test="status != 0">
+                    a.status = #{status}
+                </when>
+                <otherwise>
+                    a.status > 0
+                </otherwise>
+            </choose>
+            <if test="firstChoose != 0">
+                AND a.firstChoose = #{firstChoose}
+            </if>
+            <if test="secondChoose != 0">
+                AND a.secondChoose = #{secondChoose}
+            </if>
+            <if test="thirdChoose != 0">
+                AND a.thirdChoose = #{thirdChoose}
+            </if>
+            <if test="name != null">
+                AND b.name LIKE '%${name}%'
+            </if>
+            <if test="originalClass != null">
+                AND b.originalClass LIKE '%${originalClass}%'
+            </if>
+            <if test="sex != null">
+                AND b.sex = #{sex}
+            </if>
+            <if test="division != 0">
+                AND b.division = #{division}
+            </if>
+            <if test="stuFrom != null">
+                AND b.stuFrom LIKE '%${stuFrom}%'
+            </if>
+            <if test="startCreateTime != 0 and endCreateTime != 0">
+                AND unix_timestamp(a.createTime) between #{startCreateTime} and #{endCreateTime}
+            </if>
+            <if test="startUpdateTime != 0 and endUpdateTime != 0">
+                AND unix_timestamp(a.updateTime) between #{startUpdateTime} and #{endUpdateTime}
+            </if>
+        </where>
+        <if test="item != null and sort !=null">
+            <if test="sort == 'desc'">
+                ORDER BY ${item} DESC
+            </if>
+            <if test="sort == 'asc'">
+                ORDER BY ${item} ASC
+            </if>
+        </if>
+        limit #{from},#{size}
+    </select>
+
+    <select id="selectVolunteerListTotal" parameterType="com.szy.db.model.GetVolunteerItems" resultType="int">
+        SELECT count(*) FROM t_volunteer a LEFT JOIN t_student_info b ON a.number = b.number
+        <where>
+            <choose>
+                <when test="status != 0">
+                    a.status = #{status}
+                </when>
+                <otherwise>
+                    a.status > 0
+                </otherwise>
+            </choose>
+            <if test="firstChoose != 0">
+                AND a.firstChoose = #{firstChoose}
+            </if>
+            <if test="secondChoose != 0">
+                AND a.secondChoose = #{secondChoose}
+            </if>
+            <if test="thirdChoose != 0">
+                AND a.thirdChoose = #{thirdChoose}
+            </if>
+            <if test="name != null">
+                AND b.name LIKE '%${name}%'
+            </if>
+            <if test="originalClass != null">
+                AND b.originalClass LIKE '%${originalClass}%'
+            </if>
+            <if test="sex != null">
+                AND b.sex = #{sex}
+            </if>
+            <if test="division != 0">
+                AND b.division = #{division}
+            </if>
+            <if test="stuFrom != null">
+                AND b.stuFrom LIKE '%${stuFrom}%'
+            </if>
+            <if test="startCreateTime != 0 and endCreateTime != 0">
+                AND unix_timestamp(a.createTime) between #{startCreateTime} and #{endCreateTime}
+            </if>
+            <if test="startUpdateTime != 0 and endUpdateTime != 0">
+                AND unix_timestamp(a.updateTime) between #{startUpdateTime} and #{endUpdateTime}
+            </if>
+        </where>
     </select>
 
     <update id="updateVolunteerCommitStatus" parameterType="com.szy.db.model.VolunteerDbo">

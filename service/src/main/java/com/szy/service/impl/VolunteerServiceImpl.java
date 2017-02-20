@@ -2,8 +2,9 @@ package com.szy.service.impl;
 
 import com.szy.RespEnum;
 import com.szy.Response;
+import com.szy.db.mapper.StuInfoMapper;
 import com.szy.db.mapper.VolunteerMapper;
-import com.szy.db.model.VolunteerDbo;
+import com.szy.db.model.*;
 import com.szy.model.*;
 import com.szy.service.IVolunteerService;
 import com.szy.util.DBUtil;
@@ -100,7 +101,50 @@ public class VolunteerServiceImpl implements IVolunteerService {
         if (req == null) {
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
-        return null;
+
+        Order order = req.getOrder();
+        VolunteerFilter filter = req.getFilter();
+
+        GetVolunteerItems items = new GetVolunteerItems();
+        if (order != null) {
+            items.setFrom(order.getFrom());
+            items.setSize(order.getSize());
+            items.setItem(order.getItem());
+            items.setSort(order.getSort());
+        }
+
+        if (filter != null) {
+            items.setFirstChoose(filter.getFirstChoose());
+            items.setSecondChoose(filter.getSecondChoose());
+            items.setThirdChoose(filter.getThirdChoose());
+            items.setSex(filter.getSex());
+            items.setDivision(filter.getDivision());
+            items.setName(filter.getName());
+            items.setNumber(filter.getNumber());
+            items.setStuFrom(filter.getStuFrom());
+            items.setStatus(filter.getStatus());
+            items.setOriginalClass(filter.getOriginalClass());
+            items.setSex(filter.getSex());
+            items.setCategory(filter.getCategory());
+            if (filter.getCreateTime() != null) {
+                items.setStartCreateTime(filter.getCreateTime().getStart());
+                items.setEndCreateTime(filter.getCreateTime().getEnd());
+            }
+            if (filter.getUpdateTime() != null) {
+                items.setStartUpdateTime(filter.getUpdateTime().getStart());
+                items.setEndUpdateTime(filter.getUpdateTime().getEnd());
+            }
+        }
+        VolunteerMapper mapper = DBUtil.getMapper(VolunteerMapper.class);
+        GetVolunteersResp resp = new GetVolunteersResp();
+        try {
+            resp.setVolunteers(mapper.selectVolunteerList(items));
+            resp.setTotal(mapper.selectVolunteerListTotal(items));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return resp;
     }
 
     @Override

@@ -14,18 +14,12 @@ public interface VolunteerMapper {
 
     public VolunteerDbo selectVolunteerByNumber(long number);
 
-    public List<VolunteerDbo> selectVolunteerList();
+    public List<VolunteerDbo> selectVolunteerList(GetVolunteerItems items);
+
+    public int selectVolunteerListTotal(GetVolunteerItems items);
 
     public int deleteVolunteer(long number);
 
     public int updateVolunteerCommitStatus(VolunteerDbo dbo);
-
-    public int insertStudentInfo(StudentInfoDbo dbo);
-
-    public StudentInfoDbo selectStudentInfoByNumber(long number);
-
-    public List<StudentInfoDbo> selectStudentInfoList(GetStuInfoItems items);
-
-    public int insertChoose(ChooseDbo dbo);
 
 }

@@ -1,9 +1,12 @@
-package com.szy.db.model;
+package com.szy.model;
+
+import com.szy.db.model.StudentInfoDbo;
+import org.apache.commons.lang.StringUtils;
 
 /**
- * Created by shizhouyong on 2017/2/20.
+ * Created by shizhouyong on 2017/1/26.
  */
-public class StudentInfoDbo {
+public class StudentInfo {
 
     private long number;
     private String name;
@@ -28,6 +31,29 @@ public class StudentInfoDbo {
     private long createTime;
     private long updateTime;
     private int status;
+
+    public boolean checkStuInfo() {
+        return !(number == 0 || StringUtils.isBlank(name) || category == 0 || StringUtils.isBlank(originalClass) || createUser == 0);
+    }
+
+    public StudentInfoDbo createStuInfoDbo() {
+        StudentInfoDbo dbo = new StudentInfoDbo();
+        StudentInfo studentInfo = new StudentInfo();
+        studentInfo.setNumber(number);
+        studentInfo.setName(name);
+        studentInfo.setCategory(category);
+        studentInfo.setOriginalClass(originalClass);
+        studentInfo.setSex(sex);
+        studentInfo.setDorm(dorm);
+        studentInfo.setNote(note);
+        studentInfo.setGPA(GPA);
+        studentInfo.setStuFrom(stuFrom);
+        studentInfo.setEntranceScore(entranceScore);
+        studentInfo.setAdmissionScore(admissionScore);
+        studentInfo.setCreateUser(createUser);
+        studentInfo.setCreateTime(createTime);
+        return dbo;
+    }
 
     public long getNumber() {
         return number;

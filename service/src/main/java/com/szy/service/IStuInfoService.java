@@ -1,10 +1,7 @@
 package com.szy.service;
 
 import com.szy.Response;
-import com.szy.model.AddStudentInfoReq;
-import com.szy.model.GetVolunteersReq;
-import com.szy.model.SaveVolunteerReq;
-import com.szy.model.UpdateStudentInfoReq;
+import com.szy.model.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,13 +13,13 @@ import javax.servlet.http.HttpSession;
  */
 public interface IStuInfoService {
 
-    public Response uploadStudentInfoByExcel(@RequestParam("file") MultipartFile file, HttpSession session);
+    public Response uploadStudentInfoByExcel(UploadStuInfoReq req, MultipartFile file, HttpSession session);
 
-    public Response addStudentInfo(@RequestBody AddStudentInfoReq req, HttpSession session);
+    public Response addStudentInfo(AddStudentInfoReq req, HttpSession session);
 
-    public Response updateStudentInfo(@RequestBody UpdateStudentInfoReq req, HttpSession session);
+    public Response updateStudentInfo(UpdateStudentInfoReq req, HttpSession session);
 
-    public Response getStudentInfoList(HttpSession session);
+    public Response getStudentInfoList(GetStudentInfoListReq req, HttpSession session);
 
-    public Response getStudentInfoDetails(@PathVariable long number, HttpSession session);
+    public Response getStudentInfoDetails(long number, HttpSession session);
 }

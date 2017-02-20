@@ -37,6 +37,10 @@ public class ExcelUtil {
      * 分隔符
      */
     private final static String SEPARATOR = "|";
+    /**
+     * 空单元格
+     */
+    private final static String BLANK = "^*^BLANK";
 
     /**
      * 由Excel文件的Sheet导出至List
@@ -119,6 +123,7 @@ public class ExcelUtil {
                     case Cell.CELL_TYPE_FORMULA:
                         break;
                     case Cell.CELL_TYPE_BLANK:
+                        sb.append(BLANK);
                         break;
                     case Cell.CELL_TYPE_ERROR:
                         break;
