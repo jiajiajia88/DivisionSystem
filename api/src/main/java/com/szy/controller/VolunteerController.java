@@ -19,27 +19,27 @@ public class VolunteerController {
     @Autowired
     private IVolunteerService volunteerService;
 
-    @RequestMapping(value = "/volunteer/save", method = {RequestMethod.POST})
+    @RequestMapping(value = "/v/volunteer/save", method = {RequestMethod.POST})
     public Object saveVolunteer(@RequestBody SaveVolunteerReq req, HttpSession session) {
         return volunteerService.saveVolunteer(req, session);
     }
 
-    @RequestMapping(value = "/volunteer/commit", method = {RequestMethod.GET,RequestMethod.POST})
+    @RequestMapping(value = "/v/volunteer/commit", method = {RequestMethod.GET,RequestMethod.POST})
     public Object commitVolunteer(HttpSession session) {
         return volunteerService.commitVolunteer(session);
     }
 
-    @RequestMapping(value = "/volunteer/delete/{number}", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/v/volunteer/delete/{number}", method = {RequestMethod.GET, RequestMethod.POST})
     public Object deleteVolunteer(@PathVariable long number, HttpSession session) {
         return volunteerService.deleteVolunteer(number, session);
     }
 
-    @RequestMapping(value = "/volunteer/get/list", method = {RequestMethod.POST})
+    @RequestMapping(value = "/v/volunteer/get/list", method = {RequestMethod.POST})
     public Object getVolunteerList(@RequestBody GetVolunteersReq req, HttpSession session) {
         return volunteerService.getVolunteers(req, session);
     }
 
-    @RequestMapping(value = "/volunteer/get/details/{number}", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/v/volunteer/get/details/{number}", method = {RequestMethod.GET, RequestMethod.POST})
     public Object getVolunteerDetails(@PathVariable long number, HttpSession session) {
         return volunteerService.getVolunteerDetails(number, session);
     }

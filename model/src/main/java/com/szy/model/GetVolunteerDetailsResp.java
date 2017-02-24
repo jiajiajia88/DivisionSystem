@@ -1,6 +1,5 @@
 package com.szy.model;
 
-import com.szy.RespEnum;
 import com.szy.Response;
 import com.szy.db.model.VolunteerDbo;
 
@@ -10,14 +9,18 @@ import com.szy.db.model.VolunteerDbo;
 public class GetVolunteerDetailsResp extends Response{
 
     private long number;
-    private String majors;
+    private int firstChoose;
+    private int secondChoose;
+    private int thirdChoose;
     private long createTime;
     private long updateTime;
     private int status;
 
     public GetVolunteerDetailsResp(VolunteerDbo dbo) {
         this.number = dbo.getNumber();
-        this.majors = dbo.getMajors();
+        this.firstChoose = dbo.getFirstChoose();
+        this.secondChoose = dbo.getSecondChoose();
+        this.thirdChoose = dbo.getThirdChoose();
         this.createTime = dbo.getCreateTime();
         this.updateTime = dbo.getUpdateTime();
         this.status = dbo.getStatus();
@@ -31,12 +34,28 @@ public class GetVolunteerDetailsResp extends Response{
         this.number = number;
     }
 
-    public String getMajors() {
-        return majors;
+    public int getFirstChoose() {
+        return firstChoose;
     }
 
-    public void setMajors(String majors) {
-        this.majors = majors;
+    public void setFirstChoose(int firstChoose) {
+        this.firstChoose = firstChoose;
+    }
+
+    public int getSecondChoose() {
+        return secondChoose;
+    }
+
+    public void setSecondChoose(int secondChoose) {
+        this.secondChoose = secondChoose;
+    }
+
+    public int getThirdChoose() {
+        return thirdChoose;
+    }
+
+    public void setThirdChoose(int thirdChoose) {
+        this.thirdChoose = thirdChoose;
     }
 
     public long getCreateTime() {

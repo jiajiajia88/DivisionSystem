@@ -33,25 +33,24 @@ public class StudentInfo {
     private int status;
 
     public boolean checkStuInfo() {
-        return !(number == 0 || StringUtils.isBlank(name) || category == 0 || StringUtils.isBlank(originalClass) || createUser == 0);
+        return !(number == 0 || StringUtils.isBlank(name) || category == 0 || StringUtils.isBlank(originalClass) || createUser == 0 || StringUtils.isBlank(sex));
     }
 
     public StudentInfoDbo createStuInfoDbo() {
         StudentInfoDbo dbo = new StudentInfoDbo();
-        StudentInfo studentInfo = new StudentInfo();
-        studentInfo.setNumber(number);
-        studentInfo.setName(name);
-        studentInfo.setCategory(category);
-        studentInfo.setOriginalClass(originalClass);
-        studentInfo.setSex(sex);
-        studentInfo.setDorm(dorm);
-        studentInfo.setNote(note);
-        studentInfo.setGPA(GPA);
-        studentInfo.setStuFrom(stuFrom);
-        studentInfo.setEntranceScore(entranceScore);
-        studentInfo.setAdmissionScore(admissionScore);
-        studentInfo.setCreateUser(createUser);
-        studentInfo.setCreateTime(createTime);
+        dbo.setNumber(number);
+        dbo.setName(name);
+        dbo.setCategory(category);
+        dbo.setOriginalClass(originalClass);
+        dbo.setSex(sex);
+        dbo.setDorm(dorm);
+        dbo.setNote(note);
+        dbo.setGPA(GPA);
+        dbo.setStuFrom(stuFrom);
+        dbo.setEntranceScore(entranceScore);
+        dbo.setAdmissionScore(admissionScore);
+        dbo.setCreateUser(createUser);
+        dbo.setCreateTime(createTime);
         return dbo;
     }
 

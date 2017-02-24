@@ -5,6 +5,7 @@ import com.szy.model.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpSession;
  */
 public interface IStuInfoService {
 
-    public Response uploadStudentInfoByExcel(UploadStuInfoReq req, MultipartFile file, HttpSession session);
+    public Response uploadStudentInfoByExcel(HttpServletRequest req, MultipartFile file, HttpSession session);
 
     public Response addStudentInfo(AddStudentInfoReq req, HttpSession session);
 

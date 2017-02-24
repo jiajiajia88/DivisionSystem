@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.Filter;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,13 +47,15 @@ public class StuInfoServiceImpl implements IStuInfoService {
     private final static DecimalFormat df6 = new DecimalFormat("0.000000");
 
     @Override
-    public Response uploadStudentInfoByExcel(UploadStuInfoReq req, MultipartFile file, HttpSession session) {
+    public Response uploadStudentInfoByExcel(HttpServletRequest req, MultipartFile file, HttpSession session) {
 
         Account account = (Account)session.getAttribute("account");
         if (account == null) {
             return RespEnum.NO_USER.getResponse();
         }
-        if (file == null || file.isEmpty() || req == null || req.getCategory() == 0)
+
+        int category = Integer.parseInt(req.getParameter("category"));
+        if (file == null || file.isEmpty() || category == 0)
             return RespEnum.PARAMETER_MiSS.getResponse();
 
         InputStream in = null;
@@ -74,44 +77,58 @@ public class StuInfoServiceImpl implements IStuInfoService {
 
         long cur = System.currentTimeMillis() / 1000;
         StuInfoMapper mapper = DBUtil.getMapper(StuInfoMapper.class);
+        long start = System.currentTimeMillis();
         for (int i = 1; i < list.size(); i++) {
             String[] info = (list.get(i).substring(1)).split("\\|");
-            StudentInfo studentInfo = new StudentInfo();
-            studentInfo.setNumber(Long.parseLong(info[0]));
-            studentInfo.setName(info[1]);
-            studentInfo.setCategory(req.getCategory());
-            studentInfo.setOriginalClass(info[8]);
-            studentInfo.setSex(info[7]);
-            switch (info[7]) {
-                case "男":
-                    studentInfo.setSex("F");
-                    break;
-                case "女":
-                    studentInfo.setSex("M");
-                    break;
-                default:
-                    studentInfo.setSex("D");
-                    break;
-            }
-            studentInfo.setDorm(info[9]);
-            studentInfo.setNote(info[10]);
-            studentInfo.setGPA(Integer.parseInt(df.format(info[2])));
-            studentInfo.setStuFrom(info[3]);
-            switch (info[4]) {
-                case "文科":
-                    studentInfo.setDivision(1);
-                    break;
-                case "理科":
-                    studentInfo.setDivision(2);
-                    break;
-                default:
-                    studentInfo.setDivision(-1);
-            }
+            StudentInfo studentInfo = null;
+            try {
+                studentInfo = new StudentInfo();
+                studentInfo.setNumber(Long.parseLong(info[0]));
+                studentInfo.setName(info[1]);
+                studentInfo.setCategory(category);
+                studentInfo.setOriginalClass(info[8]);
+                studentInfo.setSex(info[7]);
+                switch (info[7]) {
+                    case "男":
+                        studentInfo.setSex("F");
+                        break;
+                    case "女":
+                        studentInfo.setSex("M");
+                        break;
+                    default:
+                        studentInfo.setSex("D");
+                        break;
+                }
+                studentInfo.setDorm(info[9]);
+                switch (info[10]) {
+                    case "^*^BLANK":
+                        studentInfo.setNote(null);
+                        break;
+                    default:
+                        studentInfo.setNote(info[10]);
+                        break;
+                }
+                studentInfo.setGPA((Double.parseDouble(df.format(Double.parseDouble(info[2])))));
+                studentInfo.setStuFrom(info[3]);
+                switch (info[4]) {
+                    case "文科":
+                        studentInfo.setDivision(1);
+                        break;
+                    case "理科":
+                        studentInfo.setDivision(2);
+                        break;
+                    default:
+                        studentInfo.setDivision(-1);
+                }
 
-            studentInfo.setEntranceScore(Integer.parseInt(info[5]));
-            studentInfo.setAdmissionScore(Integer.parseInt(info[6]));
-            studentInfo.setCreateUser(account.getNumber());
-            studentInfo.setCreateTime(cur);
+                studentInfo.setEntranceScore(Integer.parseInt(info[5]));
+                studentInfo.setAdmissionScore(Integer.parseInt(info[6]));
+                studentInfo.setCreateUser(account.getNumber());
+                studentInfo.setCreateTime(cur);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return RespEnum.DATA_PARSE_ERR.getResponse();
+            }
 
             if (studentInfo.checkStuInfo()) {
                 try {
@@ -125,6 +142,8 @@ public class StuInfoServiceImpl implements IStuInfoService {
                 return RespEnum.PARAMETER_MiSS.getResponse();
             }
         }
+        long end = System.currentTimeMillis();
+        logger.info(String.valueOf(end - start));
         return RespEnum.SUCCESS.getResponse();
     }
 

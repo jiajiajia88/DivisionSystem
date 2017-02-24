@@ -2,14 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.szy.db.mapper.StuInfoMapper">
 
-    <insert id="insertStudentInfo" parameterType="com.szy.model.StudentInfoDbo">
-        INSERT INTO t_studentInfo(number, name, telephone, category, originalClass, presentClass, sex, dorm, note, GPA, realGPA, stuFrom, division, entranceScore, admissionScore, gradeOne, gradeTwo, totalGrade, rank, CREATEUSER, createTime, updateTime, status)
-        VALUES ( #{number}, #{name}, #{telephone}, #{category}, #{originalClass}, #{presentClass}, #{sex}, #{dorm}, #{note} #{GPA}, #{realGPA}, #{stuFrom}, #{division}, #{entranceScore}, #{admissionScore}, #{gradeOne}, #{gradeTwo}, #{totalGrade}, #{rank}, #{CREATEUSER}, from_unixtime(#{createTime}))
-        ON duplicate KEY
-        SET #{name}, #{telephone}, #{category}, #{originalClass}, #{presentClass}, #{sex}, #{dorm}, #{note} #{GPA}, #{realGPA}, #{stuFrom}, #{division}, #{entranceScore}, #{admissionScore}, #{gradeOne}, #{gradeTwo}, #{totalGrade}, #{rank}, #{CREATEUSER}, from_unixtime(#{updateTime}))
+    <insert id="insertStudentInfo" parameterType="com.szy.db.model.StudentInfoDbo">
+        INSERT INTO t_student_info(number, name, telephone, category, originalClass, presentClass, sex, dorm, note, GPA, realGPA, stuFrom, division, entranceScore, admissionScore, gradeOne, gradeTwo, totalGrade, rank, createUser, createTime)
+        VALUES (#{number}, #{name}, #{telephone}, #{category}, #{originalClass}, #{presentClass}, #{sex}, #{dorm}, #{note}, #{GPA}, #{realGPA}, #{stuFrom}, #{division}, #{entranceScore}, #{admissionScore}, #{gradeOne}, #{gradeTwo}, #{totalGrade}, #{rank}, #{createUser}, from_unixtime(#{createTime}))
+        ON duplicate KEY UPDATE name = #{name}, telephone = #{telephone}, category = #{category}, originalClass = #{originalClass}, presentClass = #{presentClass}, sex = #{sex}, dorm = #{dorm},note = #{note}, GPA = #{GPA},realGPA = #{realGPA},stuFrom = #{stuFrom},division = #{division},entranceScore = #{entranceScore},admissionScore = #{admissionScore},gradeOne = #{gradeOne},gradeTwo = #{gradeTwo},totalGrade = #{totalGrade},rank = #{rank},createUser = #{createUser},updateTime = from_unixtime(#{updateTime})
     </insert>
 
-    <select id="selectStudentInfoByNumber" parameterType="long" resultType="com.szy.model.StudentInfoDbo">
+    <select id="selectStudentInfoByNumber" parameterType="long" resultType="com.szy.db.model.StudentInfoDbo">
         SELECT number, name,
                telephone,
                category,
@@ -32,11 +31,11 @@
                createTime,
                updateTime,
                status
-        FROM t_studentInfo
+        FROM t_student_info
         WHERE number = #{number}
     </select>
     
-    <select id="selectStudentInfoList" parameterType="com.szy.db.model.GetStuInfoItems" resultType="com.szy.model.StudentInfoDbo">
+    <select id="selectStudentInfoList" parameterType="com.szy.db.model.GetStuInfoItems" resultType="com.szy.db.model.StudentInfoDbo">
         SELECT
             number,
             name,
@@ -61,7 +60,7 @@
             createTime,
             updateTime,
             status
-        FROM t_studentInfo
+        FROM t_student_info
         <where>
             <choose>
                 <when test="status != 0">
@@ -105,7 +104,7 @@
     </select>
 
     <select id="selectStudentInfoListTotal" parameterType="com.szy.db.model.GetStuInfoItems" resultType="int">
-        SELECT count(*) FROM t_studentInfo
+        SELECT count(*) FROM t_student_info
         <where>
             <choose>
                 <when test="status != 0">

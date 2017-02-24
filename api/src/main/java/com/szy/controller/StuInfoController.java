@@ -4,9 +4,13 @@ import com.szy.model.AddStudentInfoReq;
 import com.szy.model.GetStudentInfoListReq;
 import com.szy.model.UpdateStudentInfoReq;
 import com.szy.model.UploadStuInfoReq;
+import com.szy.service.IStuInfoService;
+import com.szy.service.impl.StuInfoServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -17,29 +21,32 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/jg")
 public class StuInfoController {
 
-    @RequestMapping(value = "/stuInfo/add/excel", method = {RequestMethod.POST, RequestMethod.GET})
-    public Object uploadStudentInfoByExcel(@RequestBody UploadStuInfoReq req, @RequestParam("file") MultipartFile file, HttpSession session) {
-        return null;
+    @Autowired
+    private IStuInfoService stuInfoService;
+
+    @RequestMapping(value = "/v/stuInfo/add/excel", method = {RequestMethod.POST, RequestMethod.GET})
+    public Object uploadStudentInfoByExcel(HttpServletRequest req, @RequestParam("file") MultipartFile file, HttpSession session) {
+        return stuInfoService.uploadStudentInfoByExcel(req, file, session);
     }
 
-    @RequestMapping(value = "/stuInfo/add", method = {RequestMethod.POST})
+    @RequestMapping(value = "/v/stuInfo/add", method = {RequestMethod.POST})
     public Object addStudentInfo(@RequestBody AddStudentInfoReq req, HttpSession session) {
-        return null;
+        return stuInfoService.addStudentInfo(req, session);
     }
 
-    @RequestMapping(value = "/stuInfo/update", method = {RequestMethod.POST})
+    @RequestMapping(value = "/v/stuInfo/update", method = {RequestMethod.POST})
     public Object updateStudentInfo(@RequestBody UpdateStudentInfoReq req, HttpSession session) {
-        return null;
+        return stuInfoService.updateStudentInfo(req, session);
     }
 
-    @RequestMapping(value = "/stuInfo/list", method = {RequestMethod.POST})
+    @RequestMapping(value = "/v/stuInfo/list", method = {RequestMethod.POST})
     public Object getStudentInfoList(@RequestBody GetStudentInfoListReq req, HttpSession session) {
-        return null;
+        return stuInfoService.getStudentInfoList(req, session);
     }
 
-    @RequestMapping(value = "/stuInfo/details/{number}", method = {RequestMethod.POST})
+    @RequestMapping(value = "/v/stuInfo/details/{number}", method = {RequestMethod.POST})
     public Object getStudentInfoDetails(@PathVariable long number, HttpSession session) {
-        return null;
+        return stuInfoService.getStudentInfoDetails(number, session);
     }
 
 }

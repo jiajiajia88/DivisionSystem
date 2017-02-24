@@ -97,11 +97,12 @@ public class ExcelUtil {
 
             short minColIx = row.getFirstCellNum();
             short maxColIx = row.getLastCellNum();
-            for (short colIx = minColIx; colIx <= maxColIx; colIx++) {
+            for (short colIx = minColIx; colIx < maxColIx; colIx++) {
                 Cell cell = row.getCell((int) colIx);
                 CellValue cellValue = evaluator.evaluate(cell);
                 if (cellValue == null) {
-                    return null;
+                    sb.append(SEPARATOR).append(BLANK);
+                    break;
                 }
                 switch (cellValue.getCellType()) {
                     case Cell.CELL_TYPE_BOOLEAN:
@@ -123,7 +124,7 @@ public class ExcelUtil {
                     case Cell.CELL_TYPE_FORMULA:
                         break;
                     case Cell.CELL_TYPE_BLANK:
-                        sb.append(BLANK);
+                        sb.append(SEPARATOR).append(BLANK);
                         break;
                     case Cell.CELL_TYPE_ERROR:
                         break;

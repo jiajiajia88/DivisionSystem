@@ -39,11 +39,22 @@ subprojects {
         maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         mavenCentral()
     }
+
+    configurations {
+        providedRuntime
+        compile.exclude group:'ch.qos.logback'
+    }
+
+
     dependencies {
+        compile 'org.codehaus.groovy:groovy'
+        compile ('org.springframework.boot:spring-boot-starter-web'){
+            exclude module: 'org.springframework.boot:spring-boot-starter-logging'
+        }
+        compile ('org.springframework.boot:spring-boot-starter-log4j2')
         compile(
                 'org.springframework.boot:spring-boot-starter-aop',
                 'org.springframework.boot:spring-boot-starter-cache',
-                'org.springframework.boot:spring-boot-starter-web',
                 'com.alibaba:fastjson:1.2.21',
                 'commons-lang:commons-lang:2.6',
                 'org.apache.poi:poi:3.15',
