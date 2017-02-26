@@ -2,7 +2,6 @@ package com.szy.service;
 
 import com.szy.Response;
 import com.szy.model.*;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +15,9 @@ public interface IStuInfoService {
 
     public Response uploadStudentInfoByExcel(HttpServletRequest req, MultipartFile file, HttpSession session);
 
-    public Response addStudentInfo(AddStudentInfoReq req, HttpSession session);
+    public Response addStudentInfo(SaveStudentInfoReq req, HttpSession session);
 
-    public Response updateStudentInfo(UpdateStudentInfoReq req, HttpSession session);
+    public Response updateStudentInfo(SaveStudentInfoReq req, HttpSession session);
 
     public Response getStudentInfoList(GetStudentInfoListReq req, HttpSession session);
 

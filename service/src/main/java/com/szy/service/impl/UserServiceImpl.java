@@ -21,6 +21,8 @@ import javax.servlet.http.HttpSession;
 @Service("IUserService")
 public class UserServiceImpl implements IUserService {
 
+    private static final int LOGIN_SESSION_TIMEOUT = 12 * 60 *60;
+
     @Override
     public Response login(UserLoginReq req, HttpSession session) {
         if (req == null || req.getNumber() == 0 || req.getPassword() == null)
@@ -43,6 +45,7 @@ public class UserServiceImpl implements IUserService {
 
         Account account = new Account(userDbo.getNumber(),userDbo.getLimit(),userDbo.getLoginTime());
         session.setAttribute("account", account);
+        session.setMaxInactiveInterval(LOGIN_SESSION_TIMEOUT);
         return RespEnum.SUCCESS.getResponse();
     }
 

@@ -42,7 +42,7 @@ public enum RespEnum {
     DATA_UPDATE_ERR(0x00020002, "data update err"),            //数据更新失败
     DATA_DELETE_ERR(0x00020003, "data delete err"),            //数据删除失败
 
-    END(0x7FFFFFFF, "end");    //最大错误码
+    END(0x7FFFFFFF, "end");                                    //最大错误码
 
     private Response response = new Response();
 

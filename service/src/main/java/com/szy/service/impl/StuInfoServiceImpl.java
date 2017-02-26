@@ -15,12 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.Filter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -148,13 +144,24 @@ public class StuInfoServiceImpl implements IStuInfoService {
     }
 
     @Override
-    public Response addStudentInfo(AddStudentInfoReq req, HttpSession session) {
-        if (req == null || req.getStudentInfo() == null || !req.getStudentInfo().checkStuInfo()) {
+    public Response addStudentInfo(SaveStudentInfoReq req, HttpSession session) {
+        Account account = (Account)session.getAttribute("account");
+        if (account == null) {
+            return RespEnum.NO_USER.getResponse();
+        }
+
+        if (req == null) {
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
+
+        StudentInfo studentInfo = req.createStudentInfo();
+        if (!studentInfo.checkStuInfo()) {
+            return RespEnum.PARAMETER_MiSS.getResponse();
+        }
+
         long cur = System.currentTimeMillis() / 1000;
-        StudentInfo studentInfo = req.getStudentInfo();
         studentInfo.setCreateTime(cur);
+        studentInfo.setCreateUser(account.getNumber());
 
         StuInfoMapper mapper = DBUtil.getMapper(StuInfoMapper.class);
         try {
@@ -167,18 +174,28 @@ public class StuInfoServiceImpl implements IStuInfoService {
     }
 
     @Override
-    public Response updateStudentInfo(UpdateStudentInfoReq req, HttpSession session) {
-        if (req == null || req.getStudentInfo() == null || !req.getStudentInfo().checkStuInfo()) {
+    public Response updateStudentInfo(SaveStudentInfoReq req, HttpSession session) {
+        Account account = (Account)session.getAttribute("account");
+        if (account == null) {
+            return RespEnum.NO_USER.getResponse();
+        }
+
+        if (req == null) {
+            return RespEnum.PARAMETER_MiSS.getResponse();
+        }
+
+        StudentInfo studentInfo = req.createStudentInfo();
+        if (!studentInfo.checkStuInfo()) {
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
         long cur = System.currentTimeMillis() / 1000;
-        StudentInfo studentInfo = req.getStudentInfo();
         studentInfo.setUpdateTime(cur);
         StuInfoMapper mapper = DBUtil.getMapper(StuInfoMapper.class);
         try {
             mapper.insertStudentInfo(studentInfo.createStuInfoDbo());
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error(e.getMessage());
             return RespEnum.DATA_INSERT_ERR.getResponse();
         }
         return RespEnum.SUCCESS.getResponse();

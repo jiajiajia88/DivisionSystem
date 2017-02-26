@@ -33,7 +33,7 @@ public class StudentInfo {
     private int status;
 
     public boolean checkStuInfo() {
-        return !(number == 0 || StringUtils.isBlank(name) || category == 0 || StringUtils.isBlank(originalClass) || createUser == 0 || StringUtils.isBlank(sex));
+        return !(number == 0 || StringUtils.isBlank(name) || category == 0 || StringUtils.isBlank(originalClass) || StringUtils.isBlank(sex));
     }
 
     public StudentInfoDbo createStuInfoDbo() {
@@ -46,11 +46,13 @@ public class StudentInfo {
         dbo.setDorm(dorm);
         dbo.setNote(note);
         dbo.setGPA(GPA);
+        dbo.setDivision(division);
         dbo.setStuFrom(stuFrom);
         dbo.setEntranceScore(entranceScore);
         dbo.setAdmissionScore(admissionScore);
         dbo.setCreateUser(createUser);
         dbo.setCreateTime(createTime);
+        dbo.setUpdateTime(updateTime);
         return dbo;
     }
 
