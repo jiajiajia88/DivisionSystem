@@ -1,9 +1,0 @@
-rootProject.name = 'DivisionSystem'
-
-include 'start'
-include 'db'
-include 'service'
-include 'model'
-include 'util'
-include 'api'
-

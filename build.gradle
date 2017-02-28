@@ -1,3 +1,7 @@
+
+group = 'com.szy'
+version = '1.0-SNAPSHOT'
+
 //插件地址
 buildscript {
     repositories {
@@ -9,71 +13,65 @@ buildscript {
     }
 }
 
-//配置所有项目
-allprojects {
 
-    //应用插件
-    apply plugin: 'java'
-    apply plugin: 'idea'
-    apply plugin: 'org.springframework.boot'
 
-    //公共属性
-    group = 'com.szy'
-    version = '1.0-SNAPSHOT'
+//应用插件
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
 
-    //编译属性
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
 
-    configurations {
-        providedRuntime
-    }
 
+//编译属性
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+jar {
+    baseName = 'division'
+    version = '0.1-SNAPSHOT'
 }
 
-//构建依赖
-//  构建组件
-subprojects {
-
-    repositories {
-        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
-        mavenCentral()
-    }
-
-    configurations {
-        providedRuntime
-        compile.exclude group:'ch.qos.logback'
-    }
-
-
-    dependencies {
-        compile 'org.codehaus.groovy:groovy'
-        compile ('org.springframework.boot:spring-boot-starter-web'){
-            exclude module: 'org.springframework.boot:spring-boot-starter-logging'
-        }
-        compile ('org.springframework.boot:spring-boot-starter-log4j2')
-        compile(
-                'org.springframework.boot:spring-boot-starter-aop',
-                'org.springframework.boot:spring-boot-starter-cache',
-                'com.alibaba:fastjson:1.2.21',
-                'commons-lang:commons-lang:2.6',
-                'org.apache.poi:poi:3.15',
-                'org.apache.poi:poi-ooxml:3.15',
-                'com.itextpdf:itextpdf:5.5.10',
-                'com.itextpdf.tool:xmlworker:5.5.10',
-                'com.itextpdf:itext-pdfa:5.5.10',
-                'commons-io:commons-io:2.5',
-                'javax.mail:mail:1.4.7',
-                'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1'
-        )
-
-        runtime('mysql:mysql-connector-java')
-        providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
-        testCompile('org.springframework.boot:spring-boot-starter-test')
-    }
-
+bootRepackage {
+    mainClass = 'com.szy.ApplicationStart'
 }
 
-project(":start") {
 
+repositories {
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    mavenCentral()
 }
+
+configurations {
+    providedRuntime
+    compile.exclude group:'ch.qos.logback'
+}
+
+dependencies {
+    compile 'org.codehaus.groovy:groovy'
+    compile ('org.springframework.boot:spring-boot-starter-web'){
+        exclude module: 'org.springframework.boot:spring-boot-starter-logging'
+    }
+    compile ('org.springframework.boot:spring-boot-starter-log4j2')
+    compile(
+            'org.springframework.boot:spring-boot-starter-aop',
+            'org.springframework.boot:spring-boot-starter-cache',
+            'com.alibaba:fastjson:1.2.21',
+            'commons-lang:commons-lang:2.6',
+            'org.apache.poi:poi:3.13',
+            'org.apache.poi:poi-ooxml:3.13',
+            'com.itextpdf:itextpdf:5.5.10',
+            'com.itextpdf.tool:xmlworker:5.5.10',
+            'com.itextpdf:itext-pdfa:5.5.10',
+            'commons-io:commons-io:2.5',
+            'javax.mail:mail:1.4.7',
+            'org.mybatis.spring.boot:mybatis-spring-boot-starter:1.1.1'
+    )
+
+    runtime('mysql:mysql-connector-java')
+    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+
+

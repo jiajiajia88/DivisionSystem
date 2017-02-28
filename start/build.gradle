@@ -1,4 +1,0 @@
-dependencies {
-    compile project(":api"), project(":model"), project(":service"),project(":util"),project(":db")
-    testCompile project(":api"), project(":model"), project(":service"),project(":util"),project(":db")
-}
