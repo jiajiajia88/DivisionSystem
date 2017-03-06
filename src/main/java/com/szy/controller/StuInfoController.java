@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
  * Created by shizhouyong on 2017/1/4.
  */
 @RestController
-@RequestMapping("/jg/stu")
+@RequestMapping("/jg")
 public class StuInfoController {
 
     @Autowired

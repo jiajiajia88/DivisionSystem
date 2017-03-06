@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
  */
 
 @RestController
-@RequestMapping("/jg/system")
+@RequestMapping("/jg")
 public class SystemController {
 
     @Autowired

@@ -15,7 +15,7 @@ import java.io.IOException;
  * Created by shizhouyong on 2017/1/7.
  */
 
-@WebFilter(filterName = "StudentFilter", urlPatterns = {"/jg/v/*"})
+//@WebFilter(filterName = "StudentFilter", urlPatterns = {"/jg/v/*"})
 public class StudentFilter implements Filter {
 
     @Override

@@ -3,11 +3,7 @@ package com.szy.util;
 import com.szy.RespEnum;
 import com.szy.Response;
 import com.szy.db.mapper.SystemMapper;
-import com.szy.db.model.CategoryDbo;
-import com.szy.db.model.GradeDbo;
-import com.szy.db.model.MajorDbo;
-import com.szy.db.model.PositionDbo;
-import com.szy.db.model.SystemInfo;
+import com.szy.db.model.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -38,6 +34,10 @@ public class SystemInfoUtil {
     private static volatile Map<String, SystemInfo> majorMap = new ConcurrentHashMap<>();
     private static volatile Map<String, SystemInfo> categoryMap = new ConcurrentHashMap<>();
 
+    public SystemInfo getCategoryByName(String name) {
+        return categoryMap.get(name);
+    }
+
     public Response addSystemInfo(SystemInfo systemInfo, String type) throws Exception {
         checkUpdate(type);
         SystemMapper systemMapper = DBUtil.getMapper(SystemMapper.class);
@@ -60,13 +60,9 @@ public class SystemInfoUtil {
             if (majorMap.containsKey(systemInfo.getName()))
                 return RespEnum.NAME_DUPLICATE.getResponse();
 
-            try {
-                systemMapper.insertMajor(systemInfo);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            List<MajorDbo> majorDbos = systemMapper.selectMajors();
-            for (MajorDbo majorDbo : majorDbos) {
+            systemMapper.insertMajor(systemInfo);
+            List<MajorQueryDbo> majorDbos = systemMapper.selectMajors();
+            for (MajorQueryDbo majorDbo : majorDbos) {
                 majorMap.put(majorDbo.getName(), majorDbo);
             }
         }
@@ -75,12 +71,7 @@ public class SystemInfoUtil {
             if (categoryMap.containsKey(systemInfo.getName()))
                 return RespEnum.NAME_DUPLICATE.getResponse();
 
-
-            try {
-                systemMapper.insertCategory(systemInfo);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            systemMapper.insertCategory(systemInfo);
             List<CategoryDbo> categoryDbos = systemMapper.selectCategories();
             for (CategoryDbo categoryDbo : categoryDbos) {
                 categoryMap.put(categoryDbo.getName(), categoryDbo);
@@ -91,11 +82,7 @@ public class SystemInfoUtil {
             if (positionMap.containsKey(systemInfo.getName()))
                 return RespEnum.NAME_DUPLICATE.getResponse();
 
-            try {
-                systemMapper.insertPosition(systemInfo);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            systemMapper.insertPosition(systemInfo);
             List<PositionDbo> positionDbos = systemMapper.selectPositions();
             for (PositionDbo positionDbo : positionDbos) {
                 positionMap.put(positionDbo.getName(), positionDbo);
@@ -201,8 +188,8 @@ public class SystemInfoUtil {
                     if (cur - uptime_m < CACHE_TIME)
                         return;
 
-                    List<MajorDbo> majorDbos = systemMapper.selectMajors();
-                    for (MajorDbo majorDbo : majorDbos) {
+                    List<MajorQueryDbo> majorDbos = systemMapper.selectMajors();
+                    for (MajorQueryDbo majorDbo : majorDbos) {
                         majorMap.put(majorDbo.getName(), majorDbo);
                     }
                     uptime_m = cur;

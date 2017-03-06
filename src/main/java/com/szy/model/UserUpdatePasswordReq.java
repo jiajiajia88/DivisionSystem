@@ -5,22 +5,22 @@ package com.szy.model;
  */
 public class UserUpdatePasswordReq {
 
-    private long number;
-    private String password;
+    private String oldPassword;
+    private String newPassword;
 
-    public long getNumber() {
-        return number;
+    public String getOldPassword() {
+        return oldPassword;
     }
 
-    public void setNumber(long number) {
-        this.number = number;
+    public void setOldPassword(String oldPassword) {
+        this.oldPassword = oldPassword;
     }
 
-    public String getPassword() {
-        return password;
+    public String getNewPassword() {
+        return newPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 }

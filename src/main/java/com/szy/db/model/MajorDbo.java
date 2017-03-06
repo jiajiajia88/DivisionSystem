@@ -5,8 +5,17 @@ package com.szy.db.model;
  */
 public class MajorDbo extends SystemInfo{
 
+    private int category;
     private String description;
     private int status;
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
 
     public String getDescription() {
         return description;

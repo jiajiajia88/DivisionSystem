@@ -10,17 +10,17 @@ import java.util.List;
  */
 public class GetSystemInfoListResp extends Response{
 
-    private List<SystemInfo> gradeList;
+    private List<SystemInfo> systemInfoList;
 
-    public GetSystemInfoListResp(List<SystemInfo> gradeList) {
-        this.gradeList = gradeList;
+    public GetSystemInfoListResp(List<SystemInfo> systemInfoList) {
+        this.systemInfoList = systemInfoList;
     }
 
-    public List<SystemInfo> getGradeList() {
-        return gradeList;
+    public List<SystemInfo> getSystemInfoList() {
+        return systemInfoList;
     }
 
-    public void setGradeList(List<SystemInfo> gradeList) {
-        this.gradeList = gradeList;
+    public void setSystemInfoList(List<SystemInfo> systemInfoList) {
+        this.systemInfoList = systemInfoList;
     }
 }

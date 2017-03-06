@@ -28,8 +28,8 @@
                totalGrade,
                rank,
                CREATEUSER,
-               createTime,
-               updateTime,
+               unix_timestamp(createTime) as createTime,
+               unix_timestamp(updateTime) as updateTime,
                status
         FROM t_student_info
         WHERE number = #{number}
@@ -57,8 +57,8 @@
             totalGrade,
             rank,
             createUser,
-            createTime,
-            updateTime,
+            unix_timestamp(createTime) as createTime,
+            unix_timestamp(updateTime) as updateTime,
             status
         FROM t_student_info
         <where>

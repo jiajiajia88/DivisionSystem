@@ -15,12 +15,15 @@
     <!--插入用户-->
     <insert id="insertUser" parameterType="com.szy.db.model.UserDbo">
         INSERT INTO t_user(number, password, `limit`, create_time) VALUES (#{number}, #{password}, #{limit}, from_unixtime(#{createTime}))
-        on duplicate key update password = #{password}, `limit` = #{limit}
     </insert>
 
     <!--根据学工号查找用户-->
     <select id="selectUserByNumber" parameterType="long" resultMap="userMap">
         SELECT * FROM t_user WHERE number = #{number}
     </select>
+
+    <update id="updatePassword" parameterType="com.szy.db.model.UserDbo">
+        UPDATE t_user SET password = #{password} WHERE `number` = #{number}
+    </update>
 
 </mapper>

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
  * Created by shizhouyong on 2017/1/4.
  */
 @RestController
-@RequestMapping("/jg/teacher")
+@RequestMapping("/jg")
 public class PlanController {
 
     @Autowired

@@ -17,11 +17,13 @@
 
     <!--专业-->
     <insert id="insertMajor" parameterType="com.szy.db.model.MajorDbo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_major(name,description,createTime) VALUES (#{name}, #{description}, from_unixtime(#{createTime}))
+        INSERT INTO t_major(name,category,description,createTime) VALUES (#{name}, #{category}, #{description}, from_unixtime(#{createTime}))
     </insert>
 
-    <select id="selectMajors" resultType="com.szy.db.model.MajorDbo">
-        SELECT id,name,description,unix_timestamp(createTime) as createTime,status FROM t_major WHERE status > 0
+    <select id="selectMajors" resultType="com.szy.db.model.MajorQueryDbo">
+        SELECT a.id ,a.name,b.name as category,a.description,unix_timestamp(a.createTime) as createTime,a.status
+        FROM t_major a left JOIN t_category b on a.category = b.id
+        WHERE a.status > 0
     </select>
 
     <delete id="deleteMajor" parameterType="int">

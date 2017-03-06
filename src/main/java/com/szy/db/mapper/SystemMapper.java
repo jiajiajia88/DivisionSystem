@@ -15,7 +15,7 @@ public interface SystemMapper {
     public int deleteGrade(int id);
 
     public int insertMajor(SystemInfo majorDbo);
-    public List<MajorDbo> selectMajors();
+    public List<MajorQueryDbo> selectMajors();
     public int deleteMajor(int id);
 
     public int insertPosition(SystemInfo positionDbo);

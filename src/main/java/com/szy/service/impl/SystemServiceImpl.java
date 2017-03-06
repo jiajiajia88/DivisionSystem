@@ -2,10 +2,7 @@ package com.szy.service.impl;
 
 import com.szy.RespEnum;
 import com.szy.Response;
-import com.szy.db.model.CategoryDbo;
-import com.szy.db.model.GradeDbo;
-import com.szy.db.model.MajorDbo;
-import com.szy.db.model.PositionDbo;
+import com.szy.db.model.*;
 import com.szy.model.*;
 import com.szy.service.ISystemService;
 import com.szy.util.SystemInfoUtil;
@@ -47,12 +44,17 @@ public class SystemServiceImpl implements ISystemService{
 
     @Override
     public Response addMajor(AddMajorReq req, HttpSession session) {
-        if(req == null || req.getName() == null){
+        if(req == null || req.getName() == null || req.getCategory() == null){
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
         final long cur = System.currentTimeMillis() / 1000L;
         MajorDbo dbo = new MajorDbo();
         dbo.setName(req.getName());
+        SystemInfo major = systemInfoUtil.getCategoryByName(req.getCategory());
+        if (major == null) {
+            return RespEnum.CATEGORY_NOT_FOUND.getResponse();
+        }
+        dbo.setCategory(major.getId());
         dbo.setDescription(req.getDescription());
         dbo.setCreateTime(cur);
         try {

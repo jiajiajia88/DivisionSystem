@@ -1,21 +1,13 @@
-package com.szy.model;
+package com.szy.db.model;
 
 /**
- * Created by shizhouyong on 2017/1/9.
+ * Created by shizhouyong on 2017/1/8.
  */
-public class AddMajorReq {
+public class MajorQueryDbo extends SystemInfo{
 
-    private String name;
     private String category;
     private String description;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private int status;
 
     public String getCategory() {
         return category;
@@ -31,5 +23,13 @@ public class AddMajorReq {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

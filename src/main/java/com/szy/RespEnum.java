@@ -34,6 +34,7 @@ public enum RespEnum {
     SECOND_CHOOSE_IS_NULL(0x0001000A, "second choose is null"),//第二志愿为空
     FILE_INPUTSTREAM_ERR(0x0001000B, "file change to inputStream failed"),
     FILE_NEWWORKBOOK_ERR(0x0001000C, "new workbook failed"),
+    CATEGORY_NOT_FOUND(0x0002000D, "category is null"),
 
     /*
      * 数据库错误码

@@ -14,7 +14,7 @@ import java.io.IOException;
  * Created by shizhouyong on 2017/1/7.
  */
 
-@WebFilter(filterName = "SystemFilter", urlPatterns = {"/jg/v/*"})
+//@WebFilter(filterName = "SystemFilter", urlPatterns = {"/jg/v/*"})
 public class SystemFilter implements Filter {
 
     private static IUserService userService;

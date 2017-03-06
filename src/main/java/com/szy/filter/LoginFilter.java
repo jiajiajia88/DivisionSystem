@@ -14,7 +14,7 @@ import java.io.IOException;
  * Created by shizhouyong on 2017/1/7.
  */
 
-@WebFilter(filterName = "LoginFilter", urlPatterns = {"/jg/v/*"})
+//@WebFilter(filterName = "LoginFilter", urlPatterns = {"/jg/v/*"})
 public class LoginFilter implements Filter {
 
     private static IUserService userService;
