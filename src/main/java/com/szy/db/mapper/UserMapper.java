@@ -1,7 +1,6 @@
 package com.szy.db.mapper;
 
-import com.szy.db.model.Items;
-import com.szy.db.model.UserDbo;
+import com.szy.db.model.*;
 
 import java.util.List;
 
@@ -11,8 +10,19 @@ import java.util.List;
 public interface UserMapper {
 
     public int insertUser(UserDbo userDbo);
+
     public UserDbo selectUserByNumber(long number);
-    public List<UserDbo> selectUsers(Items items);
+
+    public List<StuAccountDbo> selectStuAccount(GetStuAccountItems items);
+
+    public int selectStuAccountTotal(GetStuAccountItems items);
+
     public int updateUser(UserDbo userDbo);
+
     public int updatePassword(UserDbo userDbo);
+
+    public int deleteUser(long number);
+
+    public int updateUserLimit(UpdateUserLimitDbo dbo);
+
 }

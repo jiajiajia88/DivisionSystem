@@ -2,6 +2,9 @@ package com.szy.db.mapper;
 
 import com.szy.db.model.PlanDbo;
 import com.szy.db.model.GetPlanItems;
+import com.szy.db.model.PlanOperDbo;
+import com.szy.db.model.PlanQueryDbo;
+import com.szy.model.PlanOperReq;
 
 import java.util.List;
 
@@ -12,13 +15,17 @@ public interface PlanMapper {
 
     public int insertPlan(PlanDbo planDbo);
 
-    public PlanDbo selectPlanDetals(int id);
+    public PlanQueryDbo selectPlanDetals(int id);
 
-    public List<PlanDbo> selectPlans(GetPlanItems items);
+    public List<PlanQueryDbo> selectPlans(GetPlanItems items);
 
     public int selectPlansTotal(GetPlanItems items);
 
     public int deletePlan(int id);
 
     public int updatePlan(PlanDbo planDbo);
+
+    public List<PlanQueryDbo> selectAllAlivePlans();
+
+    public int updatePlanStatus(PlanOperDbo dbo);
 }

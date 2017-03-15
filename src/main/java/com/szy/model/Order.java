@@ -1,4 +1,4 @@
-package com.szy.db.model;
+package com.szy.model;
 
 /**
  * Created by shizhouyong on 2017/2/20.

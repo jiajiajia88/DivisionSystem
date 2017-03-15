@@ -1,21 +1,18 @@
 package com.szy.model;
 
-import com.szy.db.model.Order;
-import com.szy.db.model.VolunteerFilter;
-
 /**
  * Created by shizhouyong on 2017/1/24.
  */
 public class GetVolunteersReq {
 
-    private VolunteerFilter filter;
+    private Filter filter;
     private Order order;
 
-    public VolunteerFilter getFilter() {
+    public Filter getFilter() {
         return filter;
     }
 
-    public void setFilter(VolunteerFilter filter) {
+    public void setFilter(Filter filter) {
         this.filter = filter;
     }
 

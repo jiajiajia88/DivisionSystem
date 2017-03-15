@@ -2,6 +2,7 @@ package com.szy.model;
 
 import com.szy.Response;
 import com.szy.db.model.StudentInfoDbo;
+import com.szy.db.model.StudentInfoQueryDbo;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class GetStudentInfoListResp extends Response{
 
     private int total;
-    private List<StudentInfoDbo> students;
+    private List<StudentInfoQueryDbo> students;
 
     public int getTotal() {
         return total;
@@ -21,11 +22,11 @@ public class GetStudentInfoListResp extends Response{
         this.total = total;
     }
 
-    public List<StudentInfoDbo> getStudents() {
+    public List<StudentInfoQueryDbo> getStudents() {
         return students;
     }
 
-    public void setStudents(List<StudentInfoDbo> students) {
+    public void setStudents(List<StudentInfoQueryDbo> students) {
         this.students = students;
     }
 }

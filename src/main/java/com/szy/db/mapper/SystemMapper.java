@@ -17,6 +17,8 @@ public interface SystemMapper {
     public int insertMajor(SystemInfo majorDbo);
     public List<MajorQueryDbo> selectMajors();
     public int deleteMajor(int id);
+    public MajorQueryDbo selectMajorById(int id);
+    public List<MajorQueryDbo> selectMajorsByCategory(int categoryId);
 
     public int insertPosition(SystemInfo positionDbo);
     public List<PositionDbo> selectPositions();
@@ -25,4 +27,11 @@ public interface SystemMapper {
     public int insertCategory(SystemInfo categoryDbo);
     public List<CategoryDbo> selectCategories();
     public int deleteCategory(int id);
+
+    public int insertTeacher(TeacherInfoDbo dbo);
+    public int updateTeacher(TeacherInfoDbo dbo);
+    public List<TeacherInfoQueryDbo> selectTeacherInfos();
+    public TeacherInfoQueryDbo selectTeacherInfoByNumber(long number);
+    public int deleteTeacher(long number);
+
 }

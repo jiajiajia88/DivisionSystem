@@ -12,50 +12,68 @@ public interface ISystemService {
 
     /**
      * 新增年级
+     *
      * @param req
-     * @param session
      * @return
      */
-    public Response addGrade(AddGradeReq req, HttpSession session);
+    public Response addGrade(AddGradeReq req);
 
     /**
      * 新增专业
+     *
      * @param req
-     * @param session
      * @return
      */
-    public Response addMajor(AddMajorReq req, HttpSession session);
+    public Response addMajor(AddMajorReq req);
+
+    /**
+     * 根据大类获取专业
+     *
+     * @param category
+     * @return
+     */
+    public Response getMajorByCategory(int category);
 
     /**
      * 新增大类
+     *
      * @param req
-     * @param session
      * @return
      */
-    public Response addCategory(AddCategoryReq req, HttpSession session);
+    public Response addCategory(AddCategoryReq req);
 
     /**
      * 新增职位
+     *
      * @param req
-     * @param session
      * @return
      */
-    public Response addPosition(AddPositionReq req, HttpSession session);
+    public Response addPosition(AddPositionReq req);
 
     /**
      * 获取系统信息：年级、专业、大类、职位
+     *
      * @param req
-     * @param session
      * @return
      */
-    public Response getSystemInfos(GetSystemInfoListReq req, HttpSession session);
+    public Response getSystemInfos(GetSystemInfoListReq req);
 
     /**
      * 删除系统信息
+     *
      * @param req
-     * @param session
      * @return
      */
-    public Response deleteSystemInfo(DeleteSystemInfoReq req, HttpSession session);
+    public Response deleteSystemInfo(DeleteSystemInfoReq req);
+
+    public Response addTeacher(SaveTeacherReq req);
+
+    public Response updateTeacher(SaveTeacherReq req);
+
+    public Response teacherList();
+
+    public Response deleteTeacher(long number);
+
+    public Response getStuAccount(GetStuAccountReq req);
 
 }

@@ -2,6 +2,7 @@ package com.szy.model;
 
 import com.szy.Response;
 import com.szy.db.model.PlanDbo;
+import com.szy.db.model.PlanQueryDbo;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class GetPlanListResp extends Response{
 
     private int total;
-    private List<PlanDbo> planDbos;
+    private List<PlanResp> planList;
 
     public int getTotal() {
         return total;
@@ -21,11 +22,11 @@ public class GetPlanListResp extends Response{
         this.total = total;
     }
 
-    public List<PlanDbo> getPlanDbos() {
-        return planDbos;
+    public List<PlanResp> getPlanList() {
+        return planList;
     }
 
-    public void setPlanDbos(List<PlanDbo> planDbos) {
-        this.planDbos = planDbos;
+    public void setPlanList(List<PlanResp> planList) {
+        this.planList = planList;
     }
 }

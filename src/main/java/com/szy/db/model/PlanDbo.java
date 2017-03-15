@@ -11,6 +11,7 @@ public class PlanDbo {
     private int studentAmount;
     private int majorAmount;
     private String details;
+    private long endTime;
     private long createTime;
     private long updateTime;
     private String remarks;
@@ -62,6 +63,14 @@ public class PlanDbo {
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
     }
 
     public long getCreateTime() {

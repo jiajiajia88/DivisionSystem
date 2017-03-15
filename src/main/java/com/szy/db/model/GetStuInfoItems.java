@@ -1,5 +1,7 @@
 package com.szy.db.model;
 
+import com.szy.model.Order;
+
 /**
  * Created by shizhouyong on 2017/1/24.
  */
@@ -21,6 +23,13 @@ public class GetStuInfoItems {
     private String sex;
     private String stuFrom;
     private int division;
+
+    public void setOrder(Order order) {
+        this.from = order.getFrom();
+        this.size = order.getSize();
+        this.item = order.getItem();
+        this.sort = order.getSort();
+    }
 
     public int getFrom() {
         return from;

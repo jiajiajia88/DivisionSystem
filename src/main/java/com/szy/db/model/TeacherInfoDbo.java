@@ -8,6 +8,7 @@ public class TeacherInfoDbo {
     private long number;
     private String name;
     private int positionId;
+    private long createTime;
     private long updateTime;
 
     public long getNumber() {
@@ -32,6 +33,14 @@ public class TeacherInfoDbo {
 
     public void setPositionId(int positionId) {
         this.positionId = positionId;
+    }
+
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
     }
 
     public long getUpdateTime() {

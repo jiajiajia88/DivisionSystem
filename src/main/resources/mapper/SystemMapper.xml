@@ -8,7 +8,7 @@
     </insert>
 
     <select id="selectGrades" resultType="com.szy.db.model.GradeDbo">
-        SELECT id,name,unix_timestamp(createTime) FROM t_grade
+        SELECT id,name,unix_timestamp(createTime) FROM t_grade where status > 0
     </select>
 
     <delete id="deleteGrade" parameterType="int">
@@ -30,22 +30,21 @@
         DELETE FROM t_major WHERE id = #{id}
     </delete>
 
-    <!--分流计划-->
-    <insert id="insertPlan" parameterType="com.szy.db.model.PlanDbo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_plan(grade,species,studentAmount,majorAmount,createTime) VALUES (#{grade}, #{species}, #{studentAmount}, #{majorAmount}, from_unixtime(#{createTime}))
-    </insert>
-
-    <select id="selectPlans" resultType="com.szy.db.model.PlanDbo">
-        SELECT id,grade,species,studentAmount,majorAmount,unix_timestamp(createTime) as createTime,status FROM t_plan WHERE status > 0
+    <select id="selectMajorById" resultType="com.szy.db.model.MajorQueryDbo" parameterType="int">
+        SELECT a.id ,a.name,b.name as category,a.description,unix_timestamp(a.createTime) as createTime,a.status
+        FROM t_major a left JOIN t_category b on a.category = b.id
+        WHERE a.status > 0 AND a.id = #{0}
     </select>
 
-    <update id="deletePlan" parameterType="int">
-        UPDATE t_plan SET status = 0 WHERE id = #{id}
-    </update>
+    <select id="selectMajorsByCategory" resultType="com.szy.db.model.MajorQueryDbo" parameterType="int">
+        SELECT a.id ,a.name,b.name as category,a.description,unix_timestamp(a.createTime) as createTime,a.status
+        FROM t_major a left JOIN t_category b on a.category = b.id
+        WHERE a.status > 0 AND a.category = #{0}
+    </select>
 
     <!--职位-->
     <insert id="insertPosition" parameterType="com.szy.db.model.PositionDbo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_position(name,createTime,description) VALUES (#{name}, description, from_unixtime(#{createTime}))
+        INSERT INTO t_position(name,createTime,description) VALUES (#{name},from_unixtime(#{createTime}), description)
     </insert>
 
     <select id="selectPositions" resultType="com.szy.db.model.PositionDbo">
@@ -62,11 +61,33 @@
     </insert>
 
     <select id="selectCategories" resultType="com.szy.db.model.CategoryDbo">
-        SELECT id,name,description,unix_timestamp(createTime) as createTime,status FROM t_category
+        SELECT id,name,description,unix_timestamp(createTime) as createTime,status FROM t_category where status > 0
     </select>
 
     <delete id="deleteCategory" parameterType="int">
         UPDATE t_category SET status = 0 WHERE id = #{id}
+    </delete>
+
+    <insert id="insertTeacher" parameterType="com.szy.db.model.TeacherInfoDbo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_teacher_info(name,number,positionId,createTime) VALUES (#{name}, #{number}, #{positionId}, from_unixtime(#{createTime}))
+    </insert>
+
+    <update id="updateTeacher" parameterType="com.szy.db.model.TeacherInfoDbo" useGeneratedKeys="true" keyProperty="id">
+        update t_teacher_info set name = #{name}, positionId = #{positionId}, updateTime = from_unixtime(#{updateTime}) where number = #{number}
+    </update>
+
+    <select id="selectTeacherInfos" resultType="com.szy.db.model.TeacherInfoQueryDbo">
+        SELECT a.name, number, b.name as position,unix_timestamp(a.createTime) as createTime,unix_timestamp(a.updateTime) as updateTime,a.status
+        FROM t_teacher_info a LEFT JOIN t_position b on a.positionId = b.id WHERE a.status > 0
+    </select>
+
+    <select id="selectTeacherInfoByNumber" resultType="com.szy.db.model.TeacherInfoQueryDbo" parameterType="long">
+        SELECT a.name, number, b.name as position,unix_timestamp(a.createTime) as createTime,unix_timestamp(a.updateTime) as updateTime,a.status
+        FROM t_teacher_info a LEFT JOIN t_position b on a.positionId = b.id WHERE a.status > 0 AND a.number = #{number}
+    </select>
+
+    <delete id="deleteTeacher" parameterType="long">
+        update t_teacher_info set status = 0 where number = #{number}
     </delete>
 
 </mapper>

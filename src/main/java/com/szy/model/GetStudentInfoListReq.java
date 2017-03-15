@@ -1,6 +1,5 @@
 package com.szy.model;
 
-import com.szy.db.model.Order;
 import com.szy.db.model.StuInfoFilter;
 
 /**

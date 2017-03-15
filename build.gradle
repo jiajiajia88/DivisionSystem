@@ -13,14 +13,10 @@ buildscript {
     }
 }
 
-
-
 //应用插件
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
-
-
 
 //编译属性
 sourceCompatibility = 1.8
@@ -56,6 +52,8 @@ dependencies {
     compile(
             'org.springframework.boot:spring-boot-starter-aop',
             'org.springframework.boot:spring-boot-starter-cache',
+            'org.springframework.boot:spring-boot-starter-data-redis',
+            'com.alibaba:druid:1.0.28',
             'com.alibaba:fastjson:1.2.21',
             'commons-lang:commons-lang:2.6',
             'org.apache.poi:poi:3.13',

@@ -5,18 +5,9 @@ package com.szy.model;
  */
 public class SaveVolunteerReq {
 
-    private long number;
     private int firstChoose;
     private int secondChoose;
     private int thirdChoose;
-
-    public long getNumber() {
-        return number;
-    }
-
-    public void setNumber(long number) {
-        this.number = number;
-    }
 
     public int getFirstChoose() {
         return firstChoose;

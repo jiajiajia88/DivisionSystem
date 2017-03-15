@@ -2,23 +2,25 @@ package com.szy.model;
 
 import com.szy.Response;
 import com.szy.db.model.StudentInfoDbo;
+import com.szy.db.model.StudentInfoQueryDbo;
 
 /**
  * Created by shizhouyong on 2017/2/20.
  */
 public class GetStuInfoDetailsResp extends Response {
 
-    private StudentInfoDbo studentInfo;
+    private StudentInfoQueryDbo studentInfo;
 
-    public GetStuInfoDetailsResp(StudentInfoDbo studentInfo) {
-        this.studentInfo = studentInfo;
-    }
-
-    public StudentInfoDbo getStudentInfo() {
+    public StudentInfoQueryDbo getStudentInfo() {
         return studentInfo;
     }
 
-    public void setStudentInfo(StudentInfoDbo studentInfo) {
+    public void setStudentInfo(StudentInfoQueryDbo studentInfo) {
+        this.studentInfo = studentInfo;
+    }
+
+    public GetStuInfoDetailsResp(StudentInfoQueryDbo studentInfo) {
+
         this.studentInfo = studentInfo;
     }
 }

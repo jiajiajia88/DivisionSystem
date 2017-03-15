@@ -6,6 +6,7 @@ package com.szy.db.model;
 public class UserDbo {
 
     private long number;
+    private String name;
     private String password;
     private int limit;
     private long createTime;
@@ -18,6 +19,14 @@ public class UserDbo {
 
     public void setNumber(long number) {
         this.number = number;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {

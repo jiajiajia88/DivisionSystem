@@ -10,6 +10,7 @@
             studentAmount,
             majorAmount,
             details,
+            endTime,
             createTime,
             updateTime,
             remarks)
@@ -19,23 +20,73 @@
             #{studentAmount},
             #{majorAmount},
             #{details},
+            from_unixtime(#{endTime}),
             from_unixtime(#{createTime}),
             from_unixtime(#{updateTime}),
             #{remarks})
     </insert>
 
-    <select id="selectPlans" parameterType="com.szy.db.model.GetPlanItems" resultType="com.szy.db.model.PlanDbo">
-        SELECT
-            id,
-            grade,
-            category,
+    <select id="selectPlans" parameterType="com.szy.db.model.GetPlanItems" resultType="com.szy.db.model.PlanQueryDbo">
+        SELECT a.id,
+            c.name as grade,
+            a.grade as gradeId,
+            b.name as category,
+            a.category as categoryId,
             studentAmount,
             majorAmount,
             details,
-            unix_timestamp(createTime) as createTime,
+            unix_timestamp(a.endTime) as endTime,
+            unix_timestamp(a.createTime) as createTime,
             unix_timestamp(updateTime) as updateTime,
-            remarks
-        FROM t_plan
+            remarks,
+            a.status as status
+        FROM t_plan a JOIN t_category b ON a.category = b.id JOIN t_grade c on a.grade = c.id
+        <where>
+            <choose>
+                <when test="status != 0">
+                    a.status = #{status}
+                </when>
+                <otherwise>
+                    a.status > 0
+                </otherwise>
+            </choose>
+            <if test="grade != 0">
+                AND a.grade = #{grade}
+            </if>
+            <if test="category != 0">
+                AND a.category = #{category}
+            </if>
+        </where>
+        <if test="item != null and sort !=null">
+            <if test="sort == 'desc'">
+                ORDER BY a.${item} DESC
+            </if>
+            <if test="sort == 'asc'">
+                ORDER BY a.${item} ASC
+            </if>
+        </if>
+        limit #{from},#{size}
+    </select>
+
+    <select id="selectPlanDetals" resultType="com.szy.db.model.PlanQueryDbo">
+        SELECT a.id,
+            c.name as grade,
+            a.grade as gradeId,
+            b.name as category,
+            a.category as categoryId,
+            studentAmount,
+            majorAmount,
+            details,
+            unix_timestamp(a.endTime) as endTime,
+            unix_timestamp(a.createTime) as createTime,
+            unix_timestamp(updateTime) as updateTime,
+            remarks,
+            a.status as status
+        FROM t_plan a JOIN t_category b ON a.category = b.id JOIN t_grade c on a.grade = c.id WHERE a.id = #{0} AND a.status > 0
+    </select>
+
+    <select id="selectPlansTotal" parameterType="com.szy.db.model.GetPlanItems" resultType="int">
+        SELECT count(*) FROM t_plan
         <where>
             <choose>
                 <when test="status != 0">
@@ -46,65 +97,12 @@
                 </otherwise>
             </choose>
             <if test="grade != 0">
-                AND grade LIKE '%${grade}%'
+                AND grade = #{grade}
             </if>
             <if test="category != 0">
-                AND category LIKE '%${category}%'
-            </if>
-            <if test="startCreateTime != 0 and endCreateTime != 0">
-                AND unix_timestamp(createTime) between #{startCreateTime} and #{endCreateTime}
-            </if>
-            <if test="startUpdateTime != 0 and endUpdateTime != 0">
-                AND unix_timestamp(updateTime) between #{startUpdateTime} and #{endUpdateTime}
+                AND category = #{category}
             </if>
         </where>
-        <if test="item != null and sort !=null">
-            <if test="sort == 'desc'">
-                ORDER BY ${item} DESC
-            </if>
-            <if test="sort == 'asc'">
-                ORDER BY ${item} ASC
-            </if>
-        </if>
-        limit #{from},#{size}
-    </select>
-
-    <select id="selectPlanDetals" resultType="com.szy.db.model.PlanDbo">
-        SELECT id,
-            grade,
-            category,
-            studentAmount,
-            majorAmount,
-            details,
-            unix_timestamp(createTime),
-            unix_timestamp(updateTime),
-            remarks
-        FROM t_plan WHERE id = #{0} AND status > 0
-    </select>
-
-    <select id="selectPlansTotal" parameterType="com.szy.db.model.GetPlanItems" resultType="int">
-        SELECT count(*) FROM t_plan <where>
-        <choose>
-            <when test="status != 0">
-                status = #{status}
-            </when>
-            <otherwise>
-                status > 0
-            </otherwise>
-        </choose>
-        <if test="grade != 0">
-            AND grade LIKE '%${grade}%'
-        </if>
-        <if test="category != 0">
-            AND category LIKE '%${category}%'
-        </if>
-        <if test="startCreateTime != 0 and endCreateTime != 0">
-            AND unix_timestamp(createTime) between #{startCreateTime} and #{endCreateTime}
-        </if>
-        <if test="startUpdateTime != 0 and endUpdateTime != 0">
-            AND unix_timestamp(updateTime) between #{startUpdateTime} and #{endUpdateTime}
-        </if>
-    </where>
     </select>
 
     <update id="deletePlan" parameterType="int">
@@ -123,6 +121,28 @@
             updateTime = from_unixtime(#{updateTime})
         </set>
         WHERE id = #{id}
+    </update>
+
+    <select id="selectAllAlivePlans" resultType="com.szy.db.model.PlanQueryDbo">
+        SELECT a.id,
+            c.name as grade,
+            a.grade as gradeId,
+            b.name as category,
+            a.category as categoryId,
+            studentAmount,
+            majorAmount,
+            details,
+            unix_timestamp(a.endTime) as endTime,
+            unix_timestamp(a.createTime) as createTime,
+            unix_timestamp(updateTime) as updateTime,
+            remarks,
+            a.status as status
+        FROM t_plan a JOIN t_category b ON a.category = b.id JOIN t_grade c on a.grade = c.id
+        WHERE a.status = 2
+    </select>
+
+    <update id="updatePlanStatus" parameterType="com.szy.db.model.PlanOperDbo">
+        UPDATE t_plan SET status = #{oper} WHERE id = #{id}
     </update>
 
 </mapper>

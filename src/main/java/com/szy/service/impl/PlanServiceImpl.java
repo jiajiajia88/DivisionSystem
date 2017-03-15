@@ -4,15 +4,16 @@ import com.alibaba.fastjson.JSON;
 import com.szy.RespEnum;
 import com.szy.Response;
 import com.szy.db.mapper.PlanMapper;
-import com.szy.db.model.GetPlanItems;
-import com.szy.db.model.PlanDbo;
+import com.szy.db.mapper.SystemMapper;
+import com.szy.db.model.*;
 import com.szy.model.*;
 import com.szy.service.IPlanService;
 import com.szy.util.DBUtil;
-import org.apache.commons.lang.StringUtils;
+import com.szy.util.VolunteerUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,44 +23,54 @@ import java.util.List;
 @Service("IPlanService")
 public class PlanServiceImpl implements IPlanService {
 
+    @Autowired
+    private VolunteerUtil volunteerUtil;
+
     @Override
-    public Response addPlan(AddPlanReq req, HttpSession session) {
+    public Response addPlan(AddPlanReq req) {
         if(req == null || req.getGrade() == 0 || req.getCategory() == 0){
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
 
         long cur = System.currentTimeMillis() / 1000;
         PlanMapper planMapper = DBUtil.getMapper(PlanMapper.class);
-
+        SystemMapper systemMapper = DBUtil.getMapper(SystemMapper.class);
         PlanDbo dbo = new PlanDbo();
         dbo.setGrade(req.getGrade());
         dbo.setCategory(req.getCategory());
-        if(!StringUtils.isBlank(req.getDetails())){
-            List<PlanUnit> majors = null;
-            try {
-                majors = JSON.parseArray(req.getDetails(), PlanUnit.class);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return RespEnum.DATA_PARSE_ERR.getResponse();
-            }
-            dbo.setDetails(req.getDetails());
+
+        final int[] stuAmount = {0};
+        List<PlanUnit> majors = req.getDetails();
+        if (majors != null && majors.size() > 0){
+
+            majors.forEach(t-> {
+                stuAmount[0] = stuAmount[0] + t.getStuAmount();
+                MajorQueryDbo majorQueryDbo = systemMapper.selectMajorById(t.getId());
+                if (majorQueryDbo != null) {
+                    t.setName(majorQueryDbo.getName());
+                }
+            });
+            dbo.setDetails(JSON.toJSONString(majors));
+            dbo.setStudentAmount(stuAmount[0]);
+            dbo.setMajorAmount(majors.size());
         }
-        dbo.setStudentAmount(req.getStudentAmount());
-        dbo.setMajorAmount(req.getMajorAmount());
+
+        dbo.setEndTime(req.getEndTime());
         dbo.setCreateTime(cur);
         dbo.setRemarks(req.getRemarks());
         try{
             planMapper.insertPlan(dbo);
         } catch (Exception e) {
-            e.printStackTrace();
+            if (e.getMessage().contains("Duplicate entry"))
+                return RespEnum.DUPLICATE_DATA.getResponse();
             return RespEnum.DATA_INSERT_ERR.getResponse();
         }
-
+        volunteerUtil.updateMap();
         return RespEnum.SUCCESS.getResponse();
     }
 
     @Override
-    public Response deletePlan(int id, HttpSession session) {
+    public Response deletePlan(int id) {
         if(id == 0){
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
@@ -76,7 +87,7 @@ public class PlanServiceImpl implements IPlanService {
     }
 
     @Override
-    public Response getPlans(GetPlansReq req, HttpSession session) {
+    public Response getPlans(GetPlansReq req) {
         if (req == null) {
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
@@ -87,65 +98,118 @@ public class PlanServiceImpl implements IPlanService {
             items = req.getItems();
         }
         PlanMapper planMapper = DBUtil.getMapper(PlanMapper.class);
-        List<PlanDbo> planDbos = planMapper.selectPlans(items);
+        List<PlanQueryDbo> planDbos = planMapper.selectPlans(items);
         int total = planMapper.selectPlansTotal(items);
+
+        List<PlanResp> planRespList = new ArrayList<>();
+        for (PlanQueryDbo dbo : planDbos) {
+            PlanResp planResp = new PlanResp(dbo.getId(),dbo.getGradeId(),dbo.getCategoryId(),dbo.getGrade(), dbo.getCategory(),dbo.getStudentAmount(),dbo.getMajorAmount(),
+                    dbo.getEndTime(),dbo.getCreateTime(),dbo.getUpdateTime(),dbo.getStatus());
+
+            String details = dbo.getDetails();
+            if (details != null) {
+                List<PlanUnit> planUnits = JSON.parseArray(details, PlanUnit.class);
+
+                planResp.setUnits(planUnits);
+            }
+            planRespList.add(planResp);
+        }
+
         GetPlanListResp resp = new GetPlanListResp();
-        resp.setPlanDbos(planDbos);
+        resp.setPlanList(planRespList);
         resp.setTotal(total);
         return resp;
     }
 
     @Override
-    public Response getPlanDetails(int id, HttpSession session) {
+    public Response getPlanDetails(int id) {
         if(id == 0){
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
 
         PlanMapper planMapper = DBUtil.getMapper(PlanMapper.class);
-        PlanDbo planDbo = planMapper.selectPlanDetals(id);
-        if (planDbo == null) {
+        PlanQueryDbo dbo = planMapper.selectPlanDetals(id);
+        if (dbo == null) {
             return RespEnum.DATA_NOT_FOUND.getResponse();
         }
+
+        PlanResp planResp = new PlanResp(dbo.getId(),dbo.getGradeId(),dbo.getCategoryId(),dbo.getGrade(), dbo.getCategory(),dbo.getStudentAmount(),dbo.getMajorAmount(),
+                dbo.getEndTime(),dbo.getCreateTime(),dbo.getUpdateTime(),dbo.getStatus());
+
+        String details = dbo.getDetails();
+        if (details != null) {
+            List<PlanUnit> planUnits = JSON.parseArray(details, PlanUnit.class);
+            planResp.setUnits(planUnits);
+        }
+
         GetPlanDetailsResp resp = new GetPlanDetailsResp();
-        resp.setPlanDbo(planDbo);
+        resp.setPlan(planResp);
         return resp;
     }
 
     @Override
-    public Response updatePlan(UpdatePlanReq req, HttpSession session) {
+    public Response updatePlan(UpdatePlanReq req) {
         if(req == null || req.getGrade() == 0 || req.getCategory() == 0){
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
         long cur = System.currentTimeMillis() / 1000;
         PlanMapper planMapper = DBUtil.getMapper(PlanMapper.class);
+        SystemMapper systemMapper = DBUtil.getMapper(SystemMapper.class);
+        PlanDbo dbo = new PlanDbo();
+        dbo.setId(req.getId());
+        dbo.setGrade(req.getGrade());
+        dbo.setCategory(req.getCategory());
+        final int[] stuAmount = {0};
+        List<PlanUnit> majors = req.getDetails();
+        if (majors != null && majors.size() > 0){
 
-        PlanDbo planDbo = new PlanDbo();
-        planDbo.setId(req.getId());
-        planDbo.setGrade(req.getGrade());
-        planDbo.setCategory(req.getCategory());
-        if(!StringUtils.isBlank(req.getDetails())){
-            List<PlanUnit> majors = null;
-            try {
-                majors = JSON.parseArray(req.getDetails(), PlanUnit.class);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return RespEnum.DATA_PARSE_ERR.getResponse();
-            }
-            planDbo.setDetails(req.getDetails());
+            majors.forEach(t-> {
+                stuAmount[0] = stuAmount[0] + t.getStuAmount();
+                MajorQueryDbo majorQueryDbo = systemMapper.selectMajorById(t.getId());
+                if (majorQueryDbo != null) {
+                    t.setName(majorQueryDbo.getName());
+                }
+            });
+            dbo.setDetails(JSON.toJSONString(majors));
+            dbo.setStudentAmount(stuAmount[0]);
+            dbo.setMajorAmount(majors.size());
         }
-        planDbo.setStudentAmount(req.getStudentAmount());
-        planDbo.setMajorAmount(req.getMajorAmount());
-        planDbo.setUpdateTime(cur);
-        planDbo.setRemarks(req.getRemarks());
+
+        dbo.setEndTime(req.getEndTime());
+        dbo.setUpdateTime(cur);
+        dbo.setRemarks(req.getRemarks());
 
         try {
-            planMapper.updatePlan(planDbo);
+            planMapper.updatePlan(dbo);
         } catch (Exception e) {
             e.printStackTrace();
             return RespEnum.DATA_UPDATE_ERR.getResponse();
         }
+        volunteerUtil.updateMap();
         return RespEnum.SUCCESS.getResponse();
     }
 
+    @Override
+    public Response planOper(PlanOperReq req) {
+        if (req == null || req.getId() == 0 || req.getOper() == 0) {
+            return RespEnum.PARAMETER_MiSS.getResponse();
+        }
+
+        PlanOperDbo dbo = new PlanOperDbo(req.getId(), req.getOper());
+        PlanMapper planMapper = DBUtil.getMapper(PlanMapper.class);
+        int n = 0;
+
+        try {
+            n = planMapper.updatePlanStatus(dbo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (n != 1) {
+            return RespEnum.DATA_UPDATE_ERR.getResponse();
+        }
+        volunteerUtil.updateMap();
+        return RespEnum.SUCCESS.getResponse();
+    }
 
 }

@@ -9,10 +9,6 @@ public class GetPlanItems {
     private int size = 15;
     private String item = "createTime";
     private String sort = "desc";
-    private long startCreateTime;
-    private long endCreateTime;
-    private long startUpdateTime;
-    private long endUpdateTime;
     private int grade;
     private int category;
     private int status;
@@ -47,38 +43,6 @@ public class GetPlanItems {
 
     public void setSort(String sort) {
         this.sort = sort;
-    }
-
-    public long getStartCreateTime() {
-        return startCreateTime;
-    }
-
-    public void setStartCreateTime(long startCreateTime) {
-        this.startCreateTime = startCreateTime;
-    }
-
-    public long getEndCreateTime() {
-        return endCreateTime;
-    }
-
-    public void setEndCreateTime(long endCreateTime) {
-        this.endCreateTime = endCreateTime;
-    }
-
-    public long getStartUpdateTime() {
-        return startUpdateTime;
-    }
-
-    public void setStartUpdateTime(long startUpdateTime) {
-        this.startUpdateTime = startUpdateTime;
-    }
-
-    public long getEndUpdateTime() {
-        return endUpdateTime;
-    }
-
-    public void setEndUpdateTime(long endUpdateTime) {
-        this.endUpdateTime = endUpdateTime;
     }
 
     public int getGrade() {

@@ -8,6 +8,7 @@ public class StudentInfoDbo {
     private long number;
     private String name;
     private String telephone;
+    private int grade;
     private int category;
     private String originalClass;
     private int presentClass;
@@ -51,6 +52,14 @@ public class StudentInfoDbo {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
     }
 
     public int getCategory() {

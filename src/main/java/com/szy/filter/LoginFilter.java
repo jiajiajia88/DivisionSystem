@@ -1,23 +1,24 @@
 package com.szy.filter;
 
 import com.szy.RespEnum;
-import com.szy.model.Account;
-import com.szy.service.IUserService;
-import com.szy.util.UserLimitUtil;
+import com.szy.session.LocalUtil;
+import com.szy.session.Session;
+import com.szy.util.CacheUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
  * Created by shizhouyong on 2017/1/7.
  */
 
-//@WebFilter(filterName = "LoginFilter", urlPatterns = {"/jg/v/*"})
+@WebFilter(filterName = "LoginFilter", urlPatterns = {"/jg/v/*"})
 public class LoginFilter implements Filter {
 
-    private static IUserService userService;
+    @Autowired
+    private CacheUtil cacheUtil;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -26,16 +27,30 @@ public class LoginFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest)req;
-        Account account = (Account)request.getSession().getAttribute("account");
 
-        if(account != null) {
-            if (UserLimitUtil.verify(account.getLimit(), UserLimitUtil.USER_LOGIN))
-                chain.doFilter(req, res);
-            else
-                res.getWriter().write(RespEnum.NO_ACCESS.toString());
-        } else {
-            res.getWriter().write(RespEnum.NOT_LOGIN.toString());
+        try {
+            String ss = req.getParameter("ss");
+            if (ss == null) {
+                res.getWriter().write(RespEnum.PARAMETER_MiSS.toString());
+                return;
+            }
+            if (ss.length() != 40) {
+                res.getWriter().write(RespEnum.NOT_LOGIN.toString());
+                return;
+            }
+            String key = ss.substring(0, 32);
+            Session session = cacheUtil.getSession(key);
+            String verify = ss.substring(32);
+            if (session == null || !verify.equals(session.getVerify())) {
+                res.getWriter().write(RespEnum.NOT_LOGIN.toString());
+                return;
+            }
+            session.setKey(key);
+            LocalUtil.setSession(session);
+            chain.doFilter(req, res);
+        } catch (Exception e) {
+            res.getWriter().write(RespEnum.UNKNOWN_ERROR.toString());
+            e.printStackTrace();
         }
     }
 

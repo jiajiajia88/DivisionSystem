@@ -1,24 +1,22 @@
-package com.szy.db.model;
+package com.szy.model;
 
 /**
  * Created by shizhouyong on 2017/2/20.
  */
-public class VolunteerFilter {
+public class Filter {
 
     private long number;
-    private int status;
-    private int category;
-    private int firstChoose;
-    private int secondChoose;
-    private int thirdChoose;
     private String name;
     private String originalClass;
     private String sex;
     private String stuFrom;
     private int division;
-    private Time createTime;
-    private Time updateTime;
-
+    private int category;
+    private int grade;
+    private int firstChoose;
+    private int secondChoose;
+    private int thirdChoose;
+    
     public long getNumber() {
         return number;
     }
@@ -27,12 +25,12 @@ public class VolunteerFilter {
         this.number = number;
     }
 
-    public int getStatus() {
-        return status;
+    public int getGrade() {
+        return grade;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setGrade(int grade) {
+        this.grade = grade;
     }
 
     public int getCategory() {
@@ -107,19 +105,4 @@ public class VolunteerFilter {
         this.division = division;
     }
 
-    public Time getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Time createTime) {
-        this.createTime = createTime;
-    }
-
-    public Time getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Time updateTime) {
-        this.updateTime = updateTime;
-    }
 }

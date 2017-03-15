@@ -3,6 +3,7 @@ package com.szy.service;
 import com.szy.Response;
 import com.szy.model.AddPlanReq;
 import com.szy.model.GetPlansReq;
+import com.szy.model.PlanOperReq;
 import com.szy.model.UpdatePlanReq;
 
 import javax.servlet.http.HttpSession;
@@ -12,13 +13,15 @@ import javax.servlet.http.HttpSession;
  */
 public interface IPlanService {
 
-    public Response addPlan(AddPlanReq req, HttpSession session);
+    public Response addPlan(AddPlanReq req);
 
-    public Response deletePlan(int id, HttpSession session);
+    public Response deletePlan(int id);
 
-    public Response getPlans(GetPlansReq req, HttpSession session);
+    public Response getPlans(GetPlansReq req);
 
-    public Response getPlanDetails(int id, HttpSession session);
+    public Response getPlanDetails(int id);
 
-    public Response updatePlan(UpdatePlanReq req, HttpSession session);
+    public Response updatePlan(UpdatePlanReq req);
+
+    public Response planOper(PlanOperReq req);
 }

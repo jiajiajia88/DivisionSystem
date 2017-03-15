@@ -1,8 +1,6 @@
 package com.szy.db.mapper;
 
-import com.szy.db.model.ChooseDbo;
-import com.szy.db.model.GetStuInfoItems;
-import com.szy.db.model.StudentInfoDbo;
+import com.szy.db.model.*;
 
 import java.util.List;
 
@@ -14,12 +12,14 @@ public interface StuInfoMapper {
 
     public int insertStudentInfo(StudentInfoDbo dbo);
 
-    public StudentInfoDbo selectStudentInfoByNumber(long number);
+    public StudentInfoQueryDbo selectStudentInfoByNumber(long number);
 
-    public List<StudentInfoDbo> selectStudentInfoList(GetStuInfoItems items);
+    public List<StudentInfoQueryDbo> selectStudentInfoList(GetStuInfoItems items);
 
     public int selectStudentInfoListTotal(GetStuInfoItems items);
 
     public int insertChoose(ChooseDbo dbo);
+
+    public int updatePhone(UpdatePhoneDbo dbo);
 
 }

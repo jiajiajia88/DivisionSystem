@@ -1,5 +1,7 @@
 package com.szy.db.model;
 
+import com.szy.model.Time;
+
 /**
  * Created by shizhouyong on 2017/2/20.
  */

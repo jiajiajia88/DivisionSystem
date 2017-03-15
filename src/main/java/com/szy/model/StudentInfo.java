@@ -11,6 +11,7 @@ public class StudentInfo {
     private long number;
     private String name;
     private String telephone;
+    private int grade;
     private int category;
     private String originalClass;
     private int presentClass;
@@ -40,6 +41,7 @@ public class StudentInfo {
         StudentInfoDbo dbo = new StudentInfoDbo();
         dbo.setNumber(number);
         dbo.setName(name);
+        dbo.setGrade(grade);
         dbo.setCategory(category);
         dbo.setOriginalClass(originalClass);
         dbo.setSex(sex);
@@ -78,6 +80,14 @@ public class StudentInfo {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
     }
 
     public int getCategory() {

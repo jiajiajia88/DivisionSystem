@@ -38,6 +38,10 @@ public class SystemInfoUtil {
         return categoryMap.get(name);
     }
 
+    public SystemInfo getPositionByName(String name) {
+        return positionMap.get(name);
+    }
+
     public Response addSystemInfo(SystemInfo systemInfo, String type) throws Exception {
         checkUpdate(type);
         SystemMapper systemMapper = DBUtil.getMapper(SystemMapper.class);
@@ -45,11 +49,7 @@ public class SystemInfoUtil {
             if (gradeMap.containsKey(systemInfo.getName()))
                 return RespEnum.NAME_DUPLICATE.getResponse();
 
-            try {
-                systemMapper.insertGrade(systemInfo);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            systemMapper.insertGrade(systemInfo);
             List<GradeDbo> gradeDbos = systemMapper.selectGrades();
             for (GradeDbo gradeDbo : gradeDbos) {
                 gradeMap.put(gradeDbo.getName(), gradeDbo);

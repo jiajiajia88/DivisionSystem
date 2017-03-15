@@ -12,9 +12,9 @@ public interface VolunteerMapper {
 
     public int insertVolunteer(VolunteerDbo dbo);
 
-    public VolunteerDbo selectVolunteerByNumber(long number);
+    public VolunteerQueryDbo selectVolunteerByNumber(long number);
 
-    public List<VolunteerDbo> selectVolunteerList(GetVolunteerItems items);
+    public List<VolunteerQueryDbo> selectVolunteerList(GetVolunteerItems items);
 
     public int selectVolunteerListTotal(GetVolunteerItems items);
 

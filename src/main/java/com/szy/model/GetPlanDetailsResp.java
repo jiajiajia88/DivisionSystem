@@ -8,13 +8,13 @@ import com.szy.db.model.PlanDbo;
  */
 public class GetPlanDetailsResp extends Response{
 
-    private PlanDbo planDbo;
+    private PlanResp plan;
 
-    public PlanDbo getPlanDbo() {
-        return planDbo;
+    public PlanResp getPlan() {
+        return plan;
     }
 
-    public void setPlanDbo(PlanDbo planDbo) {
-        this.planDbo = planDbo;
+    public void setPlan(PlanResp plan) {
+        this.plan = plan;
     }
 }

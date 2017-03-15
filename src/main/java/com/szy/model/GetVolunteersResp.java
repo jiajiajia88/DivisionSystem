@@ -2,6 +2,7 @@ package com.szy.model;
 
 import com.szy.Response;
 import com.szy.db.model.VolunteerDbo;
+import com.szy.db.model.VolunteerQueryDbo;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 public class GetVolunteersResp extends Response{
 
     private int total;
-    private List<VolunteerDbo> volunteers;
+    private List<VolunteerQueryDbo> volunteers;
 
     public int getTotal() {
         return total;
@@ -21,11 +22,11 @@ public class GetVolunteersResp extends Response{
         this.total = total;
     }
 
-    public List<VolunteerDbo> getVolunteers() {
+    public List<VolunteerQueryDbo> getVolunteers() {
         return volunteers;
     }
 
-    public void setVolunteers(List<VolunteerDbo> volunteers) {
+    public void setVolunteers(List<VolunteerQueryDbo> volunteers) {
         this.volunteers = volunteers;
     }
 }

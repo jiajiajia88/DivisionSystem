@@ -1,15 +1,17 @@
 package com.szy.model;
 
+import java.util.List;
+
 /**
+ *
  * Created by shizhouyong on 2017/1/24.
  */
 public class AddPlanReq {
 
     private int grade;
     private int category;
-    private int studentAmount;
-    private int majorAmount;
-    private String details;
+    private long endTime;
+    private List<PlanUnit> details;
     private String remarks;
 
     public int getGrade() {
@@ -28,28 +30,20 @@ public class AddPlanReq {
         this.category = category;
     }
 
-    public int getStudentAmount() {
-        return studentAmount;
-    }
-
-    public void setStudentAmount(int studentAmount) {
-        this.studentAmount = studentAmount;
-    }
-
-    public int getMajorAmount() {
-        return majorAmount;
-    }
-
-    public void setMajorAmount(int majorAmount) {
-        this.majorAmount = majorAmount;
-    }
-
-    public String getDetails() {
+    public List<PlanUnit> getDetails() {
         return details;
     }
 
-    public void setDetails(String details) {
+    public void setDetails(List<PlanUnit> details) {
         this.details = details;
+    }
+
+    public long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(long endTime) {
+        this.endTime = endTime;
     }
 
     public String getRemarks() {

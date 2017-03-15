@@ -2,6 +2,7 @@ package com.szy.controller;
 
 import com.szy.model.AddPlanReq;
 import com.szy.model.GetPlansReq;
+import com.szy.model.PlanOperReq;
 import com.szy.model.UpdatePlanReq;
 import com.szy.service.IPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,27 +21,32 @@ public class PlanController {
     private IPlanService planService;
 
     @RequestMapping(value = "/v/plan/add", method = {RequestMethod.POST})
-    public Object addPlan(@RequestBody AddPlanReq req, HttpSession session) {
-        return planService.addPlan(req, session);
+    public Object addPlan(@RequestBody AddPlanReq req) {
+        return planService.addPlan(req);
     }
 
     @RequestMapping(value = "/v/plan/delete/{planId}", method = {RequestMethod.GET, RequestMethod.POST})
-    public Object deletePlan(@PathVariable int planId, HttpSession session) {
-        return planService.deletePlan(planId, session);
+    public Object deletePlan(@PathVariable int planId) {
+        return planService.deletePlan(planId);
     }
 
     @RequestMapping(value = "/v/plan/get/list", method = {RequestMethod.POST})
-    public Object getPlanList(@RequestBody GetPlansReq req, HttpSession session) {
-        return planService.getPlans(req, session);
+    public Object getPlanList(@RequestBody GetPlansReq req) {
+        return planService.getPlans(req);
     }
 
     @RequestMapping(value = "/v/plan/get/details/{planId}", method = {RequestMethod.GET, RequestMethod.POST})
-    public Object getPlanDetails(@PathVariable int planId, HttpSession session) {
-        return planService.getPlanDetails(planId, session);
+    public Object getPlanDetails(@PathVariable int planId) {
+        return planService.getPlanDetails(planId);
     }
 
     @RequestMapping(value = "/v/plan/update", method = {RequestMethod.POST})
-    public Object updatePlan(@RequestBody UpdatePlanReq req, HttpSession session) {
-        return planService.updatePlan(req, session);
+    public Object updatePlan(@RequestBody UpdatePlanReq req) {
+        return planService.updatePlan(req);
+    }
+
+    @RequestMapping(value = "/v/plan/online", method = {RequestMethod.POST})
+    public Object planOper(@RequestBody PlanOperReq req) {
+        return planService.planOper(req);
     }
 }

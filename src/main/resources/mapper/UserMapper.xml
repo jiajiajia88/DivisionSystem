@@ -14,7 +14,9 @@
 
     <!--插入用户-->
     <insert id="insertUser" parameterType="com.szy.db.model.UserDbo">
-        INSERT INTO t_user(number, password, `limit`, create_time) VALUES (#{number}, #{password}, #{limit}, from_unixtime(#{createTime}))
+        INSERT INTO t_user(number, name, password, `limit`, createTime)
+        VALUES (#{number}, #{name}, #{password}, #{limit}, from_unixtime(#{createTime}))
+        on duplicate key update createTime = from_unixtime(#{createTime})
     </insert>
 
     <!--根据学工号查找用户-->
@@ -25,5 +27,102 @@
     <update id="updatePassword" parameterType="com.szy.db.model.UserDbo">
         UPDATE t_user SET password = #{password} WHERE `number` = #{number}
     </update>
+
+    <select id="selectStuAccount" parameterType="com.szy.db.model.GetStuAccountItems" resultType="com.szy.db.model.StuAccountDbo">
+        SELECT a.number, b.name as name,c.name as grade,d.name as category, b.originalClass,`limit`, unix_timestamp(a.createTime) as createTime, a.status
+        FROM t_user a
+           JOIN t_student_info b on a.number = b.number
+           JOIN t_grade c on b.grade = c.id
+           JOIN t_category d on b.category = d.id
+        <where>
+            <choose>
+                <when test="status != 0">
+                    a.status = #{status}
+                </when>
+                <otherwise>
+                    a.status > 0
+                </otherwise>
+            </choose>
+            <if test="number != 0">
+                AND a.number = #{number}
+            </if>
+            <if test="grade != 0">
+                AND b.grade = #{grade}
+            </if>
+            <if test="category != 0">
+                AND b.category = #{category}
+            </if>
+            <if test="name != null">
+                AND b.name LIKE '%${name}%'
+            </if>
+            <if test="originalClass != null">
+                AND b.originalClass LIKE '%${originalClass}%'
+            </if>
+            <if test="sex != null">
+                AND b.sex = #{sex}
+            </if>
+            <if test="division != 0">
+                AND b.division = #{division}
+            </if>
+            <if test="stuFrom != null">
+                AND b.stuFrom LIKE '%${stuFrom}%'
+            </if>
+        </where>
+        <if test="item != null and sort !=null">
+            <if test="sort == 'desc'">
+                ORDER BY a.${item} DESC
+            </if>
+            <if test="sort == 'asc'">
+                ORDER BY a.${item} ASC
+            </if>
+        </if>
+        limit #{from},#{size}
+    </select>
+
+    <select id="selectStuAccountTotal" parameterType="com.szy.db.model.GetStuAccountItems"  resultType="int">
+        SELECT count(*) FROM t_user a JOIN t_student_info b on a.number = b.number
+        <where>
+            <choose>
+                <when test="status != 0">
+                    a.status = #{status}
+                </when>
+                <otherwise>
+                    a.status > 0
+                </otherwise>
+            </choose>
+            <if test="number != 0">
+                AND a.number = #{number}
+            </if>
+            <if test="grade != 0">
+                AND b.grade = #{grade}
+            </if>
+            <if test="category != 0">
+                AND b.category = #{category}
+            </if>
+            <if test="name != null">
+                AND b.name LIKE '%${name}%'
+            </if>
+            <if test="originalClass != null">
+                AND b.originalClass LIKE '%${originalClass}%'
+            </if>
+            <if test="sex != null">
+                AND b.sex = #{sex}
+            </if>
+            <if test="division != 0">
+                AND b.division = #{division}
+            </if>
+            <if test="stuFrom != null">
+                AND b.stuFrom LIKE '%${stuFrom}%'
+            </if>
+        </where>
+    </select>
+
+    <update id="updateUserLimit" parameterType="com.szy.db.model.UpdateUserLimitDbo">
+        update t_user set `limit` = #{limit} where number = #{number}
+    </update>
+
+    <delete id="deleteUser" parameterType="long">
+        update t_user set status = -1 where number = #{number}
+    </delete>
 
 </mapper>

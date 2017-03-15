@@ -5,25 +5,21 @@ package com.szy.db.model;
  */
 public class GetVolunteerItems {
 
-    private int from = 0;
-    private int size = 15;
-    private String item = "number";
-    private String sort = "asc";
-    private int category;
+    private int from;
+    private int size;
+    private String item;
+    private String sort;
     private long number;
-    private long startCreateTime;
-    private long endCreateTime;
-    private long startUpdateTime;
-    private long endUpdateTime;
-    private int firstChoose;
-    private int secondChoose;
-    private int thirdChoose;
-    private int status;
     private String name;
     private String originalClass;
     private String sex;
     private String stuFrom;
     private int division;
+    private int category;
+    private int grade;
+    private int firstChoose;
+    private int secondChoose;
+    private int thirdChoose;
 
     public int getFrom() {
         return from;
@@ -57,84 +53,12 @@ public class GetVolunteerItems {
         this.sort = sort;
     }
 
-    public int getCategory() {
-        return category;
-    }
-
-    public void setCategory(int category) {
-        this.category = category;
-    }
-
     public long getNumber() {
         return number;
     }
 
     public void setNumber(long number) {
         this.number = number;
-    }
-
-    public long getStartCreateTime() {
-        return startCreateTime;
-    }
-
-    public void setStartCreateTime(long startCreateTime) {
-        this.startCreateTime = startCreateTime;
-    }
-
-    public long getEndCreateTime() {
-        return endCreateTime;
-    }
-
-    public void setEndCreateTime(long endCreateTime) {
-        this.endCreateTime = endCreateTime;
-    }
-
-    public long getStartUpdateTime() {
-        return startUpdateTime;
-    }
-
-    public void setStartUpdateTime(long startUpdateTime) {
-        this.startUpdateTime = startUpdateTime;
-    }
-
-    public long getEndUpdateTime() {
-        return endUpdateTime;
-    }
-
-    public void setEndUpdateTime(long endUpdateTime) {
-        this.endUpdateTime = endUpdateTime;
-    }
-
-    public int getFirstChoose() {
-        return firstChoose;
-    }
-
-    public void setFirstChoose(int firstChoose) {
-        this.firstChoose = firstChoose;
-    }
-
-    public int getSecondChoose() {
-        return secondChoose;
-    }
-
-    public void setSecondChoose(int secondChoose) {
-        this.secondChoose = secondChoose;
-    }
-
-    public int getThirdChoose() {
-        return thirdChoose;
-    }
-
-    public void setThirdChoose(int thirdChoose) {
-        this.thirdChoose = thirdChoose;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
     }
 
     public String getName() {
@@ -175,5 +99,45 @@ public class GetVolunteerItems {
 
     public void setDivision(int division) {
         this.division = division;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
+    public int getFirstChoose() {
+        return firstChoose;
+    }
+
+    public void setFirstChoose(int firstChoose) {
+        this.firstChoose = firstChoose;
+    }
+
+    public int getSecondChoose() {
+        return secondChoose;
+    }
+
+    public void setSecondChoose(int secondChoose) {
+        this.secondChoose = secondChoose;
+    }
+
+    public int getThirdChoose() {
+        return thirdChoose;
+    }
+
+    public void setThirdChoose(int thirdChoose) {
+        this.thirdChoose = thirdChoose;
     }
 }

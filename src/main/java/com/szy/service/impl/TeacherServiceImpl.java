@@ -3,12 +3,13 @@ package com.szy.service.impl;
 import com.szy.RespEnum;
 import com.szy.Response;
 import com.szy.db.mapper.StuInfoMapper;
-import com.szy.db.model.GetStuInfoItems;
-import com.szy.db.model.Order;
-import com.szy.db.model.StuInfoFilter;
-import com.szy.db.model.StudentInfoDbo;
+import com.szy.db.mapper.VolunteerMapper;
+import com.szy.db.model.*;
 import com.szy.model.*;
-import com.szy.service.IStuInfoService;
+import com.szy.service.ITeacherService;
+import com.szy.session.LocalUtil;
+import com.szy.session.Session;
+import com.szy.util.AccountCreateUtil;
 import com.szy.util.DBUtil;
 import com.szy.util.ExcelUtil;
 import org.slf4j.Logger;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
@@ -26,15 +26,19 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
+ * 学生信息服务
  * Created by shizhouyong on 2017/2/17.
  */
 @Service("IStuInfoService")
-public class StuInfoServiceImpl implements IStuInfoService {
+public class TeacherServiceImpl implements ITeacherService {
 
     @Autowired
     private ExcelUtil excelUtil;
 
-    private static Logger logger = LoggerFactory.getLogger(StuInfoServiceImpl.class);
+    @Autowired
+    private AccountCreateUtil accountCreateUtil;
+
+    private static Logger logger = LoggerFactory.getLogger(TeacherServiceImpl.class);
 
     private final static SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");  //日期格式化
     private final static DecimalFormat df = new DecimalFormat("0");  //格式化number
@@ -43,15 +47,16 @@ public class StuInfoServiceImpl implements IStuInfoService {
     private final static DecimalFormat df6 = new DecimalFormat("0.000000");
 
     @Override
-    public Response uploadStudentInfoByExcel(HttpServletRequest req, MultipartFile file, HttpSession session) {
+    public Response uploadStudentInfoByExcel(HttpServletRequest req, MultipartFile file) {
 
-        Account account = (Account)session.getAttribute("account");
-        if (account == null) {
-            return RespEnum.NO_USER.getResponse();
+        Session session = LocalUtil.getSession();
+        if (session == null) {
+            return RespEnum.NOT_LOGIN.getResponse();
         }
 
         int category = Integer.parseInt(req.getParameter("category"));
-        if (file == null || file.isEmpty() || category == 0)
+        int grade = Integer.parseInt(req.getParameter("grade"));
+        if (file == null || file.isEmpty() || category == 0 || grade == 0)
             return RespEnum.PARAMETER_MiSS.getResponse();
 
         InputStream in = null;
@@ -82,14 +87,15 @@ public class StuInfoServiceImpl implements IStuInfoService {
                 studentInfo.setNumber(Long.parseLong(info[0]));
                 studentInfo.setName(info[1]);
                 studentInfo.setCategory(category);
+                studentInfo.setGrade(grade);
                 studentInfo.setOriginalClass(info[8]);
                 studentInfo.setSex(info[7]);
                 switch (info[7]) {
                     case "男":
-                        studentInfo.setSex("F");
+                        studentInfo.setSex("M");
                         break;
                     case "女":
-                        studentInfo.setSex("M");
+                        studentInfo.setSex("F");
                         break;
                     default:
                         studentInfo.setSex("D");
@@ -119,7 +125,7 @@ public class StuInfoServiceImpl implements IStuInfoService {
 
                 studentInfo.setEntranceScore(Integer.parseInt(info[5]));
                 studentInfo.setAdmissionScore(Integer.parseInt(info[6]));
-                studentInfo.setCreateUser(account.getNumber());
+                studentInfo.setCreateUser(session.getNumber());
                 studentInfo.setCreateTime(cur);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
@@ -128,7 +134,9 @@ public class StuInfoServiceImpl implements IStuInfoService {
 
             if (studentInfo.checkStuInfo()) {
                 try {
-                    mapper.insertStudentInfo(studentInfo.createStuInfoDbo());
+                    StudentInfoDbo studentInfoDbo = studentInfo.createStuInfoDbo();
+                    mapper.insertStudentInfo(studentInfoDbo);
+                    accountCreateUtil.createStuAccount(studentInfoDbo);
                 } catch (Exception e) {
                     e.printStackTrace();
                     logger.error(e.getMessage());
@@ -139,15 +147,15 @@ public class StuInfoServiceImpl implements IStuInfoService {
             }
         }
         long end = System.currentTimeMillis();
-        logger.info(String.valueOf(end - start));
+        logger.info("上传时间："+String.valueOf(end - start));
         return RespEnum.SUCCESS.getResponse();
     }
 
     @Override
-    public Response addStudentInfo(SaveStudentInfoReq req, HttpSession session) {
-        Account account = (Account)session.getAttribute("account");
-        if (account == null) {
-            return RespEnum.NO_USER.getResponse();
+    public Response addStudentInfo(SaveStudentInfoReq req) {
+        Session session = LocalUtil.getSession();
+        if (session == null) {
+            return RespEnum.NOT_LOGIN.getResponse();
         }
 
         if (req == null) {
@@ -161,7 +169,7 @@ public class StuInfoServiceImpl implements IStuInfoService {
 
         long cur = System.currentTimeMillis() / 1000;
         studentInfo.setCreateTime(cur);
-        studentInfo.setCreateUser(account.getNumber());
+        studentInfo.setCreateUser(session.getNumber());
 
         StuInfoMapper mapper = DBUtil.getMapper(StuInfoMapper.class);
         try {
@@ -174,10 +182,10 @@ public class StuInfoServiceImpl implements IStuInfoService {
     }
 
     @Override
-    public Response updateStudentInfo(SaveStudentInfoReq req, HttpSession session) {
-        Account account = (Account)session.getAttribute("account");
-        if (account == null) {
-            return RespEnum.NO_USER.getResponse();
+    public Response updateStudentInfo(SaveStudentInfoReq req) {
+        Session session = LocalUtil.getSession();
+        if (session == null) {
+            return RespEnum.NOT_LOGIN.getResponse();
         }
 
         if (req == null) {
@@ -202,7 +210,7 @@ public class StuInfoServiceImpl implements IStuInfoService {
     }
 
     @Override
-    public Response getStudentInfoList(GetStudentInfoListReq req, HttpSession session) {
+    public Response getStudentInfoList(GetStudentInfoListReq req) {
         if (req == null) {
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
@@ -216,6 +224,11 @@ public class StuInfoServiceImpl implements IStuInfoService {
             items.setSize(order.getSize());
             items.setItem(order.getItem());
             items.setSort(order.getSort());
+        } else {
+            items.setFrom(0);
+            items.setSize(15);
+            items.setItem("number");
+            items.setSort("asc");
         }
 
         if (filter != null) {
@@ -226,7 +239,6 @@ public class StuInfoServiceImpl implements IStuInfoService {
             items.setStuFrom(filter.getStuFrom());
             items.setStatus(filter.getStatus());
             items.setOriginalClass(filter.getOriginalClass());
-            items.setSex(filter.getSex());
             items.setCategory(filter.getCategory());
             if (filter.getCreateTime() != null) {
                 items.setStartCreateTime(filter.getCreateTime().getStart());
@@ -250,13 +262,13 @@ public class StuInfoServiceImpl implements IStuInfoService {
     }
 
     @Override
-    public Response getStudentInfoDetails(long number, HttpSession session) {
+    public Response getStudentInfoDetails(long number) {
         if (number == 0) {
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
 
         StuInfoMapper mapper = DBUtil.getMapper(StuInfoMapper.class);
-        StudentInfoDbo studentInfoDbo = null;
+        StudentInfoQueryDbo studentInfoDbo = null;
         try {
             studentInfoDbo = mapper.selectStudentInfoByNumber(number);
         } catch (Exception e) {
@@ -265,4 +277,82 @@ public class StuInfoServiceImpl implements IStuInfoService {
 
         return studentInfoDbo != null ? new GetStuInfoDetailsResp(studentInfoDbo) : RespEnum.DATA_NOT_FOUND.getResponse();
     }
+
+    @Override
+    public Response deleteVolunteer(long number) {
+        if (number == 0) {
+            return RespEnum.PARAMETER_MiSS.getResponse();
+        }
+
+        VolunteerMapper mapper = DBUtil.getMapper(VolunteerMapper.class);
+        try {
+            mapper.deleteVolunteer(number);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RespEnum.DATA_DELETE_ERR.getResponse();
+        }
+        return RespEnum.SUCCESS.getResponse();
+    }
+
+    @Override
+    public Response getVolunteers(GetVolunteersReq req) {
+        if (req == null) {
+            return RespEnum.PARAMETER_MiSS.getResponse();
+        }
+
+        Order order = req.getOrder();
+        Filter filter = req.getFilter();
+
+        GetVolunteerItems items = new GetVolunteerItems();
+        if (order != null) {
+            items.setFrom(order.getFrom());
+            items.setSize(order.getSize());
+            items.setItem(order.getItem());
+            items.setSort(order.getSort());
+        }
+
+        if (filter != null) {
+            items.setFirstChoose(filter.getFirstChoose());
+            items.setSecondChoose(filter.getSecondChoose());
+            items.setThirdChoose(filter.getThirdChoose());
+            items.setSex(filter.getSex());
+            items.setDivision(filter.getDivision());
+            items.setName(filter.getName());
+            items.setNumber(filter.getNumber());
+            items.setStuFrom(filter.getStuFrom());
+            items.setGrade(filter.getGrade());
+            items.setOriginalClass(filter.getOriginalClass());
+            items.setCategory(filter.getCategory());
+        }
+        VolunteerMapper mapper = DBUtil.getMapper(VolunteerMapper.class);
+        GetVolunteersResp resp = new GetVolunteersResp();
+        try {
+            resp.setVolunteers(mapper.selectVolunteerList(items));
+            resp.setTotal(mapper.selectVolunteerListTotal(items));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return resp;
+    }
+
+    @Override
+    public Response getVolunteerDetails(long number) {
+        if (number == 0) {
+            return RespEnum.PARAMETER_MiSS.getResponse();
+        }
+        VolunteerMapper mapper = DBUtil.getMapper(VolunteerMapper.class);
+        VolunteerQueryDbo dbo = null;
+        try {
+            dbo = mapper.selectVolunteerByNumber(number);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (dbo == null) {
+            return RespEnum.DATA_NOT_FOUND.getResponse();
+        }
+        return new GetVolunteerDetailsResp(dbo);
+    }
+
 }
