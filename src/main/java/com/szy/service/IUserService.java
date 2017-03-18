@@ -19,6 +19,13 @@ public interface IUserService {
     public Response login(UserLoginReq req);
 
     /**
+     * 登出
+     * @param number
+     * @return
+     */
+    public Response logout(long number);
+
+    /**
      * 密码更新
      * @param req
      * @return

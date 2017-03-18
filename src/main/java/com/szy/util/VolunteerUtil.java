@@ -3,8 +3,8 @@ package com.szy.util;
 import com.alibaba.fastjson.JSON;
 import com.szy.db.mapper.PlanMapper;
 import com.szy.db.model.PlanQueryDbo;
-import com.szy.model.PlanKey;
-import com.szy.model.PlanUnit;
+import com.szy.vo.PlanKey;
+import com.szy.vo.PlanUnit;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

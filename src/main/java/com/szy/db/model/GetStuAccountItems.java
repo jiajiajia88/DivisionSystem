@@ -1,6 +1,6 @@
 package com.szy.db.model;
 
-import com.szy.model.Order;
+import com.szy.vo.Order;
 
 /**
  * Created by shizhouyong on 2017/1/24.
@@ -19,6 +19,7 @@ public class GetStuAccountItems {
     private int division;
     private int category;
     private int grade;
+    private int limit;
     private int status;
 
     public void setOrder(Order order) {
@@ -122,6 +123,14 @@ public class GetStuAccountItems {
 
     public void setGrade(int grade) {
         this.grade = grade;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 
     public int getStatus() {

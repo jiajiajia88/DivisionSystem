@@ -11,7 +11,8 @@ public class StudentInfoDbo {
     private int grade;
     private int category;
     private String originalClass;
-    private int presentClass;
+    private int newClass;
+    private int newMajor;
     private String sex;
     private String dorm;
     private String note;
@@ -78,12 +79,20 @@ public class StudentInfoDbo {
         this.originalClass = originalClass;
     }
 
-    public int getPresentClass() {
-        return presentClass;
+    public int getNewClass() {
+        return newClass;
     }
 
-    public void setPresentClass(int presentClass) {
-        this.presentClass = presentClass;
+    public void setNewClass(int newClass) {
+        this.newClass = newClass;
+    }
+
+    public int getNewMajor() {
+        return newMajor;
+    }
+
+    public void setNewMajor(int newMajor) {
+        this.newMajor = newMajor;
     }
 
     public String getSex() {

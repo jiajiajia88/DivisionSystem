@@ -1,4 +1,4 @@
-package com.szy.model;
+package com.szy.vo;
 
 import com.szy.db.model.StudentInfoDbo;
 import org.apache.commons.lang.StringUtils;

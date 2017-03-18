@@ -2,16 +2,17 @@ package com.szy.service.impl;
 
 import com.szy.RespEnum;
 import com.szy.Response;
+import com.szy.db.mapper.ShuntResultMapper;
 import com.szy.db.mapper.StuInfoMapper;
+import com.szy.db.mapper.SystemMapper;
 import com.szy.db.mapper.VolunteerMapper;
 import com.szy.db.model.*;
 import com.szy.model.*;
 import com.szy.service.ITeacherService;
 import com.szy.session.LocalUtil;
 import com.szy.session.Session;
-import com.szy.util.AccountCreateUtil;
-import com.szy.util.DBUtil;
-import com.szy.util.ExcelUtil;
+import com.szy.util.*;
+import com.szy.vo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 学生信息服务
@@ -37,6 +42,9 @@ public class TeacherServiceImpl implements ITeacherService {
 
     @Autowired
     private AccountCreateUtil accountCreateUtil;
+
+    @Autowired
+    private SystemInfoUtil systemInfoUtil;
 
     private static Logger logger = LoggerFactory.getLogger(TeacherServiceImpl.class);
 
@@ -110,7 +118,7 @@ public class TeacherServiceImpl implements ITeacherService {
                         studentInfo.setNote(info[10]);
                         break;
                 }
-                studentInfo.setGPA((Double.parseDouble(df.format(Double.parseDouble(info[2])))));
+                studentInfo.setGPA((Double.parseDouble(df2.format(Double.parseDouble(info[2])))));
                 studentInfo.setStuFrom(info[3]);
                 switch (info[4]) {
                     case "文科":
@@ -216,7 +224,7 @@ public class TeacherServiceImpl implements ITeacherService {
         }
 
         Order order = req.getOrder();
-        StuInfoFilter filter = req.getFilter();
+        Filter filter = req.getFilter();
 
         GetStuInfoItems items = new GetStuInfoItems();
         if (order != null) {
@@ -240,14 +248,7 @@ public class TeacherServiceImpl implements ITeacherService {
             items.setStatus(filter.getStatus());
             items.setOriginalClass(filter.getOriginalClass());
             items.setCategory(filter.getCategory());
-            if (filter.getCreateTime() != null) {
-                items.setStartCreateTime(filter.getCreateTime().getStart());
-                items.setEndCreateTime(filter.getCreateTime().getEnd());
-            }
-            if (filter.getUpdateTime() != null) {
-                items.setStartUpdateTime(filter.getUpdateTime().getStart());
-                items.setEndUpdateTime(filter.getUpdateTime().getEnd());
-            }
+            items.setGrade(filter.getGrade());
         }
         StuInfoMapper mapper = DBUtil.getMapper(StuInfoMapper.class);
         GetStudentInfoListResp resp = new GetStudentInfoListResp();
@@ -353,6 +354,122 @@ public class TeacherServiceImpl implements ITeacherService {
             return RespEnum.DATA_NOT_FOUND.getResponse();
         }
         return new GetVolunteerDetailsResp(dbo);
+    }
+
+    @Override
+    public Response calculateGrade(ShuntReq req) {
+        if (req == null || req.getCategory() == 0 || req.getCategory() == 0) {
+            return RespEnum.PARAMETER_MiSS.getResponse();
+        }
+
+        Order order = req.getOrder() == null ? new Order() : req.getOrder();
+        GetStuInfoItems items = new GetStuInfoItems();
+        items.setFrom(0);
+        items.setSize(1000 * 1000 * 1000);
+        items.setCategory(req.getCategory());
+        items.setGrade(req.getGrade());
+
+        StuInfoMapper mapper = DBUtil.getMapper(StuInfoMapper.class);
+        List<StudentInfoQueryDbo> studentInfoList = mapper.selectStudentInfoList(items);
+        for (StudentInfoQueryDbo t : studentInfoList) {
+            double realGps = Double.parseDouble(df3.format(t.getGPA() * 0.7));
+            double gradeOne = Double.parseDouble(df2.format((float)t.getEntranceScore() / t.getAdmissionScore()));
+            double gradeTwo = Double.parseDouble(df3.format(gradeOne * 0.3));
+            double totalGrade = Double.parseDouble(df2.format(realGps + gradeTwo));
+            StudentInfoDbo dbo = new StudentInfoDbo();
+            dbo.setRealGPA(realGps);
+            t.setRealGPA(realGps);
+            dbo.setGradeOne(gradeOne);
+            t.setGradeOne(gradeOne);
+            dbo.setGradeTwo(gradeTwo);
+            t.setGradeTwo(gradeTwo);
+            dbo.setTotalGrade(totalGrade);
+            t.setTotalGrade(totalGrade);
+            dbo.setNumber(t.getNumber());
+            mapper.updateGrade(dbo);
+        }
+
+        studentInfoList = studentInfoList.stream().sorted(Comparator.comparing(StudentInfoQueryDbo::getTotalGrade).reversed()).collect(Collectors.toList());
+        int i = 0;
+        for (StudentInfoQueryDbo t : studentInfoList) {
+            StudentInfoDbo dbo = new StudentInfoDbo();
+            dbo.setRank(++i);
+            dbo.setNumber(t.getNumber());
+            mapper.updateRank(dbo);
+        }
+
+        items.setItem("rank");
+        items.setSort("asc");
+        items.setFrom(order.getFrom());
+        items.setSize(order.getSize());
+
+        GetStudentInfoListResp resp = new GetStudentInfoListResp();
+        try {
+            resp.setStudents(mapper.selectStudentInfoList(items));
+            resp.setTotal(mapper.selectStudentInfoListTotal(items));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return resp;
+    }
+
+    @Override
+    public Response shunt(ShuntReq req) {
+        if (req == null || req.getCategory() == 0 || req.getCategory() == 0) {
+            return RespEnum.PARAMETER_MiSS.getResponse();
+        }
+
+        int category = req.getCategory();
+        int grade = req.getGrade();
+        SystemMapper systemMapper = DBUtil.getMapper(SystemMapper.class);
+        GradeDbo gradeDbo = systemMapper.selectGradeById(grade);
+        if (gradeDbo == null) {
+            return RespEnum.DATA_NOT_FOUND.getResponse();
+        }
+        String gradeName = gradeDbo.getName();
+
+        ShuntUtil shuntUtil = new ShuntUtil(category, grade);
+        shuntUtil.executeShunt();
+        Map<Integer, List<VolunteerQueryDbo>> targetMap = shuntUtil.getTargetMap();
+        ShuntResultMapper mapper = DBUtil.getMapper(ShuntResultMapper.class);
+
+        long cur = System.currentTimeMillis() / 1000;
+        targetMap.forEach((k,v)->{
+            PlanUnit planUnit = shuntUtil.getPlanUnitMap().get(k);
+            int num = planUnit.getClassAmount();
+            NewMajorDbo newMajorDbo = new NewMajorDbo();
+            newMajorDbo.setMajor(planUnit.getId());
+            newMajorDbo.setCategory(category);
+            newMajorDbo.setGrade(grade);
+            newMajorDbo.setClassNum(num);
+            newMajorDbo.setStudentNum(v.size());
+            newMajorDbo.setCreateTime(cur);
+            mapper.insertNewMajor(newMajorDbo);
+
+            NewClassDbo newClassDbo = new NewClassDbo();
+            newClassDbo.setMajor(newMajorDbo.getId());
+            newClassDbo.setCategory(category);
+            newClassDbo.setGrade(grade);
+            newClassDbo.setRealNum(v.size());
+            newClassDbo.setPlanNum(planUnit.getStuAmount());
+            newClassDbo.setCreateTime(cur);
+
+            StuInfoMapper stuInfoMapper = DBUtil.getMapper(StuInfoMapper.class);
+            for (int i = 0;i < num;i++) {
+                newClassDbo.setName(gradeName+"级"+planUnit.getName()+(i+1)+"班");
+                mapper.insertNewClass(newClassDbo);
+                List<VolunteerQueryDbo> volunteers = shuntUtil.getNewClassMap().get(new NewClassKey(k,i+1));
+                StudentInfoDbo studentInfoDbo = new StudentInfoDbo();
+                volunteers.forEach(t->{
+                    studentInfoDbo.setNumber(t.getNumber());
+                    studentInfoDbo.setNewMajor(newMajorDbo.getId());
+                    studentInfoDbo.setNewClass(newClassDbo.getId());
+                    stuInfoMapper.updateNewClass(studentInfoDbo);
+                });
+            }
+        });
+        return RespEnum.SUCCESS.getResponse();
     }
 
 }

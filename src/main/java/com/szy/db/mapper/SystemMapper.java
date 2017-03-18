@@ -13,6 +13,7 @@ public interface SystemMapper {
     public int insertGrade(SystemInfo gradeDbo);
     public List<GradeDbo> selectGrades();
     public int deleteGrade(int id);
+    public GradeDbo selectGradeById(int id);
 
     public int insertMajor(SystemInfo majorDbo);
     public List<MajorQueryDbo> selectMajors();
@@ -27,6 +28,7 @@ public interface SystemMapper {
     public int insertCategory(SystemInfo categoryDbo);
     public List<CategoryDbo> selectCategories();
     public int deleteCategory(int id);
+    public CategoryDbo selectCategoryById(int id);
 
     public int insertTeacher(TeacherInfoDbo dbo);
     public int updateTeacher(TeacherInfoDbo dbo);

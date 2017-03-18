@@ -13,7 +13,10 @@ public class StudentInfoQueryDbo {
     private String category;         //大类具体名称
     private int categoryId;
     private String originalClass;
-    private int presentClass;        //班级具体名称
+    private int newClassId;
+    private int newMajorId;
+    private String newClass;
+    private String newMajor;
     private String sex;              //性别
     private String dorm;
     private String note;
@@ -104,12 +107,36 @@ public class StudentInfoQueryDbo {
         this.originalClass = originalClass;
     }
 
-    public int getPresentClass() {
-        return presentClass;
+    public int getNewClassId() {
+        return newClassId;
     }
 
-    public void setPresentClass(int presentClass) {
-        this.presentClass = presentClass;
+    public void setNewClassId(int newClassId) {
+        this.newClassId = newClassId;
+    }
+
+    public int getNewMajorId() {
+        return newMajorId;
+    }
+
+    public void setNewMajorId(int newMajorId) {
+        this.newMajorId = newMajorId;
+    }
+
+    public String getNewClass() {
+        return newClass;
+    }
+
+    public void setNewClass(String newClass) {
+        this.newClass = newClass;
+    }
+
+    public String getNewMajor() {
+        return newMajor;
+    }
+
+    public void setNewMajor(String newMajor) {
+        this.newMajor = newMajor;
     }
 
     public String getSex() {

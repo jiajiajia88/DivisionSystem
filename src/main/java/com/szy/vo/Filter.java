@@ -1,4 +1,4 @@
-package com.szy.model;
+package com.szy.vo;
 
 /**
  * Created by shizhouyong on 2017/2/20.
@@ -16,6 +16,8 @@ public class Filter {
     private int firstChoose;
     private int secondChoose;
     private int thirdChoose;
+    private int limit;
+    private int status;
     
     public long getNumber() {
         return number;
@@ -105,4 +107,19 @@ public class Filter {
         this.division = division;
     }
 
+    public int getLimit() {
+        return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 }

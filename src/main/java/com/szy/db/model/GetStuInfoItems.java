@@ -1,6 +1,6 @@
 package com.szy.db.model;
 
-import com.szy.model.Order;
+import com.szy.vo.Order;
 
 /**
  * Created by shizhouyong on 2017/1/24.
@@ -11,12 +11,9 @@ public class GetStuInfoItems {
     private int size;
     private String item;
     private String sort;
+    private int grade;
     private int category;
     private long number;
-    private long startCreateTime;
-    private long endCreateTime;
-    private long startUpdateTime;
-    private long endUpdateTime;
     private int status;
     private String name;
     private String originalClass;
@@ -63,6 +60,14 @@ public class GetStuInfoItems {
         this.sort = sort;
     }
 
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
     public int getCategory() {
         return category;
     }
@@ -77,38 +82,6 @@ public class GetStuInfoItems {
 
     public void setNumber(long number) {
         this.number = number;
-    }
-
-    public long getStartCreateTime() {
-        return startCreateTime;
-    }
-
-    public void setStartCreateTime(long startCreateTime) {
-        this.startCreateTime = startCreateTime;
-    }
-
-    public long getEndCreateTime() {
-        return endCreateTime;
-    }
-
-    public void setEndCreateTime(long endCreateTime) {
-        this.endCreateTime = endCreateTime;
-    }
-
-    public long getStartUpdateTime() {
-        return startUpdateTime;
-    }
-
-    public void setStartUpdateTime(long startUpdateTime) {
-        this.startUpdateTime = startUpdateTime;
-    }
-
-    public long getEndUpdateTime() {
-        return endUpdateTime;
-    }
-
-    public void setEndUpdateTime(long endUpdateTime) {
-        this.endUpdateTime = endUpdateTime;
     }
 
     public int getStatus() {

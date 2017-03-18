@@ -22,4 +22,10 @@ public interface StuInfoMapper {
 
     public int updatePhone(UpdatePhoneDbo dbo);
 
+    public int updateGrade(StudentInfoDbo dbo);
+
+    public int updateRank(StudentInfoDbo dbo);
+
+    public int updateNewClass(StudentInfoDbo dbo);
+
 }

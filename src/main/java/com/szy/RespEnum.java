@@ -37,6 +37,8 @@ public enum RespEnum {
     CATEGORY_NOT_FOUND(0x0002000D, "category is null"),
     POSITION_NOT_FOUND(0x0002000E, "position is null"),
     DUPLICATE_DATA(0x0002000F, "data duplicate"),
+    PLAN_DATA_ERR(0x00020010, "plan data error"),              //分流计划数据有误
+    PLAN_UNIT_DATA_ERR(0x00020011, "plan'unit data error"),
 
     /*
      * 数据库错误码

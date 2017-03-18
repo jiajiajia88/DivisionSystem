@@ -1,4 +1,4 @@
-package com.szy.model;
+package com.szy.vo;
 
 /**
  * Created by shizhouyong on 2017/1/6.

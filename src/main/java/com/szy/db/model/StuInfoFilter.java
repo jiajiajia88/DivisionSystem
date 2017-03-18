@@ -1,6 +1,6 @@
 package com.szy.db.model;
 
-import com.szy.model.Time;
+import com.szy.vo.Time;
 
 /**
  * Created by shizhouyong on 2017/2/20.

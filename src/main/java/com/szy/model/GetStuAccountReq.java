@@ -1,5 +1,8 @@
 package com.szy.model;
 
+import com.szy.vo.Filter;
+import com.szy.vo.Order;
+
 /**
  * Created by shizhouyong on 2017/3/13.
  */

@@ -1,5 +1,7 @@
 package com.szy.model;
 
+import com.szy.vo.StudentInfo;
+
 /**
  * Created by shizhouyong on 2017/2/17.
  */

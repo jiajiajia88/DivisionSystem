@@ -118,8 +118,21 @@ public class UserServiceImpl implements IUserService {
             }
             cacheUtil.setSession(session);
             return new UserLoginResp(userDbo.getNumber(), session.getName(), null, ss, session.getLimit(), cur + CacheUtil.SESSION_EXPIRE);
-
         }
+    }
+
+    @Override
+    public Response logout(long number) {
+        if (number == 0) {
+            return RespEnum.PARAMETER_MiSS.getResponse();
+        }
+
+        Session session = LocalUtil.getSession();
+        if (session == null) {
+            return RespEnum.NOT_LOGIN.getResponse();
+        }
+        cacheUtil.delSeeion(session.getKey());
+        return RespEnum.SUCCESS.getResponse();
     }
 
     @Override
@@ -196,4 +209,6 @@ public class UserServiceImpl implements IUserService {
 
         return RespEnum.SUCCESS.getResponse();
     }
+
+
 }

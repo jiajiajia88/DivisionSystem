@@ -9,6 +9,8 @@ import com.szy.model.*;
 import com.szy.service.ISystemService;
 import com.szy.util.DBUtil;
 import com.szy.util.SystemInfoUtil;
+import com.szy.vo.Filter;
+import com.szy.vo.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -257,6 +259,7 @@ public class SystemServiceImpl implements ISystemService{
             items.setOriginalClass(filter.getOriginalClass());
             items.setCategory(filter.getCategory());
             items.setGrade(filter.getGrade());
+            items.setLimit(filter.getLimit());
         }
 
         UserMapper userMapper = DBUtil.getMapper(UserMapper.class);

@@ -1,12 +1,11 @@
 package com.szy.filter;
 
 import com.szy.RespEnum;
-import com.szy.model.Account;
+import com.szy.vo.Account;
 import com.szy.service.IUserService;
 import com.szy.util.UserLimitUtil;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 

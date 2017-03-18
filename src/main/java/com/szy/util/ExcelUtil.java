@@ -114,8 +114,9 @@ public class ExcelUtil {
                             sb.append(SEPARATOR).append(cell.getDateCellValue());
                         } else {
                             //把手机号码转换为字符串
-                            DecimalFormat df = new DecimalFormat("#");
-                            sb.append(SEPARATOR).append(df.format(cellValue.getNumberValue()));
+                            Double d = cell.getNumericCellValue();
+                            DecimalFormat df = new DecimalFormat("#.##");
+                            sb.append(SEPARATOR).append(df.format(d));
                         }
                         break;
                     case Cell.CELL_TYPE_STRING:

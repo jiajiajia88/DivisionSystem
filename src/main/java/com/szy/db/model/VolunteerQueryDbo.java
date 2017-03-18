@@ -16,6 +16,7 @@ public class VolunteerQueryDbo {
     private long createTime;
     private long updateTime;
     private long commitTime;
+    private int rank;
     private int status;
 
     public long getNumber() {
@@ -104,6 +105,14 @@ public class VolunteerQueryDbo {
 
     public void setCommitTime(long commitTime) {
         this.commitTime = commitTime;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
     }
 
     public int getStatus() {

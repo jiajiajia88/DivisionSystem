@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.szy.db.mapper.ShuntResultMapper">
+
+    <insert id="insertNewMajor" parameterType="com.szy.db.model.NewMajorDbo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_new_major(major, category, grade, studentNum, classNum, createTime, status)
+        values (#{major}, #{category}, #{grade}, #{studentNum}, #{classNum}, from_unixtime(#{createTime}), #{status})
+    </insert>
+
+    <insert id="insertNewClass" parameterType="com.szy.db.model.NewClassDbo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_new_class(name, major, category, grade, realNum, planNum, createTime, status)
+        values (#{name}, #{major}, #{category}, #{grade}, #{realNum}, #{planNum}, from_unixtime(#{createTime}), #{status})
+    </insert>
+
+    <update id="updateNewMajor" parameterType="com.szy.db.model.NewMajorDbo">
+        update t_new_major set major = #{major}, category = #{category}, grade = #{grade},
+        studentNum = #{studentNum}, classNum = #{classNum}, createTime = #{createTime}, status = #{status}
+    </update>
+
+    <update id="updateNewClass" parameterType="com.szy.db.model.NewClassDbo">
+        update t_new_class set name = #{name}, major = #{major}, category = #{category}, grade = #{grade},
+        realNum = #{realNum}, planNum = #{planNum}, createTime = #{createTime}, status = #{status}
+    </update>
+
+    <select id="getNewMajorList" parameterType="com.szy.db.model.GetNewMajorItems" resultType="com.szy.db.model.NewMajorQueryDbo">
+        SELECT a.major as majorId,b.name as major, a.category as categoryId, d.name as category, a.grade as gradeId, c.name as grade, studentNum, classNum, unix_timestamp(a.createTime) as createTime, unix_timestamp(a.updateTime) as updateTime, a.status
+        FROM t_new_major a
+        JOIN t_major b on a.major = b.id
+        JOIN t_grade c on a.grade = c.id
+        JOIN t_category d on a.category = d.id
+        <where>
+            a.status > 0
+            <if test="major != 0">
+                and a.major = #{major}
+            </if>
+            <if test="grade != 0">
+                and a.grade = #{grade}
+            </if>
+            <if test="category != 0">
+                and a.category = #{category}
+            </if>
+        </where>
+        <if test="item != null and sort !=null">
+            <if test="sort == 'desc'">
+                ORDER BY a.${item} DESC
+            </if>
+            <if test="sort == 'asc'">
+                ORDER BY a.${item} ASC
+            </if>
+        </if>
+        limit #{from},#{size}
+    </select>
+
+    <select id="getNewMajorListTotal" parameterType="com.szy.db.model.GetNewMajorItems" resultType="int">
+        SELECT count(*) FROM t_new_major
+        <where>
+            status > 0
+            <if test="major != 0">
+                and major = #{major}
+            </if>
+            <if test="grade != 0">
+                and grade = #{grade}
+            </if>
+            <if test="category != 0">
+                and category = #{category}
+            </if>
+        </where>
+    </select>
+
+    <select id="getNewClassList" parameterType="com.szy.db.model.GetNewClassItems" resultType="com.szy.db.model.NewClassQueryDbo">
+        SELECT a.name as name, a.major as majorId,b.name as major, a.category as categoryId, d.name as category, a.grade as gradeId, c.name as grade, realNum, planNum, unix_timestamp(a.createTime) as createTime, unix_timestamp(a.updateTime) as updateTime, a.status
+        FROM t_new_class a
+        JOIN t_major b on a.major = b.id
+        JOIN t_grade c on a.grade = c.id
+        JOIN t_category d on a.category = d.id
+        <where>
+            a.status > 0
+            <if test="name != null">
+                and a.name like '%${name}%'
+            </if>
+            <if test="major != 0">
+                and a.major = #{major}
+            </if>
+            <if test="grade != 0">
+                and a.grade = #{grade}
+            </if>
+            <if test="category != 0">
+                and a.category = #{category}
+            </if>
+        </where>
+        <if test="item != null and sort !=null">
+            <if test="sort == 'desc'">
+                ORDER BY a.${item} DESC
+            </if>
+            <if test="sort == 'asc'">
+                ORDER BY a.${item} ASC
+            </if>
+        </if>
+        limit #{from},#{size}
+    </select>
+
+    <select id="getNewClassListTotal" parameterType="com.szy.db.model.GetNewClassItems" resultType="int">
+        SELECT count(*) FROM t_new_class
+        <where>
+            status > 0
+            <if test="name != null">
+                and `name` like '%${name}%'
+            </if>
+            <if test="major != 0">
+                and major = #{major}
+            </if>
+            <if test="grade != 0">
+                and grade = #{grade}
+            </if>
+            <if test="category != 0">
+                and category = #{category}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteNewMajor" parameterType="int">
+        update t_new_major set status = -1 where id = #{0}
+    </delete>
+
+    <delete id="deleteNewClass" parameterType="int">
+        update t_new_class set status = -1 where id = #{0}
+    </delete>
+
+</mapper>

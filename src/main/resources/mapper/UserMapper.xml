@@ -29,7 +29,7 @@
     </update>
 
     <select id="selectStuAccount" parameterType="com.szy.db.model.GetStuAccountItems" resultType="com.szy.db.model.StuAccountDbo">
-        SELECT a.number, b.name as name,c.name as grade,d.name as category, b.originalClass,`limit`, unix_timestamp(a.createTime) as createTime, a.status
+         SELECT a.number, b.name as name,c.name as grade,d.name as category, b.originalClass,`limit`, unix_timestamp(a.createTime) as createTime, a.status
         FROM t_user a
            JOIN t_student_info b on a.number = b.number
            JOIN t_grade c on b.grade = c.id
@@ -40,8 +40,16 @@
                     a.status = #{status}
                 </when>
                 <otherwise>
-                    a.status > 0
+                     a.status > 0
                 </otherwise>
+            </choose>
+            <choose>
+                <when test="limit == 3">
+                    and a.`limit` > 2
+                </when>
+                <when test="limit == -1">
+                    and <![CDATA[ a.`limit` < 3 ]]>
+                </when>
             </choose>
             <if test="number != 0">
                 AND a.number = #{number}
@@ -89,6 +97,14 @@
                 <otherwise>
                     a.status > 0
                 </otherwise>
+            </choose>
+            <choose>
+                <when test="limit == 3">
+                    and a.`limit` > 2
+                </when>
+                <when test="limit == -1">
+                    and <![CDATA[ a.`limit` < 3 ]]>
+                </when>
             </choose>
             <if test="number != 0">
                 AND a.number = #{number}

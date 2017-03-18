@@ -1,20 +1,21 @@
 package com.szy.model;
 
-import com.szy.db.model.StuInfoFilter;
+import com.szy.vo.Filter;
+import com.szy.vo.Order;
 
 /**
  * Created by shizhouyong on 2017/2/20.
  */
 public class GetStudentInfoListReq {
 
-    private StuInfoFilter filter;
+    private Filter filter;
     private Order order;
 
-    public StuInfoFilter getFilter() {
+    public Filter getFilter() {
         return filter;
     }
 
-    public void setFilter(StuInfoFilter filter) {
+    public void setFilter(Filter filter) {
         this.filter = filter;
     }
 

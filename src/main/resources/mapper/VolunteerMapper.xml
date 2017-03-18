@@ -28,7 +28,7 @@
 
     <select id="selectVolunteerByNumber" parameterType="long" resultType="com.szy.db.model.VolunteerQueryDbo">
         SELECT
-          number,
+          a.number,
           firstChoose as firstChooseId,
           b.name as firstChoose,
           secondChoose as secondChooseId,
@@ -37,11 +37,13 @@
           d.name as thirdChoose,
           unix_timestamp(a.createTime) as createTime,
           unix_timestamp(a.updateTime) as updateTime,
+          e.rank as rank,
           a.status
         FROM t_volunteer a
-          LEFT JOIN t_major b on a.firstChoose = b.id
-          LEFT JOIN t_major c on a.secondChoose = c.id
-          LEFT JOIN t_major d on a.thirdChoose = d.id
+          JOIN t_major b on a.firstChoose = b.id
+          JOIN t_major c on a.secondChoose = c.id
+          JOIN t_major d on a.thirdChoose = d.id
+          JOIN t_student_info e on a.number = e.number
         WHERE a.number = #{0}
     </select>
 
@@ -57,6 +59,7 @@
             d.name as thirdChoose,
             unix_timestamp(a.createTime) as createTime,
             unix_timestamp(a.updateTime) as updateTime,
+            e.rank as rank,
             a.status
         FROM t_volunteer a
         JOIN t_major b on a.firstChoose = b.id

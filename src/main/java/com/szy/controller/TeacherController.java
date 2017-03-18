@@ -1,8 +1,6 @@
 package com.szy.controller;
 
-import com.szy.model.GetStudentInfoListReq;
-import com.szy.model.GetVolunteersReq;
-import com.szy.model.SaveStudentInfoReq;
+import com.szy.model.*;
 import com.szy.service.ITeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -62,4 +60,14 @@ public class TeacherController {
         return teacherService.getVolunteerDetails(number);
     }
 
+
+    @RequestMapping(value = "/v/operation/calculate", method = {RequestMethod.POST})
+    public Object calculateGrade(@RequestBody ShuntReq req) {
+        return teacherService.calculateGrade(req);
+    }
+
+    @RequestMapping(value = "/v/operation/shunt", method = {RequestMethod.POST})
+    public Object shunt(@RequestBody ShuntReq req) {
+        return teacherService.shunt(req);
+    }
 }
