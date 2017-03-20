@@ -26,6 +26,10 @@ public interface StuInfoMapper {
 
     public int updateRank(StudentInfoDbo dbo);
 
+    public int updateGradeAndCategory(StudentInfoDbo dbo);
+
     public int updateNewClass(StudentInfoDbo dbo);
+
+    public int updateNewMajor(StudentInfoDbo dbo);
 
 }

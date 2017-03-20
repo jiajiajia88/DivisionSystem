@@ -26,6 +26,24 @@
             #{remarks})
     </insert>
 
+    <select id="selectPlanByGradeAndCategory" parameterType="com.szy.db.model.GetPlanItems" resultType="com.szy.db.model.PlanQueryDbo">
+        SELECT a.id,
+            c.name as grade,
+            a.grade as gradeId,
+            b.name as category,
+            a.category as categoryId,
+            studentAmount,
+            majorAmount,
+            details,
+            unix_timestamp(a.endTime) as endTime,
+            unix_timestamp(a.createTime) as createTime,
+            unix_timestamp(updateTime) as updateTime,
+            remarks,
+            a.status as status
+        FROM t_plan a JOIN t_category b ON a.category = b.id JOIN t_grade c on a.grade = c.id
+        WHERE a.grade = #{grade} AND a.category = #{category} AND a.status > 0
+    </select>
+
     <select id="selectPlans" parameterType="com.szy.db.model.GetPlanItems" resultType="com.szy.db.model.PlanQueryDbo">
         SELECT a.id,
             c.name as grade,

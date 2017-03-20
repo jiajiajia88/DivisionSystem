@@ -20,6 +20,14 @@ public class VolunteerUtil {
 
     private static volatile Map<PlanKey, List<PlanUnit>> planMap = new ConcurrentHashMap<>();
 
+    public Map<PlanKey, List<PlanUnit>> getPlanMap() {
+        return planMap;
+    }
+
+    public void setPlanMap(Map<PlanKey, List<PlanUnit>> planMap) {
+        VolunteerUtil.planMap = planMap;
+    }
+
     public void updateMap() {
         PlanMapper planMapper = DBUtil.getMapper(PlanMapper.class);
         List<PlanQueryDbo> planQueryDboList = planMapper.selectAllAlivePlans();

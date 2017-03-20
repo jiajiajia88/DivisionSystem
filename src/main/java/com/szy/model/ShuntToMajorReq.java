@@ -1,15 +1,12 @@
 package com.szy.model;
 
-import com.szy.vo.Order;
-
 /**
  * Created by shizhouyong on 2017/3/16.
  */
-public class ShuntReq {
+public class ShuntToMajorReq {
 
     private int category;
     private int grade;
-    private Order order;
 
     public int getCategory() {
         return category;
@@ -27,11 +24,4 @@ public class ShuntReq {
         this.grade = grade;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
 }

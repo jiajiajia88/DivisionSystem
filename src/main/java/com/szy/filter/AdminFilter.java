@@ -13,8 +13,8 @@ import java.io.IOException;
  * Created by shizhouyong on 2017/1/7.
  */
 
-//@WebFilter(filterName = "TeacherFilter", urlPatterns = {"/jg/v/*"})
-public class TeacherFilter implements Filter {
+//@WebFilter(filterName = "AdminFilter", urlPatterns = {"/jg/v/*"})
+public class AdminFilter implements Filter {
 
     private static IUserService userService;
 

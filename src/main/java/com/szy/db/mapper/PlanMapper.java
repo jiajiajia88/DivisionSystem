@@ -15,6 +15,8 @@ public interface PlanMapper {
 
     public int insertPlan(PlanDbo planDbo);
 
+    public PlanQueryDbo selectPlanByGradeAndCategory(GetPlanItems items);
+
     public PlanQueryDbo selectPlanDetals(int id);
 
     public List<PlanQueryDbo> selectPlans(GetPlanItems items);

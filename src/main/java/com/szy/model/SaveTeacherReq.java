@@ -7,7 +7,6 @@ public class SaveTeacherReq {
 
     private long number;
     private String name;
-    private String position;
 
     public long getNumber() {
         return number;
@@ -25,11 +24,4 @@ public class SaveTeacherReq {
         this.name = name;
     }
 
-    public String getPosition() {
-        return position;
-    }
-
-    public void setPosition(String position) {
-        this.position = position;
-    }
 }

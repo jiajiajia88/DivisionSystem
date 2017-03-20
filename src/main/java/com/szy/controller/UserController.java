@@ -1,7 +1,5 @@
 package com.szy.controller;
 
-import com.szy.model.DeleteAccountReq;
-import com.szy.model.UpdateUserLimitReq;
 import com.szy.model.UserLoginReq;
 import com.szy.model.UserUpdatePasswordReq;
 import com.szy.service.IUserService;
@@ -32,16 +30,6 @@ public class UserController {
     @RequestMapping(value = "/v/user/password/update", method = {RequestMethod.POST})
     public Object updatePasswd(@RequestBody UserUpdatePasswordReq req) {
         return userService.updatePassward(req);
-    }
-
-    @RequestMapping(value = "/v/system/account/update/limit", method = {RequestMethod.POST})
-    public Object updateAccountLimit(@RequestBody UpdateUserLimitReq req){
-        return userService.updateAccountLimit(req);
-    }
-
-    @RequestMapping(value = "/v/system/account/delete", method = {RequestMethod.POST})
-    public Object deleteAccount(@RequestBody DeleteAccountReq req){
-        return userService.deleteAccount(req);
     }
 
 }

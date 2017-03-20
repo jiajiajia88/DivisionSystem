@@ -45,4 +45,6 @@ public interface IStuService {
      */
     public Response getMyVolunteer();
 
+    public Response getShuntResult();
+
 }

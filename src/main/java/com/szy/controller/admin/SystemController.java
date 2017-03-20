@@ -1,4 +1,4 @@
-package com.szy.controller;
+package com.szy.controller.admin;
 
 import com.szy.model.*;
 import com.szy.service.ISystemService;
@@ -50,31 +50,6 @@ public class SystemController {
     @RequestMapping(value = "/v/system/systemInfo/get", method = {RequestMethod.POST})
     public Object getSystemInfos(@RequestBody GetSystemInfoListReq req) {
         return systemService.getSystemInfos(req);
-    }
-
-    @RequestMapping(value = "/v/system/teacher/add", method = {RequestMethod.POST})
-    public Object addTeacher(@RequestBody SaveTeacherReq req){
-        return systemService.addTeacher(req);
-    }
-
-    @RequestMapping(value = "/v/system/teacher/update", method = {RequestMethod.POST})
-    public Object updateTeacher(@RequestBody SaveTeacherReq req){
-        return systemService.updateTeacher(req);
-    }
-
-    @RequestMapping(value = "/v/system/teacher/list", method = {RequestMethod.GET,RequestMethod.POST})
-    public Object teacherList(){
-        return systemService.teacherList();
-    }
-
-    @RequestMapping(value = "/v/system/teacher/delete/{number}", method = {RequestMethod.POST,RequestMethod.GET})
-    public Object deleteTeacher(@PathVariable long number){
-        return systemService.deleteTeacher(number);
-    }
-
-    @RequestMapping(value = "/v/system/account/stu", method = {RequestMethod.POST})
-    public Object getStuAccounts(@RequestBody GetStuAccountReq req) {
-        return systemService.getStuAccount(req);
     }
 
 }

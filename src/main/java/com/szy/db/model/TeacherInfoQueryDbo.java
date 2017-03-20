@@ -8,7 +8,7 @@ public class TeacherInfoQueryDbo {
 
     private long number;
     private String name;
-    private String position;
+    private int limit;
     private long createTime;
     private long updateTime;
     private int status;
@@ -29,12 +29,12 @@ public class TeacherInfoQueryDbo {
         this.name = name;
     }
 
-    public String getPosition() {
-        return position;
+    public int getLimit() {
+        return limit;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 
     public long getCreateTime() {

@@ -77,21 +77,28 @@
     </select>
 
     <insert id="insertTeacher" parameterType="com.szy.db.model.TeacherInfoDbo" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_teacher_info(name,number,positionId,createTime) VALUES (#{name}, #{number}, #{positionId}, from_unixtime(#{createTime}))
+        INSERT INTO t_teacher_info(name,number,createTime) VALUES (#{name}, #{number},from_unixtime(#{createTime}))
+        on duplicate key update name = #{name}, updateTime = from_unixtime(#{updateTime})
     </insert>
 
     <update id="updateTeacher" parameterType="com.szy.db.model.TeacherInfoDbo" useGeneratedKeys="true" keyProperty="id">
-        update t_teacher_info set name = #{name}, positionId = #{positionId}, updateTime = from_unixtime(#{updateTime}) where number = #{number}
+        update t_teacher_info set name = #{name}, updateTime = from_unixtime(#{updateTime}) where number = #{number}
     </update>
 
-    <select id="selectTeacherInfos" resultType="com.szy.db.model.TeacherInfoQueryDbo">
-        SELECT a.name, number, b.name as position,unix_timestamp(a.createTime) as createTime,unix_timestamp(a.updateTime) as updateTime,a.status
-        FROM t_teacher_info a LEFT JOIN t_position b on a.positionId = b.id WHERE a.status > 0
+    <select id="selectTeacherInfos" resultType="com.szy.db.model.TeacherInfoQueryDbo" parameterType="com.szy.db.model.GetAdminListDbo">
+        SELECT b.name, b.number, a.`limit` , unix_timestamp(a.createTime) as createTime,unix_timestamp(b.updateTime) as updateTime, a.status
+        FROM t_user a RIGHT JOIN t_teacher_info b ON a.number = b.number
+        <where>
+          a.status > 0
+            <if test="name != null">
+                and b.name like '%${name}%'
+            </if>
+        </where>
     </select>
 
     <select id="selectTeacherInfoByNumber" resultType="com.szy.db.model.TeacherInfoQueryDbo" parameterType="long">
-        SELECT a.name, number, b.name as position,unix_timestamp(a.createTime) as createTime,unix_timestamp(a.updateTime) as updateTime,a.status
-        FROM t_teacher_info a LEFT JOIN t_position b on a.positionId = b.id WHERE a.status > 0 AND a.number = #{number}
+        SELECT b.name, b.number, a.`limit` , unix_timestamp(a.createTime) as createTime,unix_timestamp(b.updateTime) as updateTime, a.status
+        FROM t_user a RIGHT JOIN t_teacher_info b ON a.number = b.number WHERE a.status > 0
     </select>
 
     <delete id="deleteTeacher" parameterType="long">

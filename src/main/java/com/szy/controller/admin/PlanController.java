@@ -1,4 +1,4 @@
-package com.szy.controller;
+package com.szy.controller.admin;
 
 import com.szy.model.AddPlanReq;
 import com.szy.model.GetPlansReq;
@@ -7,8 +7,6 @@ import com.szy.model.UpdatePlanReq;
 import com.szy.service.IPlanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
 
 /**
  * Created by shizhouyong on 2017/1/4.
@@ -49,4 +47,5 @@ public class PlanController {
     public Object planOper(@RequestBody PlanOperReq req) {
         return planService.planOper(req);
     }
+
 }

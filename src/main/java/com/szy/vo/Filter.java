@@ -1,6 +1,7 @@
 package com.szy.vo;
 
 /**
+ * 学生信息筛选条件
  * Created by shizhouyong on 2017/2/20.
  */
 public class Filter {
@@ -13,6 +14,8 @@ public class Filter {
     private int division;
     private int category;
     private int grade;
+    private int newMajor;
+    private int newClass;
     private int firstChoose;
     private int secondChoose;
     private int thirdChoose;
@@ -33,6 +36,22 @@ public class Filter {
 
     public void setGrade(int grade) {
         this.grade = grade;
+    }
+
+    public int getNewMajor() {
+        return newMajor;
+    }
+
+    public void setNewMajor(int newMajor) {
+        this.newMajor = newMajor;
+    }
+
+    public int getNewClass() {
+        return newClass;
+    }
+
+    public void setNewClass(int newClass) {
+        this.newClass = newClass;
     }
 
     public int getCategory() {

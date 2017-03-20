@@ -7,9 +7,10 @@ import com.szy.db.mapper.SystemMapper;
 import com.szy.db.mapper.UserMapper;
 import com.szy.db.model.StudentInfoQueryDbo;
 import com.szy.db.model.TeacherInfoQueryDbo;
-import com.szy.db.model.UpdateUserLimitDbo;
 import com.szy.db.model.UserDbo;
-import com.szy.model.*;
+import com.szy.model.UserLoginReq;
+import com.szy.model.UserLoginResp;
+import com.szy.model.UserUpdatePasswordReq;
 import com.szy.service.IUserService;
 import com.szy.session.LocalUtil;
 import com.szy.session.Session;
@@ -24,7 +25,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 /**
  * 用户服务
@@ -102,7 +102,7 @@ public class UserServiceImpl implements IUserService {
             session.setLoginTime(cur);
             session.setPasswd(userDbo.getPassword());
             session.setLimit(userDbo.getLimit());
-            if(UserLimitUtil.verify(userDbo.getLimit(), UserLimitUtil.USER_STUDENT)) {
+            if(UserLimitUtil.verify(userDbo.getLimit(), UserLimitUtil.USER_TEACHER)) {
                 SystemMapper systemMapper = DBUtil.getMapper(SystemMapper.class);
                 TeacherInfoQueryDbo teacherInfoQueryDbo = systemMapper.selectTeacherInfoByNumber(userDbo.getNumber());
                 session.setName(teacherInfoQueryDbo.getName());
@@ -170,45 +170,5 @@ public class UserServiceImpl implements IUserService {
 
         return RespEnum.SUCCESS.getResponse();
     }
-
-    @Override
-    public Response updateAccountLimit(UpdateUserLimitReq req) {
-        if (req == null || req.getLimit() == 0 || req.getNumberList() == null || req.getNumberList().isEmpty())
-            return RespEnum.PARAMETER_MiSS.getResponse();
-
-        UserMapper userMapper = DBUtil.getMapper(UserMapper.class);
-        List<Long> numberList = req.getNumberList();
-        int status = req.getLimit();
-        numberList.forEach(t->{
-            UpdateUserLimitDbo dbo = new UpdateUserLimitDbo(t, status);
-            try {
-                userMapper.updateUserLimit(dbo);
-            } catch (Exception e) {
-                logger.error("学号为"+t+"的账号更新失败！");
-                e.printStackTrace();
-            }
-        });
-
-        return RespEnum.SUCCESS.getResponse();
-    }
-
-    @Override
-    public Response deleteAccount(DeleteAccountReq req) {
-        if (req == null || req.getNumberList() == null || req.getNumberList().isEmpty())
-            return RespEnum.PARAMETER_MiSS.getResponse();
-
-        UserMapper userMapper = DBUtil.getMapper(UserMapper.class);
-        req.getNumberList().forEach(t->{
-            try {
-                userMapper.deleteUser(t);
-            } catch (Exception e) {
-                logger.error("number为"+t+"的用户删除失败！");
-                e.printStackTrace();
-            }
-        });
-
-        return RespEnum.SUCCESS.getResponse();
-    }
-
 
 }

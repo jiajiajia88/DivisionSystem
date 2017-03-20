@@ -32,7 +32,7 @@ public interface SystemMapper {
 
     public int insertTeacher(TeacherInfoDbo dbo);
     public int updateTeacher(TeacherInfoDbo dbo);
-    public List<TeacherInfoQueryDbo> selectTeacherInfos();
+    public List<TeacherInfoQueryDbo> selectTeacherInfos(GetAdminListDbo name);
     public TeacherInfoQueryDbo selectTeacherInfoByNumber(long number);
     public int deleteTeacher(long number);
 

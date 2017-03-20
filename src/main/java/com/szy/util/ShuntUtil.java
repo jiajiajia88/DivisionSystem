@@ -6,6 +6,7 @@ import com.szy.db.mapper.StuInfoMapper;
 import com.szy.db.mapper.VolunteerMapper;
 import com.szy.db.model.*;
 import com.szy.vo.NewClassKey;
+import com.szy.vo.PlanKey;
 import com.szy.vo.PlanUnit;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +20,13 @@ import java.util.stream.Collectors;
 
 public class ShuntUtil {
 
+    public static Map<PlanKey, ShuntUtil> shuntUtilMap = new ConcurrentHashMap<>();
+
     private List<PlanUnit> planUnits;
     private List<StudentInfoQueryDbo> studentInfoQueryDbos;
     private List<VolunteerQueryDbo> volunteerQueryDbos;
     private Map<Integer, List<VolunteerQueryDbo>> targetMap;
     private Map<Integer, PlanUnit> planUnitMap;
-    private Map<NewClassKey, List<VolunteerQueryDbo>> newClassMap;
 
     private int category;
     private int grade;
@@ -95,8 +97,6 @@ public class ShuntUtil {
             }
         }
 
-        //分班（目前是按学号排序）
-        initNewClassMap();
     }
 
     private void dealTargetMap() {
@@ -112,19 +112,19 @@ public class ShuntUtil {
         });
     }
 
-    public void initNewClassMap() {
+    public Map<NewClassKey, List<VolunteerQueryDbo>> getNewClassMap(int majorId) {
         Map<NewClassKey, List<VolunteerQueryDbo>> map = new ConcurrentHashMap<>();
-        this.targetMap.forEach((k,v)->{
-            PlanUnit planUnit = this.planUnitMap.get(k);
-            int num = planUnit.getClassAmount();
-            int eachNum = v.size() / num + 1;
-            v = v.stream().sorted(Comparator.comparing(VolunteerQueryDbo::getNumber).reversed()).collect(Collectors.toList());
-            for(int i = 0;i < num - 1;i++){
-                map.put(new NewClassKey(k,i+1),v.subList(i * eachNum, (i+1) * eachNum));
-            }
-            map.put(new NewClassKey(k,num), v.subList((num-1)*eachNum, v.size()));
-        });
-        this.newClassMap = map;
+        List<VolunteerQueryDbo> v = this.targetMap.get(majorId);
+
+        PlanUnit planUnit = this.planUnitMap.get(majorId);
+        int num = planUnit.getClassAmount();
+        int eachNum = v.size() / num + 1;
+        v = v.stream().sorted(Comparator.comparing(VolunteerQueryDbo::getNumber).reversed()).collect(Collectors.toList());
+        for(int i = 0;i < num - 1;i++){
+            map.put(new NewClassKey(majorId,i+1),v.subList(i * eachNum, (i+1) * eachNum));
+        }
+        map.put(new NewClassKey(majorId,num), v.subList((num-1)*eachNum, v.size()));
+        return map;
     }
 
     private Map<Integer, PlanUnit> initPlanUnitMap() {
@@ -228,7 +228,4 @@ public class ShuntUtil {
         return planUnitMap;
     }
 
-    public Map<NewClassKey, List<VolunteerQueryDbo>> getNewClassMap() {
-        return newClassMap;
-    }
 }

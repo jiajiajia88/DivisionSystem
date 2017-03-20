@@ -13,6 +13,8 @@ public class GetStuInfoItems {
     private String sort;
     private int grade;
     private int category;
+    private int newMajor;
+    private int newClass;
     private long number;
     private int status;
     private String name;
@@ -74,6 +76,22 @@ public class GetStuInfoItems {
 
     public void setCategory(int category) {
         this.category = category;
+    }
+
+    public int getNewMajor() {
+        return newMajor;
+    }
+
+    public void setNewMajor(int newMajor) {
+        this.newMajor = newMajor;
+    }
+
+    public int getNewClass() {
+        return newClass;
+    }
+
+    public void setNewClass(int newClass) {
+        this.newClass = newClass;
     }
 
     public long getNumber() {

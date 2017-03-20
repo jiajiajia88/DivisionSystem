@@ -33,8 +33,17 @@ public class PlanServiceImpl implements IPlanService {
             return RespEnum.PARAMETER_MiSS.getResponse();
         }
 
-        long cur = System.currentTimeMillis() / 1000;
         PlanMapper planMapper = DBUtil.getMapper(PlanMapper.class);
+        GetPlanItems items = new GetPlanItems();
+        items.setCategory(req.getCategory());
+        items.setGrade(req.getGrade());
+        PlanQueryDbo planQueryDbo = planMapper.selectPlanByGradeAndCategory(items);
+        if(planQueryDbo != null) {
+            return RespEnum.DUPLICATE_DATA.getResponse();
+        }
+
+        long cur = System.currentTimeMillis() / 1000;
+
         SystemMapper systemMapper = DBUtil.getMapper(SystemMapper.class);
         PlanDbo dbo = new PlanDbo();
         dbo.setGrade(req.getGrade());

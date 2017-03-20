@@ -3,8 +3,6 @@ package com.szy.service;
 import com.szy.Response;
 import com.szy.model.*;
 
-import javax.servlet.http.HttpSession;
-
 /**
  * Created by shizhouyong on 2017/1/8.
  */
@@ -65,15 +63,5 @@ public interface ISystemService {
      * @return
      */
     public Response deleteSystemInfo(DeleteSystemInfoReq req);
-
-    public Response addTeacher(SaveTeacherReq req);
-
-    public Response updateTeacher(SaveTeacherReq req);
-
-    public Response teacherList();
-
-    public Response deleteTeacher(long number);
-
-    public Response getStuAccount(GetStuAccountReq req);
 
 }

@@ -6,6 +6,7 @@ package com.szy.db.model;
 public class NewMajorQueryDbo {
 
     private int id;
+    private String name;
     private int gradeId;
     private String grade;
     private int categoryId;
@@ -24,6 +25,14 @@ public class NewMajorQueryDbo {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getGradeId() {

@@ -119,6 +119,12 @@
             <if test="category != 0">
                 AND a.category = #{category}
             </if>
+            <if test="newMajor != 0">
+                AND a.newMajor = #{newMajor}
+            </if>
+            <if test="newClass != 0">
+                AND a.newClass = #{newClass}
+            </if>
             <if test="name != null">
                 AND a.name LIKE '%${name}%'
             </if>
@@ -166,6 +172,12 @@
             <if test="category != 0">
                 AND category = #{category}
             </if>
+            <if test="newMajor != 0">
+                AND newMajor = #{newMajor}
+            </if>
+            <if test="newClass != 0">
+                AND newClass = #{newClass}
+            </if>
             <if test="name != null">
                 AND name LIKE '%${name}%'
             </if>
@@ -193,7 +205,16 @@
     </update>
 
     <update id="updateNewClass" parameterType="com.szy.db.model.StudentInfoDbo">
-        update t_student_info set newMajor = #{newMajor}, newClass = #{newClass} where `number` = #{number}
+        update t_student_info set newClass = #{newClass} where `number` = #{number}
+    </update>
+
+    <update id="updateNewMajor" parameterType="com.szy.db.model.StudentInfoDbo">
+        update t_student_info set newMajor = #{newMajor} where `number` = #{number}
+    </update>
+
+    <update id="updateGradeAndCategory" parameterType="com.szy.db.model.StudentInfoDbo">
+        update t_student_info a left join t_user b on a.number = b.number
+        set over = 2 where grade = #{grade} and category = #{category} and status > 0 and b.limit = 3
     </update>
 
 </mapper>

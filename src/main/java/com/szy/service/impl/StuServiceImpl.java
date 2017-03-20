@@ -2,11 +2,10 @@ package com.szy.service.impl;
 
 import com.szy.RespEnum;
 import com.szy.Response;
+import com.szy.db.mapper.PlanMapper;
 import com.szy.db.mapper.StuInfoMapper;
 import com.szy.db.mapper.VolunteerMapper;
-import com.szy.db.model.UpdatePhoneDbo;
-import com.szy.db.model.VolunteerDbo;
-import com.szy.db.model.VolunteerQueryDbo;
+import com.szy.db.model.*;
 import com.szy.model.*;
 import com.szy.service.IStuService;
 import com.szy.session.LocalUtil;
@@ -126,11 +125,15 @@ public class StuServiceImpl implements IStuService {
 
         PlanKey planKey = new PlanKey(session.getGrade(), session.getCategory());
         List<PlanUnit> planUnitList = new ArrayList<>();
+        if (volunteerUtil.getPlanMap().isEmpty()) {
+            volunteerUtil.updateMap();
+        }
         try {
             planUnitList =  volunteerUtil.getUnits(planKey);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return new GetVolunteerSelectItemsResp(planUnitList);
     }
 
@@ -140,6 +143,29 @@ public class StuServiceImpl implements IStuService {
         VolunteerMapper mapper = DBUtil.getMapper(VolunteerMapper.class);
         VolunteerQueryDbo volunteerQueryDbo = mapper.selectVolunteerByNumber(session.getNumber());
         return new GetMyVolunteerResp(volunteerQueryDbo);
+    }
+
+    @Override
+    public Response getShuntResult() {
+        Session session = LocalUtil.getSession();
+        if (session == null) {
+            return RespEnum.NOT_LOGIN.getResponse();
+        }
+
+        PlanMapper planMapper = DBUtil.getMapper(PlanMapper.class);
+        GetPlanItems items = new GetPlanItems();
+        items.setGrade(session.getGrade());
+        items.setCategory(session.getCategory());
+        PlanQueryDbo planQueryDbo = planMapper.selectPlanByGradeAndCategory(items);
+        if (planQueryDbo == null || planQueryDbo.getStatus() != 4) {
+            return new GetShuntResultResp(null);
+        }
+
+        StuInfoMapper stuInfoMapper = DBUtil.getMapper(StuInfoMapper.class);
+        List<StudentInfoQueryDbo> studentInfoQueryDbos = new ArrayList<>();
+        StudentInfoQueryDbo studentInfoQueryDbo = stuInfoMapper.selectStudentInfoByNumber(session.getNumber());
+        studentInfoQueryDbos.add(studentInfoQueryDbo);
+        return new GetShuntResultResp(studentInfoQueryDbos);
     }
 
 }

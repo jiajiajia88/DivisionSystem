@@ -10,6 +10,7 @@ public class NewClassDbo {
     private int grade;
     private int category;
     private int major;
+    private int index;
     private int realNum;
     private int planNum;
     private long createTime;
@@ -54,6 +55,14 @@ public class NewClassDbo {
 
     public void setMajor(int major) {
         this.major = major;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public int getRealNum() {

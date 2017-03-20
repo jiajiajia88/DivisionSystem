@@ -10,6 +10,7 @@ public class SaveStudentInfoReq {
     private long number;
     private String name;
     private int category;
+    private int grade;
     private String originalClass;
     private String sex;
     private String dorm;
@@ -25,6 +26,7 @@ public class SaveStudentInfoReq {
         studentInfo.setNumber(number);
         studentInfo.setName(name);
         studentInfo.setCategory(category);
+        studentInfo.setGrade(grade);
         studentInfo.setOriginalClass(originalClass);
         studentInfo.setSex(sex);
         studentInfo.setDorm(dorm);
@@ -59,6 +61,14 @@ public class SaveStudentInfoReq {
 
     public void setCategory(int category) {
         this.category = category;
+    }
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
     }
 
     public String getOriginalClass() {

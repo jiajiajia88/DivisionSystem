@@ -1,4 +1,4 @@
-package com.szy.controller;
+package com.szy.controller.student;
 
 import com.szy.model.GetSystemInfoListReq;
 import com.szy.model.SaveVolunteerReq;
@@ -44,6 +44,11 @@ public class StuController {
     @RequestMapping(value = "/v/stu/volunteer/select/items", method = {RequestMethod.GET})
     public Object getVolunteerSelectItems() {
         return stuService.getVolunteerSelectItems();
+    }
+
+    @RequestMapping(value = "/v/stu/shunt/result", method = {RequestMethod.GET})
+    public Object getShuntResult() {
+        return stuService.getShuntResult();
     }
 
 }
