@@ -56,6 +56,7 @@ public class ShuntUtil {
         }
         dealTargetMap();
 
+
         //第二个循环
         pendList.clear();
         pendList.addAll(this.volunteerQueryDbos);
@@ -69,7 +70,6 @@ public class ShuntUtil {
             }
         }
         dealTargetMap();
-
 
         //第三个循环
         pendList.clear();
@@ -103,12 +103,13 @@ public class ShuntUtil {
         this.targetMap.forEach((k,v)->{
             int num = this.planUnitMap.get(k).getStuAmount();
             if (v.size() > num) {
-                v = v.stream().sorted(Comparator.comparing(VolunteerQueryDbo::getRank)).collect(Collectors.toList());
+                v = v.stream().sorted(Comparator.comparing(VolunteerQueryDbo::getShuntStatus).thenComparing(VolunteerQueryDbo::getRank)).collect(Collectors.toList());
                 List<VolunteerQueryDbo> list2 = v.subList(num, v.size());
                 v = v.subList(0, num);
                 this.targetMap.put(k, v);
                 this.volunteerQueryDbos.addAll(list2);
             }
+            v.forEach(t->t.setShuntStatus(1));
         });
     }
 

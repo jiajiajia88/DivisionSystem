@@ -17,6 +17,7 @@ public class VolunteerQueryDbo {
     private long updateTime;
     private long commitTime;
     private int rank;
+    private int shuntStatus = 0;
     private int status;
 
     public long getNumber() {
@@ -113,6 +114,14 @@ public class VolunteerQueryDbo {
 
     public void setRank(int rank) {
         this.rank = rank;
+    }
+
+    public int getShuntStatus() {
+        return shuntStatus;
+    }
+
+    public void setShuntStatus(int shuntStatus) {
+        this.shuntStatus = shuntStatus;
     }
 
     public int getStatus() {
